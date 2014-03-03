@@ -4,6 +4,7 @@ chaussette==1.0
 distlib==0.1.7
 dj-database-url==0.2.2
 dj-email-url==0.0.1
+django-admin-honeypot==0.3.0
 django-cache-url==0.8.0
 django-configurations==0.8
 django-easy-pjax==1.1.0

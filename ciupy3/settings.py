@@ -54,6 +54,7 @@ class Common(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'raven.contrib.django.raven_compat',
+        'admin_honeypot',
         'djangosecure',
         'pq',
         'rest_framework',

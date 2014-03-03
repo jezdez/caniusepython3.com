@@ -17,6 +17,7 @@ router.register(r'check', CheckViewSet)
 urlpatterns = patterns('',
     url(r'^$', CheckCreateView.as_view(), name='check_form'),
     url(r'^', include(router.urls)),
+    url(r'^admin/', include('admin_honeypot.urls')),
     url(r'^manage/', include(admin.site.urls)),
     url(r'^api-auth/', include('rest_framework.urls',
                                namespace='rest_framework'))

@@ -26,14 +26,14 @@ def virtualenv():
 def deploy(commit=None):
     git_seed(env.codedir, commit)
     # stop your service here
-    supervisor('stop jezdez_web')
+    circus('stop jezdez_web')
     git_reset(env.codedir, commit)
     with virtualenv():
         with cd(env.codedir):
             run('pip install --pre -r requirements.txt')
-            run('./manage.py collectstatic --noinput --configuration=Prod')
+            run('ENVDIR=prod ./manage.py collectstatic --noinput --configuration=Prod')
     # restart your service here
-    supervisor('start jezdez_web')
+    circus('start jezdez_web')
 
 
 @task
@@ -47,9 +47,9 @@ def pushprodconfig():
 
 
 @task
-def supervisor(command):
+def circus(command):
     with cd(env.home):
-        run('supervisorctl {}'.format(command))
+        run('circusctl {}'.format(command))
 
 
 @task

@@ -26,14 +26,16 @@ def virtualenv():
 def deploy(commit=None):
     git_seed(env.codedir, commit)
     # stop your service here
-    circus('stop ciupy3_web ciupy3_worker')
+    circus('stop ciupy3_web')
+    circus('stop ciupy3_worker')
     git_reset(env.codedir, commit)
     with virtualenv():
         with cd(env.codedir):
             run('pip install --pre -r requirements.txt')
             run('ENVDIR=prod ./manage.py collectstatic --noinput --configuration=Prod')
     # restart your service here
-    circus('start ciupy3_web ciupy3_worker')
+    circus('start ciupy3_worker')
+    circus('start ciupy3_web')
 
 
 @task

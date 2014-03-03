@@ -1,8 +1,39 @@
-{% extends "base.html" %}
+{% extends "checks/base.html" %}
 
 {% block content %}
-<form action="" method="post" accept-charset="utf-8">
-    {{ form }}
-    <input type="submit" name="Submit" />
-</form>
+<div id="content">
+  <form action="" method="post">{% csrf_token %}
+  <div class="row check-form">
+    <div class="large-8 columns">
+      <h2>
+        <small>
+          Check if you are ready to make the transition
+        </small>
+      </h2>
+      <div class="row collapse">
+        <div class="large-9 columns{% if form.requirements.errors or form.non_field_errors %} error{% endif %}">
+          {{ form.requirements }}
+          {% if form.non_field_errors %}
+            <small class="error">
+              {% for error in form.non_field_errors %}
+                {{ error }}
+              {% endfor %}
+            </small>
+          {% endif %}
+          {% if form.requirements.errors %}
+            <small class="error">
+              {% for error in form.requirements.errors %}
+                {{ error }}
+              {% endfor %}
+            </small>
+          {% endif %}
+        </div>
+        <div class="large-3 columns">
+          <input type="submit" name="submit" value="Check" class="button postfix" />
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
 {% endblock content %}

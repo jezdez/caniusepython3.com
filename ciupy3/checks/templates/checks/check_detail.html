@@ -1,0 +1,122 @@
+{% extends "checks/base.html"|pjax:request %}
+{% load i18n %}
+{% load static from staticfiles %}
+
+{% block title %}Check {{ id }} - {% endblock title %}
+
+{% block content %}
+{% if not finished_at %}
+<div id="content">
+  <div class="row">
+    <div class="large-8 columns wait-message">
+      <h2>
+      <small>
+        Please wait while we're checking...
+      </small>
+      </h2>
+    </div>
+    <div class="large-8 columns error-message hide">
+      <h2>
+        <small>
+          Something went wrong while checking your projects.
+        </small>
+      </h2>
+      <p>
+       Please review the project your provided on the right and try again.
+      </p>
+    </div>
+    <div class="large-4 columns show-for-large-up">
+      <h2>
+      {% blocktrans count counter=projects|length %}
+      <small>Checking</small> {{ counter }} <small>project</small>
+      {% plural %}
+      <small>Checking</small> {{ counter }} <small>projects</small>
+      {% endblocktrans %}
+      </h2>
+      <ul class="no-bullet panel radius show-for-large-up">
+      {% for project in projects %}
+        <li>{{ project }}</li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% else %}
+<div id="content" class="finished">
+  <div class="row">
+    <div class="large-8 columns">
+      <h2>
+      <small>
+        {% if unblocked == 0 %}
+          {% blocktrans count counter=projects|length %}
+            <span class="show-for-small-only">Congrats! Not a blocker.</span>
+            <span class="show-for-medium-up">Congratulations! You have no blocker to transition to Python 3.</span>
+          {% plural %}
+            <span class="show-for-small-only">Congrats! No blockers.</span>
+            <span class="show-for-medium-up">Congratulations! You have no blockers to transition to Python 3.</span>
+          {% endblocktrans %}
+        {% else %}
+          {% blocktrans count counter=unblocked %}
+            <span class="show-for-small-only">Almost, {{ counter }} blocks you.</span>
+            <span class="show-for-medium-up">Almost, {{ counter }} project blocks your transition to Python 3.</span>
+          {% plural %}
+            <span class="show-for-small-only">Almost, {{ counter }} block you.</span>
+            <span class="show-for-medium-up">Almost, {{ counter }} projects block your transition to Python 3.</span>
+          {% endblocktrans %}
+        {% endif %}
+      </small>
+      </h2>
+    </div>
+    <div class="large-4 columns show-for-large-up">
+        <h2>
+        {% blocktrans count counter=projects|length %}
+        <small>Checked</small> {{ counter }} <small>project</small>
+        {% plural %}
+        <small>Checked</small> {{ counter }} <small>projects</small>
+        {% endblocktrans %}
+        </h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-8 columns">
+    {% if blockers|length > 0 %}
+      <dl>
+        {% if blockers|length == 1 %}
+        <dt>The following has no direct dependencies blocking its transition</dt>
+        {% elif blockers|length > 1 %}
+        <dt>
+        {% blocktrans count counter=blockers|length %}
+        {{ counter }} out of those {{ unblocked }} has no direct dependencies blocking its transition
+        {% plural %}
+        {{ counter }} out of those {{ unblocked }} have no direct dependencies blocking their transition
+        {% endblocktrans %}
+        </dt>
+        {% endif %}
+        <dd>
+          <ul>
+          {% for name, blocks in blockers.items %}
+            <li>
+              {{ name }} {% if blocks %}({% endif %}{% for name in blocks %}which is blocking {{ name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% if blocks %}){% endif %}
+            </li>
+          {% endfor %}
+          </ul>
+        </dd>
+      </dl>
+      {% endif %}
+    </div>
+    <div class="large-4 columns">
+      <ul class="no-bullet panel callout radius show-for-large-up">
+      {% for project in projects %}
+        <li>{{ project }}</li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock content %}
+
+{% block extra_footer %}
+<script src="{% static "js/jquery.pjax.js" %}"></script>
+<script src="{% static "js/app.js" %}"></script>
+{% endblock extra_footer %}

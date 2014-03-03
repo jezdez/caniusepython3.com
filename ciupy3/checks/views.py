@@ -1,37 +1,33 @@
 from django.shortcuts import redirect
-from pq.models import Job
 
 from rest_framework import viewsets
-from vanilla import CreateView, DetailView
+from vanilla import CreateView
 
-from .jobs import run_check
+from .forms import CheckForm
+from .jobs import run_check, get_compatible
 from .models import Check
-from .serializers import JobSerializer
+from .serializers import CheckSerializer
 
 
-# view to submit form to and redirect to check detail page / then /check/<job>
-class JobViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Job.objects.all()
-    serializer_class = JobSerializer
-    lookup_field = 'uuid'
+class CheckViewSet(viewsets.mixins.RetrieveModelMixin,
+                   viewsets.GenericViewSet):
+    queryset = Check.objects.all()
+    serializer_class = CheckSerializer
+    lookup_field = 'pk'
+    template_name = 'checks/check_detail.html'
 
 
-# view to show frontpage and form /
 class CheckCreateView(CreateView):
+    form_class = CheckForm
     model = Check
-    fields = ['requirements']
 
     def form_valid(self, form):
-        check = form.save(commit=False)
-        check.job = run_check.delay(form.cleaned_data['requirements'])
-        check.save()
+        check = form.save()
+        run_check.delay(check.pk)
         return redirect(check)
 
-
-class CheckDetailView(DetailView):
-    model = Check
-
-
-# view to fill form with one requirement /requirements/<requirement url>
-
-# view to fill form with one or more projects /<project>
+    def get_context_data(self, *args, **kwargs):
+        context = super(CheckCreateView, self).get_context_data(*args,
+                                                                **kwargs)
+        context.update({'compatible': get_compatible()})
+        return context

@@ -1,0 +1,43 @@
+body {
+    background-color: #fff;
+    font-family: 'Roboto', sans-serif;
+}
+/*html,
+body {
+  font-size: 110%; }
+*/
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Roboto Condensed", sans-serif;
+  /*font-family: 'Fjalla One', sans-serif;*/
+  font-weight: 500;
+}
+
+.navigation-area {
+    margin-bottom: 20px;
+}
+
+.top-bar, .top-bar .name {
+    height: 60px;
+    line-height: 60px;
+}
+
+.top-bar .name h1 {
+    line-height: 60px;
+    font-size: 1.8rem;
+}
+
+.top-bar .name h1 a {
+    width: 100%;
+}
+
+.check-form input {
+    font-size: 120%;
+    height: 60px;
+    padding: 15px;
+}
+
+footer {
+    padding-bottom: 20px;
+    line-height: 1.5;
+}

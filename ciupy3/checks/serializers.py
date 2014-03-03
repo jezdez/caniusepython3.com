@@ -1,9 +1,32 @@
-from pq.models import Job
+from collections import OrderedDict
+from operator import itemgetter
+
 from rest_framework import serializers
+from .models import Check
+from .jobs import get_compatible
 
 
-class JobSerializer(serializers.HyperlinkedModelSerializer):
+class CheckSerializer(serializers.HyperlinkedModelSerializer):
+    projects = serializers.SerializerMethodField('get_projects')
+    blockers = serializers.SerializerMethodField('get_blockers')
+    requirements = serializers.CharField('requirements')
+    compatible = serializers.SerializerMethodField('get_compatible')
+
     class Meta:
-        model = Job
-        fields = ('uuid', 'created_at', 'status', 'enqueued_at', 'ended_at',
-                  'result', 'if_failed', 'if_result')
+        model = Check
+        fields = ('id', 'created_at', 'started_at', 'finished_at',
+                  'requirements', 'projects', 'blockers', 'unblocked',
+                  'compatible')
+
+    def get_projects(self, obj):
+        return sorted(obj.projects)
+
+    def get_blockers(self, obj):
+        if obj.blockers:
+            return OrderedDict(sorted(obj.blockers.items(),
+                                      key=itemgetter(0)))
+        else:
+            return {}
+
+    def get_compatible(self, obj):
+        return int(get_compatible() or 0)

@@ -1,14 +1,57 @@
-<!DOCTYPE html>
-<html>
+{% load static from staticfiles %}<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html class="no-js" lang="en" >
 <head>
-    <title>Can I use Python 3? - {% block title %}Home{% endblock title %}</title>
-{% block extra_head %}
-
-{% endblock extra_head %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock title %}Can I use Python 3?</title>
+<link href='http://fonts.googleapis.com/css?family=Average+Sans|Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic|Roboto+Condensed:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{% static "css/normalize.css" %}">
+  <link rel="stylesheet" href="{% static "css/foundation.min.css" %}">
+  <link rel="stylesheet" href="{% static "css/gh-fork-ribbon.css" %}">
+  <!--[if lt IE 9]>
+      <link rel="stylesheet" href="{% static "css/gh-fork-ribbon.ie.css" %}">
+  <![endif]-->
+  <link rel="stylesheet" href="{% static "css/app.css" %}">
+  <script src="{% static "js/vendor/modernizr.js" %}"></script>
+  {% block extra_head %}{% endblock extra_head %}
 </head>
 <body>
-{% block content %}
-
-{% endblock content %}
+  <div class="github-fork-ribbon-wrapper right show-for-medium-up">
+      <div class="github-fork-ribbon">
+          <a href="https://github.com/jezdez/caniusepython3.com">Fork me on GitHub</a>
+      </div>
+  </div>
+  <div class="contain-to-grid navigation-area">
+    <nav class="top-bar" data-topbar data-options="is_hover: false">
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="/">Can I Use Python 3?</a></h1>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  {% block content %}{% endblock content %}
+  <footer>
+    <div class="row">
+        <div class="small-12 columns">
+            Idea and <a href="https://pypi.python.org/pypi/caniusepython3" title="CLI">CLI</a>
+            by <a href="http://nothingbutsnark.svbtle.com/" title="Brett Cannon">Brett Cannon</a>,
+            <a href="https://github.com/jezdez/caniusepython3.com" title="site code">site</a> by <a href="https://jezdez.com/" title="Jannis Leidel">Jannis Leidel</a>.
+            {% if compatible %}
+            <a href="https://pypi.python.org/" title="PyPI">PyPI</a> currently knows about <strong>{{ compatible }}</strong> compatible projects.
+            {% endif %}
+        </div>
+    </div>
+  </footer>
+  <script src="{% static "js/vendor/jquery.js" %}"></script>
+  <script src="{% static "js/foundation.js" %}"></script>
+  <script>
+  jQuery(document).ready(function ($) {
+    $(document).foundation();
+  });
+  </script>
+  <script src="{% static "js/foundation/foundation.topbar.js" %}"></script>
+  {% block extra_footer %}{% endblock extra_footer %}
 </body>
 </html>

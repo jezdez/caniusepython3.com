@@ -28,6 +28,17 @@ class Common(Configuration):
 
     TEMPLATE_DEBUG = True
 
+    TEMPLATE_CONTEXT_PROCESSORS = (
+        'django.contrib.auth.context_processors.auth',
+        'django.core.context_processors.debug',
+        'django.core.context_processors.i18n',
+        'django.core.context_processors.media',
+        'django.core.context_processors.static',
+        'django.core.context_processors.tz',
+        'django.core.context_processors.request',
+        'django.contrib.messages.context_processors.messages',
+    )
+
     ALLOWED_HOSTS = []
 
     # Application definition
@@ -38,8 +49,11 @@ class Common(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'easy_pjax',
         'pq',
         'rest_framework',
+        'south',
+        'ciupy3.checks',
     )
 
     MIDDLEWARE_CLASSES = (
@@ -58,7 +72,7 @@ class Common(Configuration):
     # Database
     # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
     # http://django-configurations.readthedocs.org/en/latest/values/#configurations.values.DatabaseURLValue
-    DATABASES = values.DatabaseURLValue('sqlite:///%s' % os.path.join(BASE_DIR, 'db.sqlite3'))
+    DATABASES = values.DatabaseURLValue('postgres://ciupy3@localhost/ciupy3')
 
     # Internationalization
     # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -84,7 +98,7 @@ class Common(Configuration):
         'PAGINATE_BY': 10,
         'DEFAULT_RENDERER_CLASSES': (
             'rest_framework.renderers.JSONRenderer',
-            'rest_framework.renderers.BrowsableAPIRenderer',
+            # 'rest_framework.renderers.BrowsableAPIRenderer',
             'rest_framework.renderers.TemplateHTMLRenderer',
         )
     }
@@ -114,6 +128,10 @@ class Common(Configuration):
     }
 
     CACHES = values.CacheURLValue('hiredis://127.0.0.1:6381/0')
+
+    STATICFILES_DIRS = [
+        os.path.join(os.path.dirname(__file__), 'foundation'),
+    ]
 
 
 class Dev(Common):

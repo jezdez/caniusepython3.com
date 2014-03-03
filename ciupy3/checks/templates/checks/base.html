@@ -45,13 +45,12 @@
     </div>
   </footer>
   <script src="{% static "js/vendor/jquery.js" %}"></script>
-  <script src="{% static "js/foundation.js" %}"></script>
+  <script src="{% static "js/foundation.min.js" %}"></script>
   <script>
   jQuery(document).ready(function ($) {
     $(document).foundation();
   });
   </script>
-  <script src="{% static "js/foundation/foundation.topbar.js" %}"></script>
   {% block extra_footer %}{% endblock extra_footer %}
 </body>
 </html>

@@ -1,6 +1,5 @@
 import glob
 from fabric.api import *  # noqa
-from fabric.contrib.files import append
 from gitric.api import *  # noqa
 from pathlib import Path
 from contextlib import contextmanager
@@ -45,7 +44,7 @@ def pushprodconfig():
         path = Path(path)
         name = Path(env.codedir, 'envs', 'prod', path.name)
         with path.open() as envfile:
-            append(name, envfile.read())
+            run('echo "%s" > %s' % (envfile.read(), name))
 
 
 @task

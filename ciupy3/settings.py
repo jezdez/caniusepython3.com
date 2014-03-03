@@ -194,3 +194,5 @@ class Prod(Common):
     MIDDLEWARE_CLASSES = Common.MIDDLEWARE_CLASSES + (
         'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
     )
+
+    ALLOWED_HOSTS = ['caniusepython3.com']

@@ -46,25 +46,23 @@
   <div class="row">
     <div class="large-8 columns">
       <h2>
-      <small>
-        {% if unblocked == 0 %}
-          {% blocktrans count counter=projects|length %}
-            <span class="show-for-small-only">Congrats! Not a blocker.</span>
-            <span class="show-for-medium-up">Congratulations! You have no blocker to transition to Python 3.</span>
-          {% plural %}
-            <span class="show-for-small-only">Congrats! No blockers.</span>
-            <span class="show-for-medium-up">Congratulations! You have no blockers to transition to Python 3.</span>
-          {% endblocktrans %}
-        {% else %}
-          {% blocktrans count counter=unblocked %}
-            <span class="show-for-small-only">Almost, {{ counter }} blocks you.</span>
-            <span class="show-for-medium-up">Almost, {{ counter }} project blocks your transition to Python 3.</span>
-          {% plural %}
-            <span class="show-for-small-only">Almost, {{ counter }} block you.</span>
-            <span class="show-for-medium-up">Almost, {{ counter }} projects block your transition to Python 3.</span>
-          {% endblocktrans %}
-        {% endif %}
-      </small>
+      {% if unblocked == 0 %}
+        {% blocktrans count counter=projects|length %}
+          <span class="show-for-small-only">Congrats! <small>No blocker.</small></span>
+          <span class="show-for-medium-up">Congratulations! <small>No blocker for your transition to Python 3.</small></span>
+        {% plural %}
+          <span class="show-for-small-only">Congrats! <small>No blockers.</small></span>
+          <span class="show-for-medium-up">Congratulations! <small>No blockers for your transition to Python 3.</small></span>
+        {% endblocktrans %}
+      {% else %}
+        {% blocktrans count counter=unblocked %}
+          <span class="show-for-small-only">Almost! <small>{{ counter }} blocker.</small></span>
+          <span class="show-for-medium-up">Almost! <small>{{ counter }} project blocks your transition to Python 3.</small></span>
+        {% plural %}
+          <span class="show-for-small-only">Almost! <small>{{ counter }} blockers.</small></span>
+          <span class="show-for-medium-up">Almost! <small>{{ counter }} projects block your transition to Python 3.</small></span>
+        {% endblocktrans %}
+      {% endif %}
       </h2>
     </div>
     <div class="large-4 columns show-for-large-up">

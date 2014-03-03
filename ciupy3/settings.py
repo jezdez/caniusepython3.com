@@ -10,6 +10,10 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 
 from configurations import Configuration, values
+from pathlib import Path
+
+here = Path(__file__).parent.resolve()
+assets_dir = here.parent / 'assets'
 
 
 class Common(Configuration):
@@ -21,7 +25,7 @@ class Common(Configuration):
     # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = ')07khcog6b!)x636@=%rq53mk0g-^!n_p(jf!2bfhyc-*5^f_9'
+    SECRET_KEY = values.SecretValue()
 
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
@@ -49,14 +53,17 @@ class Common(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        'easy_pjax',
+        'raven.contrib.django.raven_compat',
+        'djangosecure',
         'pq',
         'rest_framework',
         'south',
+        'easy_pjax',
         'ciupy3.checks',
     )
 
     MIDDLEWARE_CLASSES = (
+        'djangosecure.middleware.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
@@ -106,32 +113,59 @@ class Common(Configuration):
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': True,
+        'root': {
+            'level': 'WARNING',
+            'handlers': ['sentry'],
+        },
         'formatters': {
-            'standard': {
-                'format': '[%(levelname)s] %(name)s: %(message)s'
+            'verbose': {
+                'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
             },
         },
         'handlers': {
-            'console': {
-                'level': 'INFO',
-                'class': "logging.StreamHandler",
-                'formatter': 'standard'
+            'sentry': {
+                'level': 'ERROR',
+                'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
             },
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+                'formatter': 'verbose'
+            }
         },
         'loggers': {
-            'pq': {
+            'django.db.backends': {
+                'level': 'ERROR',
                 'handlers': ['console'],
-                'level': 'INFO',
-                'propagate': True
+                'propagate': False,
             },
-        }
+            'raven': {
+                'level': 'DEBUG',
+                'handlers': ['console'],
+                'propagate': False,
+            },
+            'sentry.errors': {
+                'level': 'DEBUG',
+                'handlers': ['console'],
+                'propagate': False,
+            },
+        },
     }
 
     CACHES = values.CacheURLValue('hiredis://127.0.0.1:6381/0')
 
+    MEDIA_ROOT = str(assets_dir / 'media')
+    MEDIA_URL = '/a/m/'
+    STATIC_ROOT = str(assets_dir / 'static')
+    STATIC_URL = '/a/s/'
+
     STATICFILES_DIRS = [
         os.path.join(os.path.dirname(__file__), 'foundation'),
     ]
+
+    EMAIL = values.EmailURLValue('console://')
+    DEFAULT_FROM_EMAIL = 'hello@caniusepython3.com'
+    SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 
 class Dev(Common):
@@ -148,4 +182,15 @@ class Prod(Common):
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
 
-    SECRET_KEY = values.SecretValue()
+    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+    MEDIA_ROOT = '/home/jezdez/webapps/ciupy3_assets/m'
+    STATIC_ROOT = '/home/jezdez/webapps/ciupy3_assets/s'
+
+    MIDDLEWARE_CLASSES = Common.MIDDLEWARE_CLASSES + (
+        'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
+    )

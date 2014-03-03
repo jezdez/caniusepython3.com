@@ -3,6 +3,7 @@ caniusepython3==1.1.0
 chaussette==1.0
 distlib==0.1.7
 dj-database-url==0.2.2
+dj-email-url==0.0.1
 django-cache-url==0.8.0
 django-configurations==0.8
 django-easy-pjax==1.1.0
@@ -10,6 +11,7 @@ django-pgfields==1.4.3
 django-picklefield==0.3.1
 django-pq==0.3.2
 django-redis==3.5.1
+django-secure==1.0
 django-vanilla-views==1.0.2
 Django==1.6.2
 djangorestframework==2.3.12
@@ -22,6 +24,7 @@ pip-tools==0.3.4
 psycopg2==2.5.2
 python-dateutil==2.2
 pytz==2013.9
+raven==4.0.4
 redis==2.9.1
 six==1.5.2
 South==0.8.4

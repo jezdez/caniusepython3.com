@@ -157,7 +157,7 @@ class Common(Configuration):
     STATIC_ROOT = str(assets_dir / 'static')
     STATIC_URL = '/a/s/'
 
-    STATICFILES_STORAGE = 'ciupy3.storage.GZIPCachedStorage'
+    STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
     STATICFILES_DIRS = [
         os.path.join(os.path.dirname(__file__), 'foundation'),

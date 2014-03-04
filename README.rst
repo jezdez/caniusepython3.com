@@ -1,7 +1,8 @@
 Can I Use Python 3
 ==================
 
-This is the companion site to the CLI tool caniusepython3_.
+This is the companion site to the CLI tool caniusepython3_ available at
+caniusepython3.com.
 
 Workflow
 --------

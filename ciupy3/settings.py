@@ -222,9 +222,6 @@ class Prod(Common):
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
-    MEDIA_ROOT = '/home/jezdez/webapps/ciupy3_assets/m'
-    STATIC_ROOT = '/home/jezdez/webapps/ciupy3_assets/s'
-
     MIDDLEWARE_CLASSES = Common.MIDDLEWARE_CLASSES + (
         'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
     )

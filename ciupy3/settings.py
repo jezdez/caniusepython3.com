@@ -153,9 +153,9 @@ class Common(Configuration):
     CACHES = values.CacheURLValue('hiredis://127.0.0.1:6381/0')
 
     MEDIA_ROOT = str(assets_dir / 'media')
-    MEDIA_URL = '/a/m/'
+    MEDIA_URL = '/assets/media/'
     STATIC_ROOT = str(assets_dir / 'static')
-    STATIC_URL = '/a/s/'
+    STATIC_URL = '/assets/static/'
 
     STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 

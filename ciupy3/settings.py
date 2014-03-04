@@ -168,6 +168,11 @@ class Common(Configuration):
     DEFAULT_FROM_EMAIL = 'hello@caniusepython3.com'
     SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
+    SENTRY_URL = os.environ.get('SENTRY_URL')
+    RAVEN_CONFIG = {
+        'dsn': SENTRY_URL,
+    }
+
 
 class Dev(Common):
     """

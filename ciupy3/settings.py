@@ -231,5 +231,5 @@ class Prod(Common):
 
     ALLOWED_HOSTS = ['caniusepython3.com']
 
-    STATIC_URL = '//d2yo0abyhdvl2j.cloudfront.net/'
+    STATIC_URL = '//d2yo0abyhdvl2j.cloudfront.net/s/'
     PIPELINE_ENABLED = True

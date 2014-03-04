@@ -54,6 +54,7 @@ class Common(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'raven.contrib.django.raven_compat',
+        'pipeline',
         'admin_honeypot',
         'djangosecure',
         'pq',
@@ -94,10 +95,6 @@ class Common(Configuration):
     USE_L10N = False
 
     USE_TZ = True
-
-    # Static files (CSS, JavaScript, Images)
-    # https://docs.djangoproject.com/en/1.6/howto/static-files/
-    STATIC_URL = '/static/'
 
     REST_FRAMEWORK = {
         # 'DEFAULT_PERMISSION_CLASSES': (
@@ -160,6 +157,8 @@ class Common(Configuration):
     STATIC_ROOT = str(assets_dir / 'static')
     STATIC_URL = '/a/s/'
 
+    STATICFILES_STORAGE = 'ciupy3.storage.GZIPCachedStorage'
+
     STATICFILES_DIRS = [
         os.path.join(os.path.dirname(__file__), 'foundation'),
     ]
@@ -172,6 +171,35 @@ class Common(Configuration):
     RAVEN_CONFIG = {
         'dsn': SENTRY_URL,
     }
+
+    PIPELINE_CSS = {
+        'styles': {
+            'source_filenames': (
+                'css/normalize.css',
+                'css/foundation.min.css',
+                'css/gh-fork-ribbon.css',
+                'css/app.css',
+            ),
+            'output_filename': 'styles.css',
+        },
+    }
+
+    PIPELINE_JS = {
+        'scripts': {
+            'source_filenames': (
+                'js/vendor/jquery.js',
+                'js/vendor/fastclick.js',
+                'js/foundation.min.js',
+                'js/jquery.pjax.js',
+                'js/spin.min.js',
+                'js/app.js',
+            ),
+            'output_filename': 'scripts.js',
+        }
+    }
+
+    PIPELINE_CSS_COMPRESSOR = None
+    PIPELINE_JS_COMPRESSOR = None
 
 
 class Dev(Common):
@@ -202,3 +230,6 @@ class Prod(Common):
     )
 
     ALLOWED_HOSTS = ['caniusepython3.com']
+
+    STATIC_URL = '//d2yo0abyhdvl2j.cloudfront.net/'
+    PIPELINE_ENABLED = True

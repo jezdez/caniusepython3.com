@@ -10,7 +10,6 @@ from caniusepython3.__main__ import projects_from_requirements
 from django_pg import models
 from redis_cache import get_redis_connection
 
-
 project_name_validator = validators.RegexValidator(r'^[\.\-\w]+$',
                                                    'Project name invalid')
 

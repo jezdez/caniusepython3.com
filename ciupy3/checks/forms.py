@@ -15,6 +15,7 @@ class CheckForm(forms.ModelForm):
             requirements = requirements.split(';')
         else:
             requirements = requirements.split()
+        requirements = list(filter(None, requirements))
         return [requirement.strip() for requirement in requirements]
 
     class Meta:

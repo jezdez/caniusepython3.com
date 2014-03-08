@@ -31,3 +31,12 @@ class CheckCreateView(CreateView):
                                                                 **kwargs)
         context.update({'compatible': get_compatible()})
         return context
+
+
+def projects(request, project_list):
+    form = CheckForm({'requirements': project_list})
+
+    if form.is_valid():
+        check = form.save()
+        run_check.delay(check.pk)
+        return redirect(check)

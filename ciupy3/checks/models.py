@@ -52,7 +52,7 @@ class Check(models.Model):
         projects = OrderedDict()  # using this since sets aren't ordered
         for requirement in self.requirements:
             url = urlparse(requirement)
-            if url.scheme in ('http', 'https'):
+            if url.scheme in ('http', 'https', 'file'):
                 requirement = sanitize_github_url(requirement, url)
                 try:
                     for project in projects_from_requirements(requirement):

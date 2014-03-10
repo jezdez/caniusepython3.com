@@ -26,7 +26,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
 }
 
-.check-form input, .check-form button {
+.check-form input, .check-form button, .check-form textarea {
     font-size: 120%;
     height: 60px;
     padding: 15px;
@@ -39,4 +39,15 @@ footer {
 
 #spinner {
     padding: 40px;
+}
+
+#drop_zone {
+    display: none;
+    border: 1px dashed #bbb;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+    color: #bbb;
 }

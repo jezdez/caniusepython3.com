@@ -11,7 +11,7 @@
         </small>
       </h2>
       <div class="row collapse">
-        <div class="large-9 columns{% if form.requirements.errors or form.non_field_errors %} error{% endif %}">
+        <div class="large-12 columns{% if form.requirements.errors or form.non_field_errors %} error{% endif %}">
           {{ form.requirements }}
           {% if form.non_field_errors %}
             <small class="error">
@@ -28,12 +28,57 @@
             </small>
           {% endif %}
         </div>
-        <div class="large-3 columns">
-          <button type="submit" class="button postfix">Check</button>
-        </div>
+        <div id="drop_zone" class="show-for-large-up">Or drop pip requirements file here (won't be uploaded)</div>
       </div>
+      <button type="submit" class="button radius">Check</button>
     </div>
   </div>
   </form>
 </div>
+
+<script>
+function handleFileSelect(event) {
+  event.stopPropagation();
+  event.preventDefault();
+
+  var files = event.dataTransfer.files; // FileList object.
+
+  // Loop through the FileList and render image files as thumbnails.
+  for (var i = 0, file; file = files[i]; i++) {
+    console.log(file.type);
+    // Only process image files.
+    if (!file.type.match('text/plain')) {
+      continue;
+    }
+    var reader = new FileReader();
+    var requirements = document.getElementById('id_requirements');
+    // Closure to capture the file information.
+    reader.onload = (function(theFile) {
+      return function(e) {
+        requirements.value = e.target.result;
+        $('textarea').trigger('autosize.resize');
+      };
+    })(file);
+
+    // Read in the image file as a data URL.
+    reader.readAsText(file);
+  }
+}
+
+function handleDragOver(event) {
+  event.stopPropagation();
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+}
+
+// Check for the various File API support.
+if (window.File && window.FileReader && window.FileList && window.Blob) {
+  // Setup the dnd listeners.
+  var dropZone = document.getElementById('drop_zone');
+  dropZone.style.display = 'block';
+  dropZone.addEventListener('dragover', handleDragOver, false);
+  dropZone.addEventListener('drop', handleFileSelect, false);
+}
+</script>
+
 {% endblock content %}

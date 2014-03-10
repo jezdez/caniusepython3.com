@@ -191,6 +191,7 @@ class Common(Configuration):
                 'js/vendor/fastclick.js',
                 'js/foundation.min.js',
                 'js/jquery.pjax.js',
+                'js/jquery.autosize.min.js',
                 'js/spin.min.js',
                 'js/app.js',
             ),

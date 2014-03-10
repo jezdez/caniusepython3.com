@@ -65,4 +65,12 @@ jQuery(document).ready(function ($) {
   if (!$('#content').hasClass('finished')) {
     schedule();
   }
+
+  $('textarea').autosize();
+
+  $(document).on('keydown', 'textarea', function(e) {
+    if(e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
+      $(this).parents('form').submit();
+    }
+  });
 });

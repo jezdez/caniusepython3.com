@@ -19,8 +19,8 @@ jQuery(document).ready(function ($) {
     left: 'auto' // Left position relative to parent in px
   });
   spinner.spin(target);
-  var tries = 60;
-  var time = 2000;
+  var tries = 600;
+  var time = 3000;
   checked = 0;
 
   function giveup() {

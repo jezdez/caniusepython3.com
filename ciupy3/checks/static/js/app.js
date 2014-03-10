@@ -1,3 +1,37 @@
+function handleFileSelect(event) {
+  event.stopPropagation();
+  event.preventDefault();
+
+  var files = event.dataTransfer.files; // FileList object.
+
+  // Loop through the FileList and render image files as thumbnails.
+  for (var i = 0, file; file = files[i]; i++) {
+    console.log(file.type);
+    // Only process image files.
+    if (!file.type.match('text/plain')) {
+      continue;
+    }
+    var reader = new FileReader();
+    var requirements = document.getElementById('id_requirements');
+    // Closure to capture the file information.
+    reader.onload = (function(theFile) {
+      return function(e) {
+        requirements.value = e.target.result;
+        $('textarea').trigger('autosize.resize');
+      };
+    })(file);
+
+    // Read in the image file as a data URL.
+    reader.readAsText(file);
+  }
+}
+
+function handleDragOver(event) {
+  event.stopPropagation();
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+}
+
 jQuery(document).ready(function ($) {
   var target = document.getElementById('spinner');
   var spinner = new Spinner({

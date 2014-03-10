@@ -25,7 +25,7 @@ class Check(models.Model):
     started_at = models.DateTimeField(null=True, blank=True)
     finished_at = models.DateTimeField(null=True, blank=True)
     requirements = models.ArrayField(models.TextField())
-    projects = models.ArrayField(models.CharField(max_length=100))
+    projects = models.ArrayField(models.CharField(max_length=255))
     blockers = models.JSONField()
 
     def get_absolute_url(self):

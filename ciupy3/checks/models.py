@@ -1,3 +1,4 @@
+import re
 from collections import OrderedDict
 
 from django.core import validators
@@ -10,8 +11,9 @@ from caniusepython3.__main__ import projects_from_requirements
 from django_pg import models
 from redis_cache import get_redis_connection
 
-project_name_validator = validators.RegexValidator(r'^[\.\-\w]+$',
-                                                   'Project name invalid')
+project_name_re = re.compile(r'^[\.\-\w]+$')
+
+
 
 
 def get_redis():
@@ -60,5 +62,7 @@ class Check(models.Model):
             else:
                 projects[requirement] = None
         for project_name in projects.keys():
-            project_name_validator(project_name)
+            validators.RegexValidator(project_name_re,
+                                      'Project %s invalid' %
+                                      project_name)(project_name)
         self.projects = projects.keys()

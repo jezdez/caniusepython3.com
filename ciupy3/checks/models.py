@@ -3,7 +3,7 @@ from collections import OrderedDict
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-from django.utils.six.moves.urllib.parse import urlparse
+from django.utils.six.moves.urllib.parse import urlparse, urlunparse
 from django.utils.timezone import now
 
 from caniusepython3.__main__ import projects_from_requirements
@@ -16,6 +16,18 @@ project_name_validator = validators.RegexValidator(r'^[\.\-\w]+$',
 
 def get_redis():
     return get_redis_connection('default')
+
+
+def sanitize_github_url(requirement, url):
+    if url.netloc == 'github.com':
+        split_path = list(filter(None, url.path.split('/')))
+        if len(split_path) > 4:  # github.com/<user>/<repo>/blob/<branch>
+            if split_path[2] == 'blob':
+                split_path[2] = 'raw'
+            path = '/' + '/'.join(split_path)
+            requirement = urlunparse((url.scheme, url.netloc, path,
+                                      url.params, url.query, url.fragment))
+    return requirement
 
 
 class Check(models.Model):
@@ -37,8 +49,9 @@ class Check(models.Model):
     def clean(self):
         projects = OrderedDict()  # using this since sets aren't ordered
         for requirement in self.requirements:
-            parsed_url_requirement = urlparse(requirement)
-            if parsed_url_requirement.scheme in ('http', 'https'):
+            url = urlparse(requirement)
+            if url.scheme in ('http', 'https'):
+                requirement = sanitize_github_url(requirement, url)
                 try:
                     for project in projects_from_requirements(requirement):
                         projects[project] = None

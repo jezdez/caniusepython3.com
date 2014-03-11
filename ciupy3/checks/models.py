@@ -52,9 +52,7 @@ class Check(models.Model):
         for requirement in self.requirements:
             url = urlparse(requirement)
             if url.scheme in ('http', 'https', 'file'):
-                requirement = sanitize_github_url(requirement, url)
-                if url.scheme == 'file':
-                    requirement = [requirement]
+                requirement = [sanitize_github_url(requirement, url)]
                 try:
                     for project in projects_from_requirements(requirement):
                         projects[project] = None

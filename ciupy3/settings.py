@@ -202,8 +202,6 @@ class Common(Configuration):
     PIPELINE_CSS_COMPRESSOR = None
     PIPELINE_JS_COMPRESSOR = None
 
-    PQ_DEFAULT_JOB_TIMEOUT = 3600
-
 
 class Dev(Common):
     """

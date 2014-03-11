@@ -18,11 +18,22 @@ project_name_re = re.compile(r'^[\.\-\w]+$')
 index_urls = ['https://pypi.python.org/simple/']
 
 
-def projects_from_requirements(requirements_path):
+def projects_from_requirements(requirements):
     """Extract the project dependencies from a Requirements specification."""
+    valid_reqs = []
     finder = PackageFinder(find_links=[], index_urls=index_urls)
-    reqs = parse_requirements(requirements_path, finder=finder)
-    return [req.name for req in reqs if not req.editable]
+    for requirements_path in requirements:
+        reqs = parse_requirements(requirements_path, finder=finder)
+        for req in reqs:
+            if not req.name:
+                continue
+            elif req.editable:
+                continue
+            elif req.url and req.url.startswith('file:'):
+                continue
+            else:
+                valid_reqs.append(req.name)
+    return valid_reqs
 
 
 def get_redis():

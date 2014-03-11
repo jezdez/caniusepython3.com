@@ -1,6 +1,9 @@
 import re
 from collections import OrderedDict
 
+from pip.req import parse_requirements
+from pip.index import PackageFinder
+
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -8,11 +11,18 @@ from django.utils.six.moves.urllib.parse import urlparse, urlunparse
 from django.utils.timezone import now
 
 
-from caniusepython3.__main__ import projects_from_requirements
 from django_pg import models
 from redis_cache import get_redis_connection
 
 project_name_re = re.compile(r'^[\.\-\w]+$')
+index_urls = ['https://pypi.python.org/simple/']
+
+
+def projects_from_requirements(requirements_path):
+    """Extract the project dependencies from a Requirements specification."""
+    finder = PackageFinder(find_links=[], index_urls=index_urls)
+    reqs = parse_requirements(requirements_path, finder=finder)
+    return [req.name for req in reqs if not req.editable]
 
 
 def get_redis():

@@ -18,7 +18,7 @@ class CheckSerializer(serializers.HyperlinkedModelSerializer):
         model = Check
         fields = ('id', 'created_at', 'started_at', 'finished_at',
                   'requirements', 'projects', 'blockers', 'unblocked',
-                  'compatible')
+                  'compatible', 'total', 'checked')
 
     def get_projects(self, obj):
         return sorted(obj.projects)

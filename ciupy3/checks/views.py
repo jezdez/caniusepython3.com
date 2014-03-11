@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from vanilla import CreateView
 
 from .forms import CheckForm
-from .jobs import run_check, get_compatible, get_total
+from .jobs import run_check, get_compatible, get_total, get_checked
 from .models import Check
 from .serializers import CheckSerializer
 
@@ -32,5 +32,6 @@ class CheckCreateView(CreateView):
         context.update({
             'compatible': get_compatible(),
             'total': get_total(),
+            'checked': get_checked(),
         })
         return context

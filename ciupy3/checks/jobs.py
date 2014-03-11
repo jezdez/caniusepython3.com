@@ -11,6 +11,7 @@ TROVE_KEY_NAME = 'trove_classifiers_key'
 TROVE_COUNT_KEY = 'compatible_count'
 ALL_KEY_NAME = 'all_key'
 ALL_COUNT_KEY = 'all_count'
+CHECKED_COUNT_KEY = 'checked_count'
 
 
 def all_projects():
@@ -83,6 +84,11 @@ def get_total():
     return redis.get(ALL_COUNT_KEY) or None
 
 
+def get_checked():
+    redis = get_redis()
+    return redis.get(CHECKED_COUNT_KEY) or None
+
+
 def decode_name(name, lower=False):
     name = name.decode('utf-8')
     if lower:
@@ -151,5 +157,8 @@ def run_check(pk):
 
     check.finished_at = now()
     check.save()
+
+    redis = get_redis()
+    redis.set(CHECKED_COUNT_KEY, Check.objects.count())
 
     return blockers

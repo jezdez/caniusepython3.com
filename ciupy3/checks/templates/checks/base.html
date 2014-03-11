@@ -36,7 +36,7 @@
             by <a href="http://nothingbutsnark.svbtle.com/" title="Brett Cannon">Brett Cannon</a>,
             <a href="https://github.com/jezdez/caniusepython3.com" title="site code">site</a> by <a href="https://jezdez.com/" title="Jannis Leidel">Jannis Leidel</a>.
             {% if compatible %}
-            <a href="https://pypi.python.org/" title="PyPI">PyPI</a> currently knows about <strong>{{ compatible }}</strong> compatible projects.
+            <a href="https://pypi.python.org/" title="PyPI">PyPI</a> currently knows about <strong>{{ compatible }}</strong> compatible {% if total %}of {{ total }} total {% endif %}projects.
             {% endif %}
         </div>
     </div>

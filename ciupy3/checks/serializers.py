@@ -3,7 +3,7 @@ from operator import itemgetter
 
 from rest_framework import serializers
 from .models import Check
-from .jobs import get_compatible
+from .jobs import get_compatible, get_total
 
 
 class CheckSerializer(serializers.HyperlinkedModelSerializer):
@@ -11,6 +11,7 @@ class CheckSerializer(serializers.HyperlinkedModelSerializer):
     blockers = serializers.SerializerMethodField('get_blockers')
     requirements = serializers.CharField('requirements')
     compatible = serializers.SerializerMethodField('get_compatible')
+    total = serializers.SerializerMethodField('get_total')
 
     class Meta:
         model = Check
@@ -30,3 +31,6 @@ class CheckSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_compatible(self, obj):
         return int(get_compatible() or 0)
+
+    def get_total(self, obj):
+        return int(get_total() or 0)

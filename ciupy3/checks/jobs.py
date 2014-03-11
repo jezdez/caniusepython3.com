@@ -78,6 +78,11 @@ def get_compatible():
     return redis.get(TROVE_COUNT_KEY) or None
 
 
+def get_total():
+    redis = get_redis()
+    return redis.get(ALL_COUNT_KEY) or None
+
+
 def decode_name(name, lower=False):
     name = name.decode('utf-8')
     if lower:

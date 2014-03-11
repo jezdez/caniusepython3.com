@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from rest_framework import routers
-from ciupy3.checks.views import CheckViewSet, CheckCreateView
+from ciupy3.checks.views import CheckViewSet, CheckCreateView, projects
 
 from django.contrib import admin
 admin.autodiscover()
@@ -20,5 +20,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include('admin_honeypot.urls')),
     url(r'^manage/', include(admin.site.urls)),
     url(r'^api-auth/', include('rest_framework.urls',
-                               namespace='rest_framework'))
+                               namespace='rest_framework')),
+    url(r'^projects/(?P<project_list>.*)/$', projects, name='projects'),
 )

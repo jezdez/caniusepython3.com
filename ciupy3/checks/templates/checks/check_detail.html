@@ -108,6 +108,11 @@
       </ul>
     </div>
   </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <p><a href="{% url 'projects' project_list=projects|join:';' %}">Link to this</a></p>
+    </div>
+  </div>
 </div>
 {% endif %}
 {% endblock content %}

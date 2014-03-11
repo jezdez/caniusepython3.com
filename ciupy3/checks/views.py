@@ -35,3 +35,12 @@ class CheckCreateView(CreateView):
             'checked': get_checked(),
         })
         return context
+
+
+def projects(request, project_list):
+    form = CheckForm({'requirements': project_list})
+
+    if form.is_valid():
+        check = form.save()
+        run_check.delay(check.pk)
+        return redirect(check)

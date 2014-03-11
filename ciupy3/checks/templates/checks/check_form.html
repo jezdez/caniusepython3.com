@@ -49,7 +49,6 @@ function handleFileSelect(event) {
 
   // Loop through the FileList and render image files as thumbnails.
   for (var i = 0, file; file = files[i]; i++) {
-    console.log(file.type);
     // Only process image files.
     if (!file.type.match('text/plain')) {
       continue;

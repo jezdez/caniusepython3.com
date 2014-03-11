@@ -61,9 +61,9 @@ class Check(models.Model):
             else:
                 projects[requirement] = None
 
-        from .jobs import get_all_projects
-        all_projects = get_all_projects(lower=True)
-        check_all_projects = len(all_projects) > 0
+        # from .jobs import get_all_projects
+        # all_projects = get_all_projects(lower=True)
+        # check_all_projects = len(all_projects) > 0
 
         self.projects = list(projects.keys())
 
@@ -71,5 +71,5 @@ class Check(models.Model):
             validators.RegexValidator(project_name_re,
                                       'Project %s invalid' %
                                       project_name)(project_name)
-            if check_all_projects and project_name.lower() not in all_projects:
-                self.projects[index] = '%s (not on PyPI)' % project_name
+            # if check_all_projects and project_name.lower() not in all_projects:
+            #     self.projects[index] = '%s (not on PyPI)' % project_name

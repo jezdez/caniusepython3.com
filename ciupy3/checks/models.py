@@ -7,13 +7,12 @@ from django.core.urlresolvers import reverse
 from django.utils.six.moves.urllib.parse import urlparse, urlunparse
 from django.utils.timezone import now
 
+
 from caniusepython3.__main__ import projects_from_requirements
 from django_pg import models
 from redis_cache import get_redis_connection
 
 project_name_re = re.compile(r'^[\.\-\w]+$')
-
-
 
 
 def get_redis():
@@ -61,8 +60,16 @@ class Check(models.Model):
                     raise ValidationError("Couldn't check %s." % requirement)
             else:
                 projects[requirement] = None
-        for project_name in projects.keys():
+
+        from .jobs import get_all_projects
+        all_projects = get_all_projects(lower=True)
+        check_all_projects = len(all_projects) > 0
+
+        self.projects = list(projects.keys())
+
+        for index, project_name in enumerate(self.projects):
             validators.RegexValidator(project_name_re,
                                       'Project %s invalid' %
                                       project_name)(project_name)
-        self.projects = projects.keys()
+            if check_all_projects and project_name.lower() not in all_projects:
+                self.projects[index] = '%s (not on PyPI)' % project_name

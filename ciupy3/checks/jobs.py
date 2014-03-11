@@ -1,5 +1,6 @@
 import uuid
 from django.utils.timezone import now
+from django.utils.six.moves import xmlrpc_client
 
 from pq.decorators import job
 from caniusepython3 import blocking_dependencies, all_py3_projects
@@ -7,7 +8,14 @@ from caniusepython3 import blocking_dependencies, all_py3_projects
 from .models import Check, get_redis
 
 TROVE_KEY_NAME = 'trove_classifiers_key'
-COUNT_KEY = 'compatible_count'
+TROVE_COUNT_KEY = 'compatible_count'
+ALL_KEY_NAME = 'all_key'
+ALL_COUNT_KEY = 'all_count'
+
+
+def all_projects():
+    client = xmlrpc_client.ServerProxy('http://pypi.python.org/pypi')
+    return client.list_packages()
 
 
 @job('default')
@@ -34,23 +42,68 @@ def fetch_all_py3_projects():
 
         # return number of Python 3 projects
         compatible_count = len(projects)
-        redis.set(COUNT_KEY, compatible_count)
+        redis.set(TROVE_COUNT_KEY, compatible_count)
+        return compatible_count
+
+
+@job('default')
+def fetch_all_projects():
+    """
+    A job to be run periodically (e.g. daily) to update the projects from PyPI.
+    """
+    redis = get_redis()
+    with redis.lock('fetch_all'):
+        # try to get the old fetch id first
+        old_key_name = redis.get(ALL_KEY_NAME)
+
+        # then populate a set of Python 3 projects in Redis
+        new_key_name = uuid.uuid4().hex
+        projects = all_projects()
+        for project in projects:
+            redis.sadd(new_key_name, str(project))
+        redis.set(ALL_KEY_NAME, new_key_name)
+
+        # get rid of the old fetch set if needed
+        if old_key_name is not None:
+            redis.delete(old_key_name)
+
+        # return number of Python 3 projects
+        compatible_count = len(projects)
+        redis.set(ALL_COUNT_KEY, compatible_count)
         return compatible_count
 
 
 def get_compatible():
     redis = get_redis()
-    return redis.get(COUNT_KEY) or None
+    return redis.get(TROVE_COUNT_KEY) or None
 
 
-def get_all_py3_projects():
+def decode_name(name, lower=False):
+    name = name.decode('utf-8')
+    if lower:
+        return name.lower()
+    else:
+        return name
+
+
+def get_all_py3_projects(lower=False):
     """
     Return the list of projects compatible to Python 3 according
     to PyPI
     """
     redis = get_redis()
     key_name = redis.get(TROVE_KEY_NAME)
-    return {project.decode('utf-8')
+    return {decode_name(project, lower)
+            for project in redis.smembers(key_name)}
+
+
+def get_all_projects(lower=False):
+    """
+    Return the list of all projects on PyPI
+    """
+    redis = get_redis()
+    key_name = redis.get(ALL_KEY_NAME)
+    return {decode_name(project, lower)
             for project in redis.smembers(key_name)}
 
 

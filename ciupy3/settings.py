@@ -242,7 +242,7 @@ class Prod(Common):
             'secure': True,
         },
         'amazon_eu_west': {
-            'type': 'libcloud.storage.types.Provider.S3_EU_WEST_HOST',
+            'type': 'libcloud.storage.types.Provider.S3_EU_WEST',
             'user': os.environ.get('AWS_ACCESS_KEY'),
             'key': os.environ.get('AWS_SECRET_KEY'),
             'bucket': 'caniusepython3-assets',

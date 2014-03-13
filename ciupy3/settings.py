@@ -231,7 +231,7 @@ class Prod(Common):
 
     PIPELINE_ENABLED = True
 
-    STATICFILES_STORAGE = 'ciupy3.storage.PipelineCachedCloudStorage'
+    # STATICFILES_STORAGE = 'ciupy3.storage.PipelineCachedCloudStorage'
 
     LIBCLOUD_PROVIDERS = {
         'cloudfiles_uk': {

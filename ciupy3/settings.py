@@ -239,5 +239,6 @@ class Prod(Common):
             'user': os.environ.get('RACKSPACE_USER_ID'),
             'key': os.environ.get('RACKSPACE_API_KEY'),
             'bucket': 'caniusepython3-assets',
+            'secure': True,
         },
     }

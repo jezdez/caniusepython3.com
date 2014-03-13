@@ -7,6 +7,7 @@ from django.contrib.staticfiles.storage import CachedFilesMixin
 from django.core.files.storage import Storage
 from django.core.files.base import File
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.six.moves.urllib.parse import urlparse, urlunparse
 
 from pipeline.storage import PipelineMixin
 
@@ -94,6 +95,7 @@ class LibCloudStorage(Storage):
                 "Unable to create libcloud driver type %s: %s" %
                 (self.provider.get('type'), e))
         self.bucket = self.provider['bucket']   # Limit to one container
+        self.secure = self.provider.get('secure', False)
 
     def _get_bucket(self):
         """Helper to get bucket object (libcloud container)"""
@@ -164,7 +166,17 @@ class LibCloudStorage(Storage):
 
     def url(self, name):
         obj = self._get_object(name)
-        return self.driver.get_object_cdn_url(obj)
+        url = self.driver.get_object_cdn_url(obj)
+        if self.secure and 'cloudfiles' in self.provider['type'].lower():
+            parsed_url = urlparse(url)
+            if parsed_url.scheme != 'http':
+                return url
+            split_netloc = parsed_url.netloc.split('.')
+            split_netloc[1] = 'ssl'
+            url = urlunparse('https', '.'.join(split_netloc), parsed_url.path,
+                             parsed_url.params, parsed_url.query,
+                             parsed_url.fragment)
+        return url
 
     def modified_time(self, name):
         obj = self._get_object(name)

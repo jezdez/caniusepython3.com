@@ -183,8 +183,10 @@ class LibCloudStorage(Storage):
         # TOFIX : we should be able to read chunk by chunk
         return next(self.driver.download_object_as_stream(obj, obj.size))
 
-    def _save(self, name, file):
-        self.driver.upload_object_via_stream(file, self._get_bucket(), name)
+    def _save(self, name, content):
+        self.driver.upload_object_via_stream(iter(content.file),
+                                             self._get_bucket(),
+                                             name)
         return name
 
 

@@ -184,8 +184,7 @@ class LibCloudStorage(Storage):
         return next(self.driver.download_object_as_stream(obj, obj.size))
 
     def _save(self, name, file):
-        self.driver.upload_object_via_stream(iter(file), self._get_bucket(),
-                                             name)
+        self.driver.upload_object_via_stream(file, self._get_bucket(), name)
         return name
 
 

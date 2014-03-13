@@ -167,15 +167,19 @@ class LibCloudStorage(Storage):
     def url(self, name):
         obj = self._get_object(name)
         url = self.driver.get_object_cdn_url(obj)
-        if self.secure and 'cloudfiles' in self.provider['type'].lower():
-            parsed_url = urlparse(url)
-            if parsed_url.scheme != 'http':
-                return url
-            split_netloc = parsed_url.netloc.split('.')
-            split_netloc[1] = 'ssl'
-            url = urlunparse('https', '.'.join(split_netloc), parsed_url.path,
-                             parsed_url.params, parsed_url.query,
-                             parsed_url.fragment)
+        if self.secure:
+            provider_type = self.provider['type'].lower()
+            if 'cloudfiles' in provider_type:
+                parsed_url = urlparse(url)
+                if parsed_url.scheme != 'http':
+                    return url
+                split_netloc = parsed_url.netloc.split('.')
+                split_netloc[1] = 'ssl'
+                url = urlunparse('https', '.'.join(split_netloc), parsed_url.path,
+                                 parsed_url.params, parsed_url.query,
+                                 parsed_url.fragment)
+            if 's3' in provider_type:
+                url = url.replace('http://', 'https://')
         return url
 
     def modified_time(self, name):

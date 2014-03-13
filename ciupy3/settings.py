@@ -234,11 +234,20 @@ class Prod(Common):
     STATICFILES_STORAGE = 'ciupy3.storage.PipelineCachedCloudStorage'
 
     LIBCLOUD_PROVIDERS = {
-        'default': {
+        'cloudfiles_uk': {
             'type': 'libcloud.storage.types.Provider.CLOUDFILES_UK',
             'user': os.environ.get('RACKSPACE_USER_ID'),
             'key': os.environ.get('RACKSPACE_API_KEY'),
             'bucket': 'caniusepython3-assets',
             'secure': True,
         },
+        'amazon_eu_west': {
+            'type': 'libcloud.storage.types.Provider.S3_EU_WEST_HOST',
+            'user': os.environ.get('AWS_ACCESS_KEY'),
+            'key': os.environ.get('AWS_SECRET_KEY'),
+            'bucket': 'caniusepython3-assets',
+            'secure': True,
+        }
     }
+
+    DEFAULT_LIBCLOUD_PROVIDER = 'amazon_eu_west'

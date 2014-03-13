@@ -230,3 +230,14 @@ class Prod(Common):
     ALLOWED_HOSTS = ['caniusepython3.com']
 
     PIPELINE_ENABLED = True
+
+    STATICFILES_STORAGE = 'ciupy3.storage.PipelineCachedCloudStorage'
+
+    LIBCLOUD_PROVIDERS = {
+        'default': {
+            'type': 'libcloud.storage.types.Provider.CLOUDFIULES_UK',
+            'user': os.environ.get('RACKSPACE_USER_ID'),
+            'key': os.environ.get('RACKSPACE_API_KEY'),
+            'bucket': 'caniusepython3-assets',
+        },
+    }

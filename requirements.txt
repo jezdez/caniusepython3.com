@@ -1,3 +1,5 @@
+apache-libcloud==0.14.1
+argparse==1.1
 caniusepython3==1.2.1
 chaussette==1.0
 distlib==0.1.7

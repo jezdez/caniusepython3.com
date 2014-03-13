@@ -77,7 +77,7 @@ class LibCloudStorage(Storage):
             extra_kwargs['region'] = self.provider['region']
         try:
             provider_type = self.provider['type']
-            if isinstance(provider_type, basestring):
+            if isinstance(provider_type, str):
                 module_path, tag = provider_type.rsplit('.', 1)
                 if module_path != 'libcloud.storage.types.Provider':
                     raise ValueError("Invalid module path")

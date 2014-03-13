@@ -168,7 +168,7 @@ class LibCloudStorage(Storage):
 
     def modified_time(self, name):
         obj = self._get_object(name)
-        last_modified = obj.meta_data.get('last_modified')
+        last_modified = obj.extra.get('last_modified')
         if last_modified is None:
             return super(LibCloudStorage, self).modified_time(name)
         else:

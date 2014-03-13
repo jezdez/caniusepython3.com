@@ -116,8 +116,6 @@ class LibCloudStorage(Storage):
         obj = self._get_object(name)
         if obj:
             return self.driver.delete_object(obj)
-        else:
-            raise Exception('Object to delete does not exists')
 
     def exists(self, name):
         obj = self._get_object(name)

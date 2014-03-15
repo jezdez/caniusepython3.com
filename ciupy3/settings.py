@@ -62,6 +62,7 @@ class Common(Configuration):
         'south',
         'easy_pjax',
         'ciupy3.checks',
+        'whitenoise',
     )
 
     MIDDLEWARE_CLASSES = (

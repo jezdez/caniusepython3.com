@@ -227,7 +227,7 @@ class Prod(Common):
         'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
     )
 
-    ALLOWED_HOSTS = ['caniusepython3.com']
+    ALLOWED_HOSTS = ['caniusepython3.com', 'ciupy3-assets.global.ssl.fastly.net']
 
     PIPELINE_ENABLED = True
 

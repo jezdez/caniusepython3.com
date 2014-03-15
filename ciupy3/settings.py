@@ -231,6 +231,9 @@ class Prod(Common):
 
     PIPELINE_ENABLED = True
 
+    STATIC_URL = 'https://ciupy3-assets.global.ssl.fastly.net/static/'
+    MEDIA_URL = 'https://ciupy3-assets.global.ssl.fastly.net/media/'
+
     # STATICFILES_STORAGE = 'ciupy3.storage.PipelineCachedCloudStorage'
 
     LIBCLOUD_PROVIDERS = {

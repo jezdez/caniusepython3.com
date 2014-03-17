@@ -26,10 +26,13 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
 }
 
-.check-form input, .check-form button, .check-form textarea {
+.check-form input, .check-form textarea {
     font-size: 120%;
     height: 60px;
     padding: 15px;
+}
+.check-form button {
+    margin-top: 10px;
 }
 
 footer {

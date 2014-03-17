@@ -2,7 +2,7 @@ apache-libcloud==0.14.1
 argparse==1.1
 caniusepython3==1.2.1
 chaussette==1.0
-distlib==0.1.7
+https://bitbucket.org/pypa/distlib/get/72bc6714f461.zip
 dj-database-url==0.3.0
 dj-email-url==0.0.1
 django-admin-honeypot==0.3.0

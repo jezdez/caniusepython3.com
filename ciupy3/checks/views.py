@@ -24,7 +24,7 @@ class CheckCreateView(CreateView):
     def get_form(self, data=None, files=None, **kwargs):
         projects = self.request.GET.get('projects', None)
         if projects is not None:
-            kwargs['initial'] = {'requirements': projects}
+            kwargs['initial'] = {'requirements': '\n'.join(projects.split())}
         return super(CheckCreateView, self).get_form(data, files, **kwargs)
 
     def form_valid(self, form):

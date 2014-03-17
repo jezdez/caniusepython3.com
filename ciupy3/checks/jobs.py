@@ -118,9 +118,24 @@ def get_all_projects(lower=False):
             for project in redis.smembers(key_name)}
 
 
+def get_or_fetch_all_projects(lower=False):
+    """
+    Get all projects stored in redis and if not available
+    try to fetch it synchronysly, then fail if that errors as well.
+    """
+    projects = get_all_projects(lower)
+    if not projects:
+        fetch_all_projects()
+        projects = get_all_projects(lower)
+        if not projects:
+            raise ValueError('Something went wrong while fetching '
+                             'all projects from PyPI')
+    return projects
+
+
 def get_or_fetch_all_py3_projects():
     """
-    Get the compatible projets stored in redis and if not available
+    Get the compatible projects stored in redis and if not available
     try to fetch it synchronysly, then fail if that errors as well.
     """
     projects = get_all_py3_projects()

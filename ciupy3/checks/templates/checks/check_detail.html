@@ -104,7 +104,13 @@
       <a href="{% url 'check_form' %}?projects={{ projects|join:'+' }}" class="button radius small">Check again</a>
       <ul class="no-bullet panel callout radius show-for-large-up">
       {% for project in projects %}
-        <li>{{ project }}</li>
+        <li>
+        {% if project.lower in public %}
+          <a href="https://pypi.python.org/pypi/{{ project }}" title="{{ project }} on PyPI">{{ project }}</a>
+        {% else %}
+          {{ project }}
+        {% endif %}
+        </li>
       {% endfor %}
       </ul>
     </div>

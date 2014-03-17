@@ -21,6 +21,12 @@ class CheckCreateView(CreateView):
     form_class = CheckForm
     model = Check
 
+    def get_form(self, data=None, files=None, **kwargs):
+        projects = self.request.GET.get('projects', None)
+        if projects is not None:
+            kwargs['initial'] = {'requirements': projects}
+        return super(CheckCreateView, self).get_form(data, files, **kwargs)
+
     def form_valid(self, form):
         check = form.save()
         run_check.delay(check.pk)

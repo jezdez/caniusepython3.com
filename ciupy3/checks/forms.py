@@ -1,3 +1,4 @@
+import pkg_resources
 import tempfile
 from django import forms
 
@@ -6,8 +7,19 @@ from .models import Check
 placeholder = "Project name(s) or URL(s) of pip requirements file"
 
 
+def parse_requirement(project_name):
+    try:
+        req = pkg_resources.Requirement.parse(project_name)
+    except ValueError:
+        return project_name
+    else:
+        return req.project_name
+
+
 def filter_requirements(requirements):
-    requirements = [requirement.strip() for requirement in requirements]
+
+    requirements = [parse_requirement(requirement.strip())
+                    for requirement in requirements]
     return list(filter(None, requirements))
 
 

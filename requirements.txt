@@ -27,7 +27,7 @@ pip-tools==0.3.4
 psycopg2==2.5.2
 python-dateutil==2.2
 pytz==2014.1
-raven==4.1.0
+raven==4.1.1
 redis==2.9.1
 six==1.6.1
 South==0.8.4

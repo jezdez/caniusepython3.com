@@ -2,8 +2,10 @@ import uuid
 from django.utils.timezone import now
 from django.utils.six.moves import xmlrpc_client
 
+from pip._vendor import requests
 from pq.decorators import job
-from caniusepython3 import blocking_dependencies, all_py3_projects
+from caniusepython3.dependencies import blocking_dependencies
+from caniusepython3.pypi import all_py3_projects
 
 from .models import Check, get_redis
 
@@ -12,11 +14,32 @@ TROVE_COUNT_KEY = 'compatible_count'
 ALL_KEY_NAME = 'all_key'
 ALL_COUNT_KEY = 'all_count'
 CHECKED_COUNT_KEY = 'checked_count'
+OVERRIDE_KEY = 'override'
+OVERRIDE_URL = ('https://raw.github.com/brettcannon/caniusepython3/'
+                'master/caniusepython3/overrides.json')
 
 
 def all_projects():
     client = xmlrpc_client.ServerProxy('http://pypi.python.org/pypi')
     return client.list_packages()
+
+
+@job('default')
+def fetch_overrides():
+    """
+    A job to fetch the caniusepython3 CLI override json file from Github
+    to simplify the overrides.
+    """
+    try:
+        override_response = requests.get(OVERRIDE_URL)
+    except ValueError:
+        # just ignore it since there might be something wrong with the
+        # request or Github is down or something else horrible
+        pass
+    else:
+        redis = get_redis()
+        override_json = override_response.json()
+        redis.hmset(OVERRIDE_KEY, override_json)
 
 
 @job('default')
@@ -32,7 +55,7 @@ def fetch_all_py3_projects():
 
         # then populate a set of Python 3 projects in Redis
         new_key_name = uuid.uuid4().hex
-        projects = all_py3_projects()
+        projects = all_py3_projects(get_overrides())
         for project in projects:
             redis.sadd(new_key_name, str(project))
         redis.set(TROVE_KEY_NAME, new_key_name)
@@ -116,6 +139,12 @@ def get_all_projects(lower=False):
     key_name = redis.get(ALL_KEY_NAME)
     return {decode_name(project, lower)
             for project in redis.smembers(key_name)}
+
+
+def get_overrides():
+    redis = get_redis()
+    return dict((decode_name(project), decode_name(url))
+                for project, url in redis.hgetall(OVERRIDE_KEY).items())
 
 
 def get_or_fetch_all_projects(lower=False):

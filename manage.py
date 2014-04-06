@@ -5,9 +5,12 @@ import sys
 import envdir
 from pathlib import Path
 
-here = Path(__file__).parent
-path = here / 'envs' / os.environ.get('ENVDIR', 'dev')
-envdir.read(str(path))
+env = os.environ.get('ENVDIR', 'dev')
+
+if env:
+    here = Path(__file__).parent
+    path = here / 'envs' / env
+    envdir.read(str(path))
 
 
 if __name__ == "__main__":

@@ -13,20 +13,18 @@ middleware here, or combine a Django application with an application of another
 framework.
 
 """
+import envdir
 import os
 from pathlib import Path
 
-env = os.environ.get('ENVDIR', 'dev')
+env = os.environ.get('ENVDIR')
 
-parent_dir = Path(__file__).parent.parent
-
-# if env == 'prod':
-#     import newrelic.agent
-#     newrelic.agent.initialize(str(parent_dir / 'newrelic.ini'))
-
-import envdir
-
-envdir.read(str(parent_dir / 'envs' / env))
+if env:
+    parent_dir = Path(__file__).parent.parent
+    # if env == 'prod':
+    #     import newrelic.agent
+    #     newrelic.agent.initialize(str(parent_dir / 'newrelic.ini'))
+    envdir.read(str(parent_dir / 'envs' / env))
 
 # We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks
 # if running multiple sites in the same mod_wsgi process. To fix this, use

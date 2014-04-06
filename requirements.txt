@@ -1,7 +1,6 @@
 apache-libcloud==0.14.1
 argparse==1.1
 caniusepython3==2.0.3
-chaussette==1.0
 distlib==0.1.8
 dj-database-url==0.3.0
 dj-email-url==0.0.2
@@ -20,6 +19,7 @@ Django==1.6.2
 djangorestframework==2.3.13
 envdir==0.6.1
 futures==2.1.6
+gunicorn==18.0
 hiredis==0.1.2
 mock==1.0.1
 pathlib==0.97

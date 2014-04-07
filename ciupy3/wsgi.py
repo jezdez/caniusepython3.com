@@ -14,18 +14,6 @@ framework.
 
 """
 import os
-from pathlib import Path
-
-env = os.environ.get('ENVDIR')
-
-if env:
-    parent_dir = Path(__file__).parent.parent
-    # if env == 'prod':
-    #     import newrelic.agent
-    #     newrelic.agent.initialize(str(parent_dir / 'newrelic.ini'))
-    import envdir
-    envdir.read(str(parent_dir / 'envs' / env))
-
 # We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks
 # if running multiple sites in the same mod_wsgi process. To fix this, use
 # mod_wsgi daemon mode with each site in its own daemon process, or use

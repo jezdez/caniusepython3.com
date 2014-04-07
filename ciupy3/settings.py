@@ -235,5 +235,4 @@ class Prod(Common):
     STATIC_URL = 'https://ciupy3-assets.global.ssl.fastly.net/assets/static/'
     MEDIA_URL = 'https://ciupy3-assets.global.ssl.fastly.net/assets/media/'
 
-    # STATICFILES_STORAGE = 'ciupy3.storage.PipelineCachedCloudStorage'
     STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'

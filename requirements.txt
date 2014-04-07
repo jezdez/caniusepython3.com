@@ -31,3 +31,4 @@ South==0.8.4
 times==0.6.2
 waitress==0.8.8
 whitenoise==0.13
+-e git+https://github.com/jezdez/hirefire#egg=HireFire

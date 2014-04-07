@@ -25,7 +25,7 @@ class Common(Configuration):
     # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = values.SecretValue()
+    SECRET_KEY = ')07khcog6b!)x636@=%rq53mk0g-^!n_p(jf!2bfhyc-*5^f_9'
 
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
@@ -53,7 +53,6 @@ class Common(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        'raven.contrib.django.raven_compat',
         'pipeline',
         'admin_honeypot',
         'djangosecure',
@@ -109,49 +108,7 @@ class Common(Configuration):
         )
     }
 
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': True,
-        'root': {
-            'level': 'WARNING',
-            'handlers': ['sentry'],
-        },
-        'formatters': {
-            'verbose': {
-                'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-            },
-        },
-        'handlers': {
-            'sentry': {
-                'level': 'ERROR',
-                'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-            },
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-                'formatter': 'verbose'
-            }
-        },
-        'loggers': {
-            'django.db.backends': {
-                'level': 'ERROR',
-                'handlers': ['console'],
-                'propagate': False,
-            },
-            'raven': {
-                'level': 'DEBUG',
-                'handlers': ['console'],
-                'propagate': False,
-            },
-            'sentry.errors': {
-                'level': 'DEBUG',
-                'handlers': ['console'],
-                'propagate': False,
-            },
-        },
-    }
-
-    CACHES = values.CacheURLValue('hiredis://127.0.0.1:6381/0')
+    CACHES = values.CacheURLValue('hiredis://127.0.0.1:6379/0')
 
     MEDIA_ROOT = str(assets_dir / 'media')
     MEDIA_URL = '/assets/media/'
@@ -164,14 +121,9 @@ class Common(Configuration):
         os.path.join(os.path.dirname(__file__), 'foundation'),
     ]
 
-    EMAIL = values.EmailURLValue('console://')
-    DEFAULT_FROM_EMAIL = 'hello@caniusepython3.com'
-    SERVER_EMAIL = DEFAULT_FROM_EMAIL
-
-    SENTRY_URL = os.environ.get('SENTRY_URL')
-    RAVEN_CONFIG = {
-        'dsn': SENTRY_URL,
-    }
+    # EMAIL = values.EmailURLValue('console://')
+    # DEFAULT_FROM_EMAIL = 'hello@caniusepython3.com'
+    # SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
     PIPELINE_CSS = {
         'styles': {
@@ -223,9 +175,14 @@ class Prod(Common):
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECRET_KEY = values.SecretValue()
 
     MIDDLEWARE_CLASSES = Common.MIDDLEWARE_CLASSES + (
         'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
+    )
+
+    INSTALLED_APPS = Common.INSTALLED_APPS + (
+        'raven.contrib.django.raven_compat',
     )
 
     ALLOWED_HOSTS = ['*']
@@ -249,4 +206,9 @@ class Prod(Common):
                 "handlers": ["console"],
             }
         }
+    }
+
+    SENTRY_URL = os.environ.get('SENTRY_URL')
+    RAVEN_CONFIG = {
+        'dsn': SENTRY_URL,
     }

@@ -189,8 +189,8 @@ class Prod(Common):
 
     PIPELINE_ENABLED = True
 
-    # STATIC_URL = 'https://ciupy3-assets.global.ssl.fastly.net/assets/static/'
-    # MEDIA_URL = 'https://ciupy3-assets.global.ssl.fastly.net/assets/media/'
+    STATIC_URL = 'https://ciupy3-assets.global.ssl.fastly.net/assets/static/'
+    MEDIA_URL = 'https://ciupy3-assets.global.ssl.fastly.net/assets/media/'
 
     LOGGING = {
         "version": 1,

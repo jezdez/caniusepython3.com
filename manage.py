@@ -2,12 +2,12 @@
 import os
 import sys
 
-import envdir
 from pathlib import Path
 
 env = os.environ.get('ENVDIR', 'dev')
 
 if env:
+    import envdir
     here = Path(__file__).parent
     path = here / 'envs' / env
     envdir.read(str(path))

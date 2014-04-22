@@ -14,7 +14,7 @@ django-pq==0.3.2
 django-redis==3.6.0
 django-secure==1.0
 django-vanilla-views==1.0.2
-Django==1.6.2
+Django==1.6.3
 djangorestframework==2.3.13
 futures==2.1.6
 hiredis==0.1.2

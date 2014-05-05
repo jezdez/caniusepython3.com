@@ -46,7 +46,6 @@
     $(document).foundation();
   });
   </script>
-  {% comment %}
   <!-- Piwik -->
   <script type="text/javascript">
     var _paq = _paq || [];
@@ -54,7 +53,7 @@
     _paq.push(["enableLinkTracking"]);
 
     (function() {
-      var u=(("https:" == document.location.protocol) ? "https" : "http") + "://jezdez.com/piwik/";
+      var u=(("https:" == document.location.protocol) ? "https" : "http") + "://jezdez-piwik.herokuapp.com/";
       _paq.push(["setTrackerUrl", u+"piwik.php"]);
       _paq.push(["setSiteId", "4"]);
       var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
@@ -62,7 +61,6 @@
     })();
   </script>
   <!-- End Piwik Code -->
-  {% endcomment %}
   {% block extra_footer %}{% endblock extra_footer %}
 </body>
 </html>

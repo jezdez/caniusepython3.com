@@ -1,6 +1,10 @@
 Can I Use Python 3
 ==================
 
+.. image:: https://requires.io/github/jezdez/caniusepython3.com/requirements.png?branch=master
+   :target: https://requires.io/github/jezdez/caniusepython3.com/requirements/?branch=master
+   :alt: Requirements Status
+
 This is the companion site to the CLI tool caniusepython3_ available at
 caniusepython3.com.
 

@@ -9,6 +9,6 @@ class WorkerProc(RQProc):
 
 
 class HighWorkerProc(RQProc):
-    name = 'high-worker'
+    name = 'high_worker'
     queues = ['high']
     connection = get_redis_connection()

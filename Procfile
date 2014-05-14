@@ -1,3 +1,3 @@
 web: waitress-serve --port=$PORT ciupy3.wsgi:application
 worker: python manage.py rqworker
-high-worker: python manage.py rqworker high
+high_worker: python manage.py rqworker high

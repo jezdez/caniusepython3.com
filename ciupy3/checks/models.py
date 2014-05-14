@@ -7,12 +7,13 @@ from pip.index import PackageFinder
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
+from django.utils.functional import cached_property
 from django.utils.six.moves.urllib.parse import urlparse, urlunparse
 from django.utils.timezone import now
 
-
 from django_pg import models
 from redis_cache import get_redis_connection
+
 
 project_name_re = re.compile(r'^[\.\-\w]+$')
 index_urls = ['https://pypi.python.org/simple/']
@@ -52,6 +53,36 @@ def sanitize_github_url(requirement, url):
     return requirement
 
 
+class Project(models.Model):
+    id = models.UUIDField(auto_add=True, primary_key=True)
+    name = models.TextField(db_index=True, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('project-detail', kwargs={'name': self.name})
+
+    @cached_property
+    def last_check(self):
+        try:
+            return self.checks.latest('finished_at')
+        except (Check.DoesNotExist, IndexError):
+            return None
+
+    def check(self):
+        from .jobs import run_check
+        check = Check(project=self,
+                      public=False,
+                      requirements=[self.name],
+                      projects=[self.name])
+        check.full_clean()
+        check.save()
+        run_check.delay(check.pk)
+
+
 class Check(models.Model):
     id = models.UUIDField(auto_add=True, primary_key=True)
     unblocked = models.SmallIntegerField(default=0)
@@ -61,12 +92,19 @@ class Check(models.Model):
     requirements = models.ArrayField(models.TextField())
     projects = models.ArrayField(models.CharField(max_length=255))
     blockers = models.JSONField()
+    public = models.BooleanField(default=True)
+    runs = models.SmallIntegerField(default=0)
+    project = models.ForeignKey(Project, related_name='checks',
+                                null=True, blank=True)
 
-    def get_absolute_url(self):
-        return reverse('check-detail', kwargs={'pk': str(self.pk)})
+    class Meta:
+        ordering = ('-finished_at',)
 
     def __str__(self):
         return str(self.id)
+
+    def get_absolute_url(self):
+        return reverse('check-detail', kwargs={'pk': str(self.pk)})
 
     def clean(self):
         projects = OrderedDict()  # using this since sets aren't ordered

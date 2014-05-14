@@ -19,7 +19,7 @@ assets_dir = here.parent / 'assets'
 class Common(Configuration):
 
     # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+    BASE_DIR = str(here.parent)
 
     # Quick-start development settings - unsuitable for production
     # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -43,6 +43,10 @@ class Common(Configuration):
         'django.contrib.messages.context_processors.messages',
     )
 
+    TEMPLATE_DIRS = [
+        str(here / 'templates'),
+    ]
+
     ALLOWED_HOSTS = []
 
     # Application definition
@@ -53,15 +57,17 @@ class Common(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'django.contrib.humanize',
         'pipeline',
         'admin_honeypot',
         'djangosecure',
-        'pq',
+        'django_rq',
         'rest_framework',
         'south',
         'easy_pjax',
-        'ciupy3.checks',
         'whitenoise',
+        'macros',
+        'ciupy3.checks',
     )
 
     MIDDLEWARE_CLASSES = (
@@ -106,6 +112,7 @@ class Common(Configuration):
             'rest_framework.renderers.JSONRenderer',
             # 'rest_framework.renderers.BrowsableAPIRenderer',
             'rest_framework.renderers.TemplateHTMLRenderer',
+            'ciupy3.checks.renderers.ShieldRenderer',
         )
     }
 
@@ -119,7 +126,7 @@ class Common(Configuration):
     STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
     STATICFILES_DIRS = [
-        os.path.join(os.path.dirname(__file__), 'foundation'),
+        str(here / 'foundation'),
     ]
 
     # EMAIL = values.EmailURLValue('console://')
@@ -158,6 +165,35 @@ class Common(Configuration):
 
     HIREFIRE_PROCS = ['ciupy3.procs.WorkerProc']
 
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "handlers": {
+            "console": {
+                "level": "INFO",
+                "class": "logging.StreamHandler",
+            },
+        },
+        "loggers": {
+            "django": {
+                "handlers": ["console"],
+            }
+        }
+    }
+
+    RQ_QUEUES = {
+        'high': {
+            'USE_REDIS_CACHE': 'default',
+        },
+        'default': {
+            'USE_REDIS_CACHE': 'default',
+        },
+        'low': {
+            'USE_REDIS_CACHE': 'default',
+        },
+    }
+    RQ_SHOW_ADMIN_LINK = True
+
 
 class Dev(Common):
     """
@@ -195,22 +231,6 @@ class Prod(Common):
 
     STATIC_URL = 'https://ciupy3-assets.global.ssl.fastly.net/assets/static/'
     MEDIA_URL = 'https://ciupy3-assets.global.ssl.fastly.net/assets/media/'
-
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "handlers": {
-            "console": {
-                "level": "INFO",
-                "class": "logging.StreamHandler",
-            },
-        },
-        "loggers": {
-            "django": {
-                "handlers": ["console"],
-            }
-        }
-    }
 
     SENTRY_URL = os.environ.get('SENTRY_URL')
     RAVEN_CONFIG = {

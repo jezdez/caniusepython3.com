@@ -1,0 +1,34 @@
+{% load macros %}
+{% load variables %}
+
+{% macro check_again name url %}
+  <a href="{{ url }}?check=again" class="button radius tiny right" rel="nofollow">Check again</a>
+{% endmacro %}
+
+{% macro shield name shield_path format %}
+<div class="row">
+  {% capture shield_url %}
+    {% if request.is_secure %}https{% else %}http{% endif %}://{{ request.get_host }}{{ shield_path }}
+  {% endcapture %}
+  <div class="large-3 columns">
+    <p>
+      <img height="16" src="{{ shield_url }}" alt="{{ name }} port status" />
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="large-3 columns">
+    <select id="shield-select" data-shield="{{ shield_url }}.{{ format }}" data-home="{{ shield_url }}">
+      <option value="image" selected="selected">Image URL</option>
+      <option value="restructuredtext">reStructureText</option>
+      <option value="markdown">Markdown</option>
+      <option value="textile">Textile</option>
+      <option value="rdoc">RDOC</option>
+      <option value="asciidoc">AsciiDoc</option>
+    </select>
+  </div>
+  <div class="large-9 columns">
+    <textarea readonly="readonly" id="shield-code">{{ shield_url }}</textarea>
+  </div>
+</div>
+{% endmacro %}

@@ -28,7 +28,7 @@ Backend perspective
 - Render frontpage form
 - Once the form is submitted, create a unique check object
 - Parse requirements and return error if not parseable
-- create pq jobs and them to check object
+- create rq jobs and them to check object
 - Redirect to check detail page with a list of attached jobs
 - Render self-updating result list page with each job attached to the check
 

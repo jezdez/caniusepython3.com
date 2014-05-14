@@ -3,8 +3,8 @@ jQuery(document).ready(function ($) {
   var spinner = new Spinner({
     lines: 17, // The number of lines to draw
     length: 5, // The length of each line
-    width: 6, // The line thickness
-    radius: 30, // The radius of the inner circle
+    width: 2, // The line thickness
+    radius: 10, // The radius of the inner circle
     corners: 0.7, // Corner roundness (0..1)
     rotate: 0, // The rotation offset
     direction: 1, // 1: clockwise, -1: counterclockwise
@@ -72,5 +72,45 @@ jQuery(document).ready(function ($) {
     if(e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
       $(this).parents('form').submit();
     }
+  });
+
+  $('#shield-code').focus(function() {
+      var $this = $(this);
+      $this.select();
+
+      // Work around Chrome's little problem
+      $this.mouseup(function() {
+          // Prevent further mouseup intervention
+          $this.unbind('mouseup');
+          return false;
+      });
+  });
+
+  // define some default snippets for the shields
+  var shields = {
+    'image': '{{shield}}',
+    'restructuredtext': '.. image:: {{shield}}\n    :target: {{home}}',
+    'markdown': '[![Can I Use Python 3?]({{shield}})]({{home}})',
+    'textile': '!{{shield}}!:{{home}}',
+    'rdoc': '{<img src="{{shield}}" alt="Can I Use Python 3?" />}[{{home}}]',
+    'asciidoc': 'image:{{shield}}["Can I Use Python 3?", link="{{home}}"]',
+  }
+  var render_shield = function(select) {
+    var template = shields[select.val()];
+    if (template) {
+      // populate a rendering context
+      var context = {
+        'shield': select.data('shield'),
+        'home': select.data('home'),
+      }
+      var output = Mustache.render(template, context);
+      $('#shield-code').html(output).autosize().trigger('autosize.resize');
+    };
+  };
+  $(document).on('change', '#shield-select', function(event) {
+    event.preventDefault();
+    render_shield($(this));
+  }).find("#shield-select option:selected").each(function() {
+    render_shield($(this).parent());
   });
 });

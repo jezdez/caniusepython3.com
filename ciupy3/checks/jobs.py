@@ -1,13 +1,14 @@
 import uuid
+from django.db.models import F, Sum
 from django.utils.timezone import now
 from django.utils.six.moves import xmlrpc_client
 
 from pip._vendor import requests
-from pq.decorators import job
+from django_rq import job
 from caniusepython3.dependencies import blocking_dependencies
 from caniusepython3.pypi import all_py3_projects
 
-from .models import Check, get_redis
+from .models import Check, Project, get_redis
 
 TROVE_KEY_NAME = 'trove_classifiers_key'
 TROVE_COUNT_KEY = 'compatible_count'
@@ -70,7 +71,7 @@ def fetch_all_py3_projects():
         return compatible_count
 
 
-@job('default')
+@job('low')
 def fetch_all_projects():
     """
     A job to be run periodically (e.g. daily) to update the projects from PyPI.
@@ -120,6 +121,17 @@ def decode_name(name, lower=False):
         return name
 
 
+def handle_projects(project_list, lower):
+    projects = {}
+    for project in project_list:
+        decoded_project = decode_name(project)
+        lower_decoded_project = decoded_project.lower()
+        if lower:
+            decoded_project = lower_decoded_project
+        projects[decoded_project] = lower_decoded_project
+    return projects
+
+
 def get_all_py3_projects(lower=False):
     """
     Return the list of projects compatible to Python 3 according
@@ -127,8 +139,7 @@ def get_all_py3_projects(lower=False):
     """
     redis = get_redis()
     key_name = redis.get(TROVE_KEY_NAME)
-    return {decode_name(project, lower)
-            for project in redis.smembers(key_name)}
+    return handle_projects(redis.smembers(key_name), lower)
 
 
 def get_all_projects(lower=False):
@@ -137,8 +148,7 @@ def get_all_projects(lower=False):
     """
     redis = get_redis()
     key_name = redis.get(ALL_KEY_NAME)
-    return {decode_name(project, lower)
-            for project in redis.smembers(key_name)}
+    return handle_projects(redis.smembers(key_name), lower)
 
 
 def get_overrides():
@@ -177,7 +187,7 @@ def get_or_fetch_all_py3_projects():
     return projects
 
 
-@job('default')
+@job('high')
 def run_check(pk):
     """
     The central job to run the check. Called after a check has been
@@ -200,9 +210,28 @@ def run_check(pk):
     check.unblocked = len(flattened_blockers)
 
     check.finished_at = now()
+    check.runs = F('runs') + 1
     check.save()
 
     redis = get_redis()
-    redis.set(CHECKED_COUNT_KEY, Check.objects.count())
 
+    # the number of "publicly" announced checks is the sum of all runs
+    # and the number of projects that have been created lazily
+    public_checks = (Check.objects.filter(public=True)
+                                  .aggregate(Sum('runs')))
+    project_count = Project.objects.count()
+    redis.set(CHECKED_COUNT_KEY, public_checks['runs__sum'] + project_count)
     return blockers
+
+
+@job('low')
+def check_all_projects():
+    for project in Project.objects.all():
+        project.check()
+
+
+def real_project_name(value):
+    all_projects = get_or_fetch_all_projects()
+    all_projects_flipped = dict((value, key)
+                                for key, value in all_projects.items())
+    return all_projects_flipped.get(value.lower(), None)

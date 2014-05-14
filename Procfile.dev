@@ -1,2 +1,2 @@
-web: python manage.py runserver
-worker: python manage.py pqworker default
+web: python manage.py runserver 0.0.0.0:8000
+worker: python manage.py rqworker high default low

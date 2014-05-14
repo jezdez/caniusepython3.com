@@ -17,7 +17,6 @@ def parse_requirement(project_name):
 
 
 def filter_requirements(requirements):
-
     requirements = [parse_requirement(requirement.strip())
                     for requirement in requirements]
     return list(filter(None, requirements))

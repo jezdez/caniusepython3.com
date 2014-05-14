@@ -1,0 +1,131 @@
+{% extends "base.html"|pjax:request %}
+{% load i18n %}
+{% load humanize %}
+{% load variables %}
+{% load macros %}
+{% loadmacros "macros.html" %}
+
+{% block title %}Project {{ name }} - {% endblock title %}
+
+{% block content %}
+{% if checks %}
+  {% set last_check=checks.0 %}
+{% else %}
+  {% set last_check=0 %}
+{% endif %}
+{% url 'project-detail' name=name as project_url %}
+
+{% if last_check.finished_at %}
+<div id="content" class="finished">
+  <div class="row">
+    <div class="large-8 columns">
+      <h2>
+      {% if last_check.unblocked == 0 %}
+        {% blocktrans %}
+          <span class="show-for-small-only">Congrats! <small>No blockers.</small></span>
+          <span class="show-for-medium-up">Congratulations! <small>No blockers for your transition to Python 3.</small></span>
+        {% endblocktrans %}
+      {% else %}
+        {% blocktrans count counter=last_check.unblocked %}
+          <span class="show-for-small-only">Almost! <small>{{ counter }} blocker.</small></span>
+          <span class="show-for-medium-up">Almost! <small>{{ counter }} project blocks your transition to Python 3.</small></span>
+        {% plural %}
+          <span class="show-for-small-only">Almost! <small>{{ counter }} blockers.</small></span>
+          <span class="show-for-medium-up">Almost! <small>{{ counter }} projects block your transition to Python 3.</small></span>
+        {% endblocktrans %}
+      {% endif %}
+      </h2>
+    </div>
+    <div class="large-4 columns show-for-large-up">
+        <h2>
+          {% usemacro check_again name project_url %}
+        </h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-8 columns">
+    {% if last_check.blockers|length > 0 %}
+      <dl>
+        {% if last_check.blockers|length == 1 %}
+        <dt>The following has no direct dependencies blocking its transition</dt>
+        {% elif last_check.blockers|length > 1 %}
+        <dt>
+        {% blocktrans count counter=last_check.blockers|length with unblocked=last_check.unblocked %}
+        {{ counter }} out of those {{ unblocked }} has no direct dependencies blocking its transition
+        {% plural %}
+        {{ counter }} out of those {{ unblocked }} have no direct dependencies blocking their transition
+        {% endblocktrans %}
+        </dt>
+        {% endif %}
+        <dd>
+          <ul>
+          {% for name, blocks in last_check.blockers.items %}
+            <li>
+              {{ name }} {% if blocks %}({% endif %}{% for name in blocks %}which is blocking {{ name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% if blocks %}){% endif %}
+            </li>
+          {% endfor %}
+          </ul>
+        </dd>
+      </dl>
+    {% endif %}
+    {% url 'project-detail' name=name as shield_path %}
+    {% usemacro shield name shield_path 'svg' %}
+    </div>
+      <div class="large-4 columns show-for-large-up">
+        <ul class="no-bullet panel callout radius show-for-large-up">
+        <h2>
+          {% blocktrans count count=checks|length %}
+            {{ count }} <small>check run</small>
+          {% plural %}
+            {{ count }} <small>checks run</small>
+          {% endblocktrans %}
+        </h2>
+        {% for check in checks %}
+          <li>
+          <a href="{% url 'check-detail' pk=check.id %}" title="{{ check.finished_at.isoformat }}">
+          {% if check.finished_at %}
+            {{ check.finished_at|naturaltime }}</a>
+          {% else %}
+            {% trans "Still running.." %}
+          {% endif %}
+          </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+  </div>
+</div>
+
+{% else %}
+<div id="content">
+  <div class="row">
+    <div class="large-8 columns wait-message">
+      <h2><small>Please wait we're checking the project {{ name }}</small></h2>
+      <p id="spinner"></p>
+    </div>
+    <div class="large-8 columns error-message hide">
+      <h2>
+        <small>
+          Something went wrong.
+        </small>
+      </h2>
+      <p>
+       Please try first to reload the page and if that doesn't help please
+       review the projects your provided on the right and try again.
+      </p>
+    </div>
+    <div class="large-4 columns show-for-large-up">
+      <h2>
+        <small>Running check...</small>
+        {% usemacro check_again name %}
+      </h2>
+      <ul class="no-bullet panel radius show-for-large-up">
+      {% for project in last_check.projects %}
+        <li>{{ project }}</li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock content %}

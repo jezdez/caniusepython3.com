@@ -1,6 +1,8 @@
-from hirefire.procs.pq import PQProc
+from hirefire.procs.rq import RQProc
+from redis_cache import get_redis_connection
 
 
-class WorkerProc(PQProc):
+class WorkerProc(RQProc):
     name = 'worker'
-    queues = ['default']
+    queues = ['low', 'default', 'high']
+    connection = get_redis_connection()

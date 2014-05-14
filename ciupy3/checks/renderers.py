@@ -30,7 +30,7 @@ class ShieldRenderer(BaseRenderer):
 
     def render(self, data, accepted_media_type=None, renderer_context=None):
         renderer_context = renderer_context or {}
-        # request = renderer_context['request']
+        request = renderer_context['request']
         if 'checks' in data:
             check = data['checks'][0]
         else:
@@ -61,5 +61,7 @@ class ShieldRenderer(BaseRenderer):
             color,
             self.format,
         )
+        if request.QUERY_PARAMS.get('style', '') == 'flat':
+            shield_url += '?style=flat'
         shield_response = requests.get(shield_url)
         return shield_response.content

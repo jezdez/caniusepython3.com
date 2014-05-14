@@ -39,7 +39,7 @@ class ShieldRenderer(BaseRenderer):
         if not data:
             color = 'white'
             status = 'error'
-        elif check['finished_at']:
+        elif check.get('finished_at', None):
             num_blockers = len(check['blockers'])
             if num_blockers == 1:
                 status = '%s blocker' % num_blockers

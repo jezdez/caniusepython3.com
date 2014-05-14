@@ -170,7 +170,10 @@ class Common(Configuration):
     PIPELINE_CSS_COMPRESSOR = None
     PIPELINE_JS_COMPRESSOR = None
 
-    HIREFIRE_PROCS = ['ciupy3.procs.WorkerProc']
+    HIREFIRE_PROCS = [
+        'ciupy3.procs.WorkerProc',
+        'ciupy3.procs.HighWorkerProc',
+    ]
 
     LOGGING = {
         "version": 1,

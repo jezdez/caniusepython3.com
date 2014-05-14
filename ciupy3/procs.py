@@ -4,5 +4,11 @@ from redis_cache import get_redis_connection
 
 class WorkerProc(RQProc):
     name = 'worker'
-    queues = ['low', 'default', 'high']
+    queues = ['default']
+    connection = get_redis_connection()
+
+
+class HighWorkerProc(RQProc):
+    name = 'high-worker'
+    queues = ['high']
     connection = get_redis_connection()

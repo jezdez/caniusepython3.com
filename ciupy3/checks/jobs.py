@@ -71,7 +71,7 @@ def fetch_all_py3_projects():
         return compatible_count
 
 
-@job('low')
+@job('default')
 def fetch_all_projects():
     """
     A job to be run periodically (e.g. daily) to update the projects from PyPI.
@@ -224,7 +224,7 @@ def run_check(pk):
     return blockers
 
 
-@job('low')
+@job('high')
 def check_all_projects():
     for project in Project.objects.all():
         project.check()

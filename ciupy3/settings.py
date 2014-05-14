@@ -81,6 +81,13 @@ class Common(Configuration):
         # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     )
 
+    TEMPLATE_LOADERS = (
+        ('django.template.loaders.cached.Loader', (
+            'django.template.loaders.filesystem.Loader',
+            'django.template.loaders.app_directories.Loader',
+        )),
+    )
+
     ROOT_URLCONF = 'ciupy3.urls'
 
     WSGI_APPLICATION = 'ciupy3.wsgi.application'

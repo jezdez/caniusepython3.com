@@ -89,6 +89,7 @@ jQuery(document).ready(function ($) {
   // define some default snippets for the shields
   var shields = {
     'image': '{{shield}}',
+    'html': '<a href="{{home}}" rel="nofollow" title="Can I Use Python 3?"><img src="{{shield}}" alt="Can I Use Python 3?" /></a>',
     'restructuredtext': '.. image:: {{shield}}\n    :target: {{home}}',
     'markdown': '[![Can I Use Python 3?]({{shield}})]({{home}})',
     'textile': '!{{shield}}!:{{home}}',

@@ -72,7 +72,7 @@ class ProjectSerializer(PublicDataSerializer):
     checks = CheckSerializer(read_only=True, many=True)
 
     def transform_checks(self, obj, value):
-        return value[:20]
+        return value[:30]
 
     def get_last_check(self, obj):
         return obj.last_check

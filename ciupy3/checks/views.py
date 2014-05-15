@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import redirect
 
-from rest_framework import viewsets
+from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
@@ -14,8 +14,7 @@ from .models import Check, Project
 from .serializers import PublicCheckSerializer, ProjectSerializer
 
 
-class CheckViewSet(viewsets.mixins.RetrieveModelMixin,
-                   viewsets.GenericViewSet):
+class CheckDetailView(generics.RetrieveAPIView):
     queryset = Check.objects.all()
     serializer_class = PublicCheckSerializer
     lookup_field = 'pk'
@@ -65,7 +64,7 @@ class CheckCreateView(CreateView):
         return context
 
 
-class ProjectViewSet(viewsets.GenericViewSet):
+class ProjectDetailView(generics.RetrieveAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     lookup_field = 'name'

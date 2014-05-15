@@ -68,6 +68,10 @@ jQuery(document).ready(function ($) {
 
   $('textarea').autosize();
 
+  $(document).on('pjax:complete', function() {
+    $('textarea').autosize();
+  })
+
   $(document).on('keydown', 'textarea', function(e) {
     if(e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
       $(this).parents('form').submit();
@@ -114,4 +118,5 @@ jQuery(document).ready(function ($) {
   }).find("#shield-select option:selected").each(function() {
     render_shield($(this).parent());
   });
+
 });

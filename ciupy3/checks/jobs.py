@@ -50,25 +50,24 @@ def fetch_all_py3_projects():
     Python 3 compatible projects from PyPI.
     """
     redis = get_redis()
-    with redis.lock('fetch_trove_classifiers'):
-        # try to get the old fetch id first
-        old_key_name = redis.get(TROVE_KEY_NAME)
+    # try to get the old fetch id first
+    old_key_name = redis.get(TROVE_KEY_NAME)
 
-        # then populate a set of Python 3 projects in Redis
-        new_key_name = uuid.uuid4().hex
-        projects = all_py3_projects(get_overrides())
-        for project in projects:
-            redis.sadd(new_key_name, str(project))
-        redis.set(TROVE_KEY_NAME, new_key_name)
+    # then populate a set of Python 3 projects in Redis
+    new_key_name = uuid.uuid4().hex
+    projects = all_py3_projects(get_overrides())
+    for project in projects:
+        redis.sadd(new_key_name, str(project))
+    redis.set(TROVE_KEY_NAME, new_key_name)
 
-        # get rid of the old fetch set if needed
-        if old_key_name is not None:
-            redis.delete(old_key_name)
+    # get rid of the old fetch set if needed
+    if old_key_name is not None:
+        redis.delete(old_key_name)
 
-        # return number of Python 3 projects
-        compatible_count = len(projects)
-        redis.set(TROVE_COUNT_KEY, compatible_count)
-        return compatible_count
+    # return number of Python 3 projects
+    compatible_count = len(projects)
+    redis.set(TROVE_COUNT_KEY, compatible_count)
+    return compatible_count
 
 
 @job('default')
@@ -77,25 +76,24 @@ def fetch_all_projects():
     A job to be run periodically (e.g. daily) to update the projects from PyPI.
     """
     redis = get_redis()
-    with redis.lock('fetch_all'):
-        # try to get the old fetch id first
-        old_key_name = redis.get(ALL_KEY_NAME)
+    # try to get the old fetch id first
+    old_key_name = redis.get(ALL_KEY_NAME)
 
-        # then populate a set of Python 3 projects in Redis
-        new_key_name = uuid.uuid4().hex
-        projects = all_projects()
-        for project in projects:
-            redis.sadd(new_key_name, str(project))
-        redis.set(ALL_KEY_NAME, new_key_name)
+    # then populate a set of Python 3 projects in Redis
+    new_key_name = uuid.uuid4().hex
+    projects = all_projects()
+    for project in projects:
+        redis.sadd(new_key_name, str(project))
+    redis.set(ALL_KEY_NAME, new_key_name)
 
-        # get rid of the old fetch set if needed
-        if old_key_name is not None:
-            redis.delete(old_key_name)
+    # get rid of the old fetch set if needed
+    if old_key_name is not None:
+        redis.delete(old_key_name)
 
-        # return number of Python 3 projects
-        compatible_count = len(projects)
-        redis.set(ALL_COUNT_KEY, compatible_count)
-        return compatible_count
+    # return number of Python 3 projects
+    compatible_count = len(projects)
+    redis.set(ALL_COUNT_KEY, compatible_count)
+    return compatible_count
 
 
 def get_compatible():

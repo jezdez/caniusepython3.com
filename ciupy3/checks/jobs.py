@@ -56,17 +56,19 @@ def fetch_all_py3_projects():
     # then populate a set of Python 3 projects in Redis
     new_key_name = uuid.uuid4().hex
     projects = all_py3_projects(get_overrides())
+    pipeline = redis.pipeline()
     for project in projects:
-        redis.sadd(new_key_name, str(project))
-    redis.set(TROVE_KEY_NAME, new_key_name)
+        pipeline.sadd(new_key_name, str(project))
+    pipeline.set(TROVE_KEY_NAME, new_key_name)
 
     # get rid of the old fetch set if needed
     if old_key_name is not None:
-        redis.delete(old_key_name)
+        pipeline.delete(old_key_name)
 
     # return number of Python 3 projects
     compatible_count = len(projects)
-    redis.set(TROVE_COUNT_KEY, compatible_count)
+    pipeline.set(TROVE_COUNT_KEY, compatible_count)
+    pipeline.execute()
     return compatible_count
 
 
@@ -82,17 +84,19 @@ def fetch_all_projects():
     # then populate a set of Python 3 projects in Redis
     new_key_name = uuid.uuid4().hex
     projects = all_projects()
+    pipeline = redis.pipeline()
     for project in projects:
-        redis.sadd(new_key_name, str(project))
-    redis.set(ALL_KEY_NAME, new_key_name)
+        pipeline.sadd(new_key_name, str(project))
+    pipeline.set(ALL_KEY_NAME, new_key_name)
 
     # get rid of the old fetch set if needed
     if old_key_name is not None:
-        redis.delete(old_key_name)
+        pipeline.delete(old_key_name)
 
     # return number of Python 3 projects
     compatible_count = len(projects)
-    redis.set(ALL_COUNT_KEY, compatible_count)
+    pipeline.set(ALL_COUNT_KEY, compatible_count)
+    pipeline.execute()
     return compatible_count
 
 

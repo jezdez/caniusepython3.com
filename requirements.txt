@@ -1,5 +1,5 @@
 argparse==1.2.1
-caniusepython3==2.1.0
+caniusepython3==2.1.1
 distlib==0.1.8
 dj-database-url==0.3.0
 dj-email-url==0.0.2

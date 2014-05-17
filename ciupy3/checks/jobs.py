@@ -189,7 +189,7 @@ def get_or_fetch_all_py3_projects():
     return projects
 
 
-@job('high')
+@job('high', timeout=1800)
 def run_check(pk):
     """
     The central job to run the check. Called after a check has been

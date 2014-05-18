@@ -18,7 +18,7 @@
 {% if last_check.finished_at %}
 <div id="content" class="finished">
   <div class="row">
-    <div class="large-8 columns">
+    <div class="small-8 columns">
       <h2>
       {% if last_check.unblocked == 0 %}
         {% blocktrans %}
@@ -36,15 +36,15 @@
       {% endif %}
       </h2>
     </div>
-    <div class="large-4 columns show-for-large-up">
+    <div class="small-4 columns">
         <h2>
-          {% usemacro check_again name project_url %}
+          {% usemacro check_again name project_url "Check again" %}
         </h2>
     </div>
   </div>
   <div class="row">
     <div class="large-8 columns">
-    {% if last_check.blockers|length > 0 %}
+      {% if last_check.blockers|length > 0 %}
       <dl>
         {% if last_check.blockers|length == 1 %}
         <dt>The following has no direct dependencies blocking its transition</dt>
@@ -67,41 +67,40 @@
           </ul>
         </dd>
       </dl>
-    {% endif %}
-    {% url 'project-detail' name=name as shield_path %}
-    {% usemacro shield name shield_path 'svg' %}
+      {% endif %}
+      {% url 'project-detail' name=name as shield_path %}
+      <span class="show-for-large-up">
+      {% usemacro shield name shield_path 'svg' %}
+      </span>
     </div>
-      <div class="large-4 columns show-for-large-up">
-        <ul class="no-bullet panel callout radius show-for-large-up">
+    <div class="large-4 columns">
+      <ul class="no-bullet panel callout radius">
         <h2>
           {% blocktrans count count=checks|length %}
-            {{ count }} <small>check run</small>
+            {{ count }} <small>check done</small>
           {% plural %}
-            {{ count }} <small>checks run</small>
+            {{ count }} <small>checks done</small>
           {% endblocktrans %}
         </h2>
         {% for check in checks %}
-          <li>
-          <a href="{% url 'check-detail' pk=check.id %}" title="{{ check.finished_at.isoformat }}">
-          {% if check.finished_at %}
-            {{ check.finished_at|naturaltime }}</a>
-          {% else %}
-            {% trans "Still running.." %}
-          {% endif %}
-          </li>
+        <li>
+        <a href="{% url 'check-detail' pk=check.id %}" title="{{ check.finished_at.isoformat }}">
+        {% if check.finished_at %}
+          {{ check.finished_at|naturaltime }}</a>
+        {% else %}
+          {% trans "Still checking.." %}
+        {% endif %}
+        </li>
         {% endfor %}
-        </ul>
+      </ul>
     </div>
-
   </div>
 </div>
-
 {% else %}
 <div id="content">
   <div class="row">
     <div class="large-8 columns wait-message">
-      <h2><small>Please wait we're checking the project {{ name }}</small></h2>
-      <p id="spinner"></p>
+      <h2><small>Please wait. We're checking {{ name }}.</small></h2>
     </div>
     <div class="large-8 columns error-message hide">
       <h2>
@@ -114,16 +113,8 @@
        review the projects your provided on the right and try again.
       </p>
     </div>
-    <div class="large-4 columns show-for-large-up">
-      <h2>
-        <small>Running check...</small>
-        {% usemacro check_again name %}
-      </h2>
-      <ul class="no-bullet panel radius show-for-large-up">
-      {% for project in last_check.projects %}
-        <li>{{ project }}</li>
-      {% endfor %}
-      </ul>
+    <div class="small-4 columns show-for-large-up">
+      <h2>{% usemacro check_again name check_url "Checking.." "disabled" %}</h2>
     </div>
   </div>
 </div>

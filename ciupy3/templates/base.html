@@ -27,19 +27,27 @@
           <h1><a href="/">Can I Use Python 3?</a></h1>
         </li>
       </ul>
+      {% if compatible %}
+      <section class="top-bar-section">
+        <ul class="left pypi-stats">
+          <li>
+            <strong>{{ compatible }}</strong>{% if total %} of {{ total }}{% endif %} projects compatible.
+          </li>
+        </ul>
+      </section>
+      {% endif %}
     </nav>
   </div>
-  {% block content %}this{% endblock content %}
+  {% block content %}{% endblock content %}
   <footer>
+    {% block footer %}
     <div class="row">
-        <div class="small-12 columns">
-            <a href="https://pypi.python.org/pypi/caniusepython3" title="CLI">CLI tool</a>
-            by <a href="http://nothingbutsnark.svbtle.com/" title="Brett Cannon">Brett Cannon</a>,
-            <a href="https://github.com/jezdez/caniusepython3.com" title="site code">site</a> by <a href="https://jezdez.com/" title="Jannis Leidel">Jannis Leidel</a>.
-            {% if compatible %}
-            <a href="https://pypi.python.org/" title="PyPI">PyPI</a> lists <strong>{{ compatible }}</strong> compatible projects{% if total %} of {{ total }} total{% endif %}.{% endif %}{% if checked %} {{ checked }} checks done.{% endif %}
-        </div>
+      <div class="small-12 columns">
+        <a href="/about/" title="About this site">About this site</a>.
+        {% if checked %} {{ checked }} checks done.{% endif %}
+      </div>
     </div>
+    {% endblock footer %}
   </footer>
   {% compressed_js 'scripts' %}
   <script>

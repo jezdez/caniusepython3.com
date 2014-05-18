@@ -9,21 +9,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navigation-area {
-    margin-bottom: 20px;
-}
-
-.top-bar, .top-bar .name {
-    height: 60px;
-    line-height: 60px;
+    margin-bottom: 10px;
 }
 
 .top-bar .name h1 {
-    line-height: 60px;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
 }
 
 .top-bar .name h1 a {
     width: 100%;
+}
+
+.top-bar .pypi-stats {
+    color: #fff;
+    line-height: 50px;
+    background: none;
 }
 
 .check-form input, .check-form textarea {
@@ -39,10 +39,6 @@ footer {
     padding-top: 20px;
     padding-bottom: 20px;
     line-height: 1.5;
-}
-
-#spinner {
-    padding: 40px;
 }
 
 #drop_zone {

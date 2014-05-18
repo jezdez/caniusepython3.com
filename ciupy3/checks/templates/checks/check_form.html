@@ -2,7 +2,7 @@
 
 {% block content %}
 <div id="content">
-  <form action="" method="post">{% csrf_token %}
+  <form action="" method="post" id="check-form">{% csrf_token %}
   <div class="row check-form">
     <div class="large-8 columns">
       <h2>
@@ -28,9 +28,9 @@
             </small>
           {% endif %}
         </div>
-        <div id="drop_zone" class="show-for-large-up">Or drop pip requirements file here (won't be uploaded)</div>
+        <div id="drop_zone" class="show-for-large-up">Or drop pip requirements files here</div>
       </div>
-      <button type="submit" class="button radius">Check</button>
+      <button type="submit" class="button radius" id="check-submit">Check</button>
     </div>
   </div>
   </form>

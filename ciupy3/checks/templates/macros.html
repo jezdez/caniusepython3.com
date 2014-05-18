@@ -1,8 +1,11 @@
 {% load macros %}
 {% load variables %}
 
-{% macro check_again name url %}
-  <a href="{{ url }}?check=again" class="button radius tiny right" rel="nofollow">Check again</a>
+{% macro check_again name url label class %}
+  <form action="{{ url }}" method="get">
+    <input type="hidden" name="check" value="again" />
+    <button type="submit" class="button radius tiny right {{ class }}">{{ label }}</button>
+  </form>
 {% endmacro %}
 
 {% macro shield name shield_path format %}
@@ -11,14 +14,20 @@
     {% if request.is_secure %}https{% else %}http{% endif %}://{{ request.get_host }}{{ shield_path }}
   {% endcapture %}
   <div class="large-3 columns">
-    <p>
-      <img height="16" src="{{ shield_url }}.{{ format }}" alt="{{ name }} port status" />
-    </p>
+    <img height="16" id="shield-example" src="{{ shield_url }}.{{ format }}" />
+  </div>
+  <div class="large-9 columns">
+    <div class="large-3 columns">
+      <label for="shield-style"><input type="checkbox" id="shield-style" /> Flat style</label>
+    </div>
+    <div class="large-9 columns">
+      <label for="shield-format"><input type="checkbox" value="test" id="shield-format" /> PNG format</label>
+    </div>
   </div>
 </div>
 <div class="row">
   <div class="large-3 columns">
-    <select id="shield-select" data-shield="{{ shield_url }}.{{ format }}" data-home="{{ shield_url }}">
+    <select id="shield-select" data-url="{{ shield_url }}">
       <option value="image" selected="selected">Image URL</option>
       <option value="html">HTML</option>
       <option value="restructuredtext">reStructureText</option>
@@ -27,7 +36,6 @@
       <option value="rdoc">RDOC</option>
       <option value="asciidoc">AsciiDoc</option>
     </select>
-    <small>Add <code>?style=flat</code> to the image URLs for a flat style.</small>
   </div>
   <div class="large-9 columns">
     <textarea readonly="readonly" id="shield-code">{{ shield_url }}.{{ format }}</textarea>

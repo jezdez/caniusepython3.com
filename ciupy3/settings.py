@@ -67,6 +67,7 @@ class Common(Configuration):
         'easy_pjax',
         'whitenoise',
         'macros',
+        'staticflatpages',
         'ciupy3.checks',
     )
 
@@ -78,14 +79,8 @@ class Common(Configuration):
         'django.middleware.csrf.CsrfViewMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
+        'staticflatpages.middleware.StaticFlatpageFallbackMiddleware',
         # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    )
-
-    TEMPLATE_LOADERS = (
-        ('django.template.loaders.cached.Loader', (
-            'django.template.loaders.filesystem.Loader',
-            'django.template.loaders.app_directories.Loader',
-        )),
     )
 
     ROOT_URLCONF = 'ciupy3.urls'
@@ -119,7 +114,8 @@ class Common(Configuration):
             'rest_framework.renderers.JSONRenderer',
             # 'rest_framework.renderers.BrowsableAPIRenderer',
             'rest_framework.renderers.TemplateHTMLRenderer',
-            'ciupy3.checks.renderers.ShieldRenderer',
+            'ciupy3.checks.renderers.SVGRenderer',
+            'ciupy3.checks.renderers.PNGRenderer',
         )
     }
 
@@ -160,7 +156,6 @@ class Common(Configuration):
                 'js/foundation.min.js',
                 'js/jquery.pjax.js',
                 'js/jquery.autosize.min.js',
-                'js/spin.min.js',
                 'js/app.js',
             ),
             'output_filename': 'scripts.js',
@@ -246,3 +241,10 @@ class Prod(Common):
     RAVEN_CONFIG = {
         'dsn': SENTRY_URL,
     }
+
+    TEMPLATE_LOADERS = (
+        ('django.template.loaders.cached.Loader', (
+            'django.template.loaders.filesystem.Loader',
+            'django.template.loaders.app_directories.Loader',
+        )),
+    )

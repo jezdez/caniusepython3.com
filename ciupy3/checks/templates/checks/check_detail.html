@@ -6,44 +6,15 @@
 {% block title %}Check {{ id }} - {% endblock title %}
 
 {% block content %}
-{% if not finished_at %}
-<div id="content">
-  <div class="row">
-    <div class="large-8 columns wait-message">
-      <h2><small>Please wait we're checking your projects</small></h2>
-      <p id="spinner"></p>
-    </div>
-    <div class="large-8 columns error-message hide">
-      <h2>
-        <small>
-          Something went wrong.
-        </small>
-      </h2>
-      <p>
-       Please try first to reload the page and if that doesn't help please
-       review the projects your provided on the right and try again.
-      </p>
-    </div>
-    <div class="large-4 columns show-for-large-up">
-      <h2>
-      {% blocktrans count counter=projects|length %}
-      <small>Checking</small> {{ counter }} <small>project</small>
-      {% plural %}
-      <small>Checking</small> {{ counter }} <small>projects</small>
-      {% endblocktrans %}
-      </h2>
-      <ul class="no-bullet panel radius show-for-large-up">
-      {% for project in projects %}
-        <li>{{ project }}</li>
-      {% endfor %}
-      </ul>
-    </div>
-  </div>
-</div>
+{% if projects|length == 1 %}
+  {% url 'project-detail' name=projects.0 as check_url %}
 {% else %}
+  {% url 'check-detail' pk=id as check_url %}
+{% endif %}
+{% if finished_at %}
 <div id="content" class="finished">
   <div class="row">
-    <div class="large-8 columns">
+    <div class="small-8 columns">
       <h2>
       {% if unblocked == 0 %}
         {% blocktrans %}
@@ -61,20 +32,8 @@
       {% endif %}
       </h2>
     </div>
-    <div class="large-4 columns show-for-large-up">
-        <h2>
-          {% blocktrans count counter=projects|length %}
-          {{ counter }} <small>project</small>
-          {% plural %}
-          {{ counter }} <small>projects</small>
-          {% endblocktrans %}
-          {% if projects|length == 1 %}
-            {% url 'project-detail' name=projects.0 as check_url %}
-          {% else %}
-            {% url 'check-detail' pk=id as check_url %}
-          {% endif %}
-          {% usemacro check_again name check_url %}
-        </h2>
+    <div class="small-4 columns">
+      <h2>{% usemacro check_again name check_url "Check again" %}</h2>
     </div>
   </div>
   <div class="row">
@@ -104,11 +63,20 @@
       </dl>
       {% endif %}
       {% url 'check-detail' pk=id as shield_path %}
-      {% usemacro shield id shield_path 'svg' %}
+      <span class="show-for-large-up">
+        {% usemacro shield id shield_path 'svg' %}
+      </span>
     </div>
     <div class="large-4 columns">
-      <ul class="no-bullet panel callout radius show-for-large-up">
-      {% for project in projects %}
+      <ul class="no-bullet panel callout radius">
+        <h2>
+          {% blocktrans count counter=projects|length %}
+          {{ counter }} <small>project</small>
+          {% plural %}
+          {{ counter }} <small>projects</small>
+          {% endblocktrans %}
+        </h2>
+        {% for project in projects %}
         <li>
         {% if project in public %}
           <a href="{% url 'project-detail' name=project %}" title="{{ project }}">{{ project }}</a>
@@ -116,6 +84,46 @@
           {{ project }}
         {% endif %}
         </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% else %}
+<div id="content">
+  <div class="row">
+    <div class="large-8 columns wait-message">
+      <h2><small>Please wait we're checking your projects</small></h2>
+    </div>
+    <div class="large-8 columns error-message hide">
+      <h2>
+        <small>
+          Something went wrong.
+        </small>
+      </h2>
+      <p>
+       Please try first to reload the page and if that doesn't help please
+       review the projects your provided on the right and try again.
+      </p>
+    </div>
+    <div class="small-4 columns show-for-large-up">
+      <h2>{% usemacro check_again name check_url "Checking.." "disabled" %}</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-8 columns">
+    </div>
+    <div class="large-4 columns">
+      <ul class="no-bullet panel radius">
+      <h2>
+      {% blocktrans count counter=projects|length %}
+      {{ counter }} <small>project</small>
+      {% plural %}
+      {{ counter }} <small>projects</small>
+      {% endblocktrans %}
+      </h2>
+      {% for project in projects %}
+        <li>{{ project }}</li>
       {% endfor %}
       </ul>
     </div>

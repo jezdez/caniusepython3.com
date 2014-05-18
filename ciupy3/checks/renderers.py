@@ -22,8 +22,6 @@ class ShieldRenderer(BaseRenderer):
     All renderers should extend this class, setting the `media_type`
     and `format` attributes, and override the `.render()` method.
     """
-    media_type = 'image/svg+xml'
-    format = 'svg'
     charset = 'utf-8'
     render_style = 'binary'
     subject = 'Python 3 port'
@@ -65,3 +63,13 @@ class ShieldRenderer(BaseRenderer):
             shield_url += '?style=flat'
         shield_response = requests.get(shield_url)
         return shield_response.content
+
+
+class SVGRenderer(ShieldRenderer):
+    media_type = 'image/svg+xml'
+    format = 'svg'
+
+
+class PNGRenderer(ShieldRenderer):
+    media_type = 'image/png'
+    format = 'png'

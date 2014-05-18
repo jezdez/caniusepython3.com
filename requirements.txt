@@ -15,7 +15,7 @@ django-pipeline==1.3.24
 django-redis==3.6.2
 django-secure==1.0
 # django-staticflatpages==0.2.1
--e git+https://github.com/bradmontgomery/django-staticflatpages#egg=django-staticflatpages
+-e git+https://github.com/jezdez/django-staticflatpages#egg=django-staticflatpages
 # django-templates-macros==0.1
 -e git+https://github.com/jezdez/django-templates-macros@a63e0195105846d6cd5af452d9569ab68ebc835c#egg=django-templates-macros
 django-vanilla-views==1.0.3

@@ -237,3 +237,14 @@ def real_project_name(value):
     all_projects_flipped = dict((value, key)
                                 for key, value in all_projects.items())
     return all_projects_flipped.get(value.lower(), None)
+
+
+@job('default')
+def fill_autocomplete_index():
+    projects = get_or_fetch_all_projects()
+    redis = get_redis()
+    with redis.pipeline() as pipe:
+        for project_name, project_label in projects.items():
+            value = '%s:%s' % (project_label, project_name)
+            pipe.zadd('autocomplete', value, 0)
+        pipe.execute()

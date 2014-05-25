@@ -51,3 +51,14 @@ footer {
     margin: 10px 0;
     color: #bbb;
 }
+
+.f-dropdown li.active {
+    background: #eeeeee;
+}
+.f-dropdown li {
+    font-size: 1rem;
+    line-height: 1.2rem;
+}
+.f-dropdown li a {
+    padding: 0.70rem
+}

@@ -31,7 +31,8 @@ psycopg2==2.5.3
 python-dateutil==2.2
 pytz==2014.3
 raven==4.2.3
-redis==2.9.1
+# redis==2.9.1
+-e git+https://github.com/andymccurdy/redis-py#egg=redis
 requests==2.3.0
 rq==0.4.6
 six==1.6.1

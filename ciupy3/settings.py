@@ -154,6 +154,7 @@ class Common(Configuration):
                 'js/vendor/jquery.js',
                 'js/vendor/fastclick.js',
                 'js/foundation.min.js',
+                'js/jquery.textcomplete.min.js',
                 'js/jquery.pjax.js',
                 'js/jquery.autosize.min.js',
                 'js/app.js',

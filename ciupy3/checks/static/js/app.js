@@ -44,8 +44,6 @@ jQuery(document).ready(function ($) {
     schedule();
   }
 
-  $('textarea').autosize();
-
   $(document).on('pjax:complete', function() {
     $('textarea').autosize();
   })
@@ -107,5 +105,33 @@ jQuery(document).ready(function ($) {
 
   $('#check-form').on('submit', function() {
     $('#check-submit').addClass('disabled').text('Checking..');
+  });
+
+  var autocomplete_cache = Array();
+  $('textarea').autosize().textcomplete([{
+      match: /\b([\w-]*)$/,
+      index: 1,
+      search: function (term, callback) {
+        $.getJSON('/autocomplete/', {term: term.toLowerCase()})
+          .done(function (resp) { callback(resp); })
+          .fail(function ()     { callback([]);   });
+      },
+      replace: function (word) {
+          return word + '\n';
+      },
+    },
+  ]).on({
+    'textComplete:show': function (e) {
+      var completer = $(this).data('textComplete');
+      completer.listView.$el.on(
+        'touchstart.textComplete', 'li.textcomplete-item',
+         $.proxy(completer.listView.onClick, completer.listView));
+      $('.dropdown-menu').addClass('f-dropdown');
+      $('.dropdown-menu').css({position: 'fixed'});
+    },
+    'textComplete:select': function (e, value) {
+      $('textarea').trigger('autosize.resize');
+      $(this).focus();
+    }
   });
 });

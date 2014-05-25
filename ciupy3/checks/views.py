@@ -1,8 +1,11 @@
 from django.http import Http404
 from django.shortcuts import redirect
+from django.utils.encoding import force_text
 
 from rest_framework import generics
+from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.generics import get_object_or_404
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 from vanilla import CreateView
@@ -10,8 +13,11 @@ from vanilla import CreateView
 from .forms import CheckForm
 from .jobs import (run_check, get_compatible, get_total,
                    get_checked, real_project_name)
-from .models import Check, Project
+from .models import Check, Project, get_redis
 from .serializers import PublicCheckSerializer, ProjectSerializer
+
+
+redis = get_redis()
 
 
 class CheckDetailView(generics.RetrieveAPIView):
@@ -103,3 +109,21 @@ class ProjectDetailView(generics.RetrieveAPIView):
 
         serializer = self.get_serializer(self.object)
         return Response(serializer.data)
+
+
+@api_view(['GET'])
+@renderer_classes([JSONRenderer])
+def autocomplete(request):
+    term = request.QUERY_PARAMS.get('term', None)
+    count = 50
+    try:
+        count = int(request.QUERY_PARAMS.get('count', count))
+    except ValueError:
+        pass
+    if count > 50:
+        count = 50
+    byte_results = redis.zrangebylex('autocomplete',
+                                     '[%s' % term, '[%s\xff' % term)
+    text_results = (force_text(result).split(':')[1]
+                    for result in byte_results)
+    return Response(sorted(text_results, key=len)[:count])

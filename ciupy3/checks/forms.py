@@ -1,5 +1,4 @@
 import pkg_resources
-import tempfile
 from django import forms
 
 from .models import Check
@@ -22,6 +21,15 @@ def filter_requirements(requirements):
     return list(filter(None, requirements))
 
 
+def split_requirements(requirements):
+    if ',' in requirements:
+        return requirements.split(',')
+    elif ';' in requirements:
+        return requirements.split(';')
+    else:
+        return requirements.split()
+
+
 class CheckForm(forms.ModelForm):
     requirements = forms.CharField(required=True, widget=forms.Textarea(
         attrs={'placeholder': placeholder}))
@@ -30,21 +38,16 @@ class CheckForm(forms.ModelForm):
         requirements = self.cleaned_data['requirements']
         # if it's potentially the content of a requirements file
         # we write it to a temporary file and return that as a file:// URL
-        split_requirements = filter_requirements(requirements.splitlines())
-        line_number = len(split_requirements)
-        if line_number > 1:
-            with tempfile.NamedTemporaryFile(delete=False) as tmp:
-                tmp.write(bytes(requirements, 'UTF-8'))
-            return ['file://' + tmp.name]
-
-        # assume the requirements is comma, semicolon or space separated text
-        requirements = split_requirements[0]
-        if ',' in requirements:
-            requirements = requirements.split(',')
-        elif ';' in requirements:
-            requirements = requirements.split(';')
+        splitlines = filter_requirements(requirements.splitlines())
+        if len(splitlines) > 1:
+            requirements = []
+            for splitline in splitlines:
+                if splitline.startswith(('#', '-')):
+                    continue
+                requirements.extend(split_requirements(splitline))
         else:
-            requirements = requirements.split()
+            # assume the requirements is comma, semicolon or space separated text
+            requirements = split_requirements(splitlines[0])
         return filter_requirements(requirements)
 
     class Meta:

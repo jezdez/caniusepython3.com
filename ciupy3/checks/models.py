@@ -68,8 +68,7 @@ class Project(models.Model):
     @cached_property
     def last_check(self):
         try:
-            return (self.checks.filter(finished_at__isnull=False)
-                               .latest('finished_at'))
+            return self.checks.exclude(finished_at=None).latest('finished_at')
         except (Check.DoesNotExist, IndexError):
             return None
 

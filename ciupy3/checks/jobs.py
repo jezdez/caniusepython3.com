@@ -212,8 +212,8 @@ def run_check(pk):
     check.unblocked = len(flattened_blockers)
 
     check.finished_at = now()
-    check.runs = F('runs') + 1
     check.save()
+    Check.objects.filter(pk=check.pk).update(runs=F('runs') + 1)
 
     redis = get_redis()
 

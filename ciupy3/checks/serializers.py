@@ -69,6 +69,7 @@ class PublicCheckSerializer(CheckSerializer, PublicDataSerializer):
 
 class ProjectSerializer(PublicDataSerializer):
     finished_at = serializers.SerializerMethodField('get_finished_at')
+    check_count = serializers.SerializerMethodField('get_check_count')
     checks = CheckSerializer(read_only=True, many=True)
 
     def transform_checks(self, obj, value):
@@ -76,6 +77,9 @@ class ProjectSerializer(PublicDataSerializer):
 
     def get_last_check(self, obj):
         return obj.last_check
+
+    def get_check_count(self, obj):
+        return obj.checks.exclude(finished_at=None).count()
 
     def get_finished_at(self, obj):
         if obj.last_check:
@@ -85,5 +89,5 @@ class ProjectSerializer(PublicDataSerializer):
     class Meta:
         model = Project
         fields = (('id', 'name', 'created_at', 'finished_at',
-                   'modified_at', 'checks') +
+                   'modified_at', 'checks', 'check_count') +
                   PublicDataSerializer.Meta.fields)

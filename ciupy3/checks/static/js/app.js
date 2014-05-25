@@ -109,7 +109,7 @@ jQuery(document).ready(function ($) {
 
   var autocomplete_cache = Array();
   $('textarea').autosize().textcomplete([{
-      match: /\b([\w-]*)$/,
+      match: /\b([\w-\.]*)$/,
       index: 1,
       search: function (term, callback) {
         $.getJSON('/autocomplete/', {term: term.toLowerCase()})

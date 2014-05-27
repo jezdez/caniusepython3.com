@@ -26,10 +26,13 @@ class CheckDetailView(generics.RetrieveAPIView):
     lookup_field = 'pk'
     template_name = 'checks/check_detail.html'
 
+    def post(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
     def retrieve(self, request, *args, **kwargs):
         self.object = self.get_object()
         # redirect if the case doesn't match
-        if self.request.QUERY_PARAMS.get('check', None) == 'again':
+        if self.request.DATA.get('check', None) == 'again':
             self.object.finished_at = None
             self.object.save()
             run_check.delay(self.object.pk)
@@ -76,6 +79,9 @@ class ProjectDetailView(generics.RetrieveAPIView):
     lookup_field = 'name'
     template_name = 'projects/project_detail.html'
 
+    def post(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
     def get_object(self, queryset=None):
         if queryset is None:
             queryset = self.filter_queryset(self.get_queryset())
@@ -103,7 +109,7 @@ class ProjectDetailView(generics.RetrieveAPIView):
         if self.object.name != self.lookup:
             return redirect(self.object)
 
-        if self.request.QUERY_PARAMS.get('check', None) == 'again':
+        if self.request.DATA.get('check', None) == 'again':
             self.object.check()
             return redirect(self.object)
 

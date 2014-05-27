@@ -2,7 +2,7 @@
 {% load variables %}
 
 {% macro check_again name url label class %}
-  <form action="{{ url }}" method="get">
+  <form action="{{ url }}" method="post">
     <input type="hidden" name="check" value="again" />
     <button type="submit" class="button radius tiny right {{ class }}">{{ label }}</button>
   </form>

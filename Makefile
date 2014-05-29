@@ -1,4 +1,7 @@
-.PHONY: dev
+.PHONY: dev deploy
 
 dev:
-	foreman start -f Procfile.dev
+	foreman start
+
+deploy:
+	cd deploy; make deploy

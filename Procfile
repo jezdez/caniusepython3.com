@@ -1,3 +1,2 @@
-web: waitress-serve --port=$PORT ciupy3.wsgi:application
-worker: python manage.py rqworker
-high_worker: python manage.py rqworker high
+web: python manage.py runserver 0.0.0.0:8000
+worker: python manage.py rqworker high default low

@@ -222,7 +222,8 @@ def run_check(pk):
     public_checks = (Check.objects.filter(public=True)
                                   .aggregate(Sum('runs')))
     project_count = Project.objects.count()
-    redis.set(CHECKED_COUNT_KEY, public_checks['runs__sum'] + project_count)
+    redis.set(CHECKED_COUNT_KEY,
+              public_checks.get('runs__sum') or 0 + project_count)
     return blockers
 
 

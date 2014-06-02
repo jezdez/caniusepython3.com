@@ -67,7 +67,6 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'hirefire.contrib.django.middleware.HireFireMiddleware',
     'djangosecure.middleware.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -172,11 +171,6 @@ PIPELINE_JS = {
 
 PIPELINE_CSS_COMPRESSOR = None
 PIPELINE_JS_COMPRESSOR = None
-
-HIREFIRE_PROCS = [
-    'ciupy3.procs.WorkerProc',
-    'ciupy3.procs.HighWorkerProc',
-]
 
 LOGGING = {
     'version': 1,

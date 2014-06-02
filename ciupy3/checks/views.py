@@ -11,8 +11,8 @@ from rest_framework.response import Response
 from vanilla import CreateView
 
 from .forms import CheckForm
-from .jobs import (run_check, get_compatible, get_total,
-                   get_checked, real_project_name)
+from .tasks import (run_check, get_compatible, get_total,
+                    get_checked, real_project_name)
 from .models import Check, Project, get_redis
 from .serializers import PublicCheckSerializer, ProjectSerializer
 

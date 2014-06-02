@@ -3,8 +3,8 @@ from operator import itemgetter
 
 from rest_framework import serializers
 from .models import Check, Project
-from .jobs import (get_compatible, get_total,
-                   get_checked, get_or_fetch_all_projects)
+from .tasks import (get_compatible, get_total,
+                    get_checked, get_or_fetch_all_projects)
 
 
 class PublicDataSerializer(serializers.HyperlinkedModelSerializer):

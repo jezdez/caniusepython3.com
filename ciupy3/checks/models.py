@@ -73,7 +73,7 @@ class Project(models.Model):
             return None
 
     def check(self):
-        from .jobs import run_check
+        from .tasks import run_check
         check = Check(project=self,
                       public=False,
                       requirements=[self.name],

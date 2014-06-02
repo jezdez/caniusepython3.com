@@ -6,8 +6,7 @@ django-easy-pjax==1.1.0
 django-pgfields==1.4.3
 django-picklefield==0.3.1
 django-pipeline==1.3.24
-# django-rq==0.6.1
--e git+https://github.com/ui/django-rq@b83e9c304c7fe4fd617eab14d2b3c9fa7d075363#egg=django-rq
+celery==3.1.11
 django-redis==3.6.2
 django-secure==1.0
 django-staticflatpages==0.3.0
@@ -29,7 +28,6 @@ raven==4.2.3
 # redis==2.9.1
 -e git+https://github.com/andymccurdy/redis-py#egg=redis
 requests==2.3.0
-rq==0.4.6
 six==1.6.1
 South==0.8.4
 times==0.6.2

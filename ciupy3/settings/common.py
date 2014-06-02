@@ -7,6 +7,8 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+from celery.schedules import crontab
+from kombu import Queue, Exchange
 from pathlib import Path
 
 here = Path(__file__).parent.parent.resolve()
@@ -55,7 +57,6 @@ INSTALLED_APPS = (
     'pipeline',
     'admin_honeypot',
     'djangosecure',
-    'django_rq',
     'rest_framework',
     'south',
     'easy_pjax',
@@ -197,15 +198,42 @@ LOGGING = {
     }
 }
 
-RQ_QUEUES = {
-    'high': {
-        'USE_REDIS_CACHE': 'default',
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+BROKER_TRANSPORT_OPTIONS = {'fanout_patterns': True}
+
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/2'
+CELERY_TIMEZONE = 'UTC'
+CELERY_ENABLE_UTC = True
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+)
+CELERY_ROUTES = {
+    'ciupy3.checks.tasks.run_check': {'queue': 'high'},
+    'ciupy3.checks.tasks.check_all_projects': {'queue': 'high'},
+}
+
+every_10_minutes = crontab(minute='*/10')
+CELERYBEAT_SCHEDULE = {
+    'fetch_all_py3_projects': {
+        'task': 'ciupy3.checks.tasks.fetch_all_py3_projects',
+        'schedule': every_10_minutes,
     },
-    'default': {
-        'USE_REDIS_CACHE': 'default',
+    'fetch_all_projects': {
+        'task': 'ciupy3.checks.tasks.fetch_all_projects',
+        'schedule': crontab(minute='35'),
     },
-    'low': {
-        'USE_REDIS_CACHE': 'default',
+    'fetch_overrides': {
+        'task': 'ciupy3.checks.tasks.fetch_overrides',
+        'schedule': every_10_minutes,
+    },
+    'check_all_projects': {
+        'task': 'ciupy3.checks.tasks.check_all_projects',
+        'schedule': crontab(minute='5'),
+    },
+    'fill_autocomplete_index': {
+        'task': 'ciupy3.checks.tasks.fill_autocomplete_index',
+        'schedule': crontab(minute='55'),
     },
 }
-RQ_SHOW_ADMIN_LINK = True
+CELERY_ACCEPT_CONTENT = ['pickle']

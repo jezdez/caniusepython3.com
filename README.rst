@@ -28,8 +28,8 @@ Backend perspective
 - Render frontpage form
 - Once the form is submitted, create a unique check object
 - Parse requirements and return error if not parseable
-- create rq jobs and them to check object
-- Redirect to check detail page with a list of attached jobs
+- create celery tasks and them to check object
+- Redirect to check detail page with a list of attached tasks
 - Render self-updating result list page with each job attached to the check
 
 - Periodically update the trove classifier cache (~30 mins)

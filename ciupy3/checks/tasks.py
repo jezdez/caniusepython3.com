@@ -2,9 +2,9 @@ import uuid
 from django.db.models import F, Sum
 from django.utils.timezone import now
 from django.utils.six.moves import xmlrpc_client
+from celery import shared_task
 
 from pip._vendor import requests
-from django_rq import job
 from caniusepython3.dependencies import blocking_dependencies
 from caniusepython3.pypi import all_py3_projects
 
@@ -25,25 +25,21 @@ def all_projects():
     return client.list_packages()
 
 
-@job('default')
+# just ignore ValueError since there might be something wrong with the
+# request or Github is down or something else horrible
+@shared_task(throws=(ValueError,))
 def fetch_overrides():
     """
     A job to fetch the caniusepython3 CLI override json file from Github
     to simplify the overrides.
     """
-    try:
-        override_response = requests.get(OVERRIDE_URL)
-    except ValueError:
-        # just ignore it since there might be something wrong with the
-        # request or Github is down or something else horrible
-        pass
-    else:
-        redis = get_redis()
-        override_json = override_response.json()
-        redis.hmset(OVERRIDE_KEY, override_json)
+    override_response = requests.get(OVERRIDE_URL)
+    redis = get_redis()
+    override_json = override_response.json()
+    redis.hmset(OVERRIDE_KEY, override_json)
 
 
-@job('default')
+@shared_task
 def fetch_all_py3_projects():
     """
     A job to be run periodically (e.g. daily) to update the
@@ -72,7 +68,7 @@ def fetch_all_py3_projects():
     return compatible_count
 
 
-@job('default')
+@shared_task
 def fetch_all_projects():
     """
     A job to be run periodically (e.g. daily) to update the projects from PyPI.
@@ -189,7 +185,7 @@ def get_or_fetch_all_py3_projects():
     return projects
 
 
-@job('high', timeout=1800)
+@shared_task(time_limit=1800)
 def run_check(pk):
     """
     The central job to run the check. Called after a check has been
@@ -227,7 +223,7 @@ def run_check(pk):
     return blockers
 
 
-@job('high')
+@shared_task
 def check_all_projects():
     for project in Project.objects.all():
         project.check()
@@ -240,7 +236,7 @@ def real_project_name(value):
     return all_projects_flipped.get(value.lower(), None)
 
 
-@job('default')
+@shared_task
 def fill_autocomplete_index():
     projects = get_or_fetch_all_projects()
     redis = get_redis()

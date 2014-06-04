@@ -1,0 +1,5 @@
+---
+
+- include: source.yml
+  when: source_enabled
+  tags: [source]

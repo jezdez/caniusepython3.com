@@ -1,0 +1,4 @@
+---
+# vim:sw=2:ft=ansible
+- name: source reload
+  shell: "{{source_reload_cmd}}"

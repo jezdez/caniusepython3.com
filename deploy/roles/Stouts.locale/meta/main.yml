@@ -1,0 +1,15 @@
+---
+
+dependencies: []
+
+galaxy_info:
+  author: klen
+  company: Stouts
+  description: Ansible role which ensure the defined locales are exists.
+  license: MIT
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  categories:
+  - system

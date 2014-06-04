@@ -1,0 +1,19 @@
+---
+# vim:sw=2:ft=ansible
+
+dependencies:
+  - Stouts.deploy
+  - Stouts.python
+  - Stouts.nginx
+
+galaxy_info:
+  author: klen
+  company: Stouts
+  description: Deploy wsgi application (uwsgi, nginx)
+  license: MIT
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  categories:
+  - system

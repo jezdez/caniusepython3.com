@@ -1,5 +1,4 @@
 envs/prod/
 assets/
-deploy/roles/
 .vagrant
 celerybeat-schedule

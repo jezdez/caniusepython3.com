@@ -1,0 +1,8 @@
+---
+
+- include: install.deb.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Update pip
+  pip: name={{item}} state=latest executable={{python_pip_executable}}
+  with_items: python_pip_latest

@@ -1,0 +1,31 @@
+---
+# vim:sw=2:ft=ansible
+
+- name: Setup virtualenv
+  shell: virtualenv {{wsgi_env_dir}} -p {{wsgi_env_python}}
+    creates={{wsgi_env_dir}}
+  when: wsgi_env_dir != ""
+  sudo: yes
+  sudo_user: "{{wsgi_user}}"
+
+- set_fact: wsgi_pip=pip
+  when: wsgi_env_dir == ""
+
+- set_fact: wsgi_pip={{wsgi_env_dir}}/bin/pip
+  when: wsgi_env_dir != ""
+
+- name: Install Pip packages
+  pip: name={{item}} executable={{wsgi_pip}}
+  with_items: wsgi_pip_packages 
+  sudo: yes
+  sudo_user: "{{wsgi_user}}"
+
+- name: Check requirements
+  stat: path={{wsgi_pip_requirements}}
+  register: wsgi_check
+
+- name: Install project requirements
+  pip: requirements={{wsgi_pip_requirements}} executable={{wsgi_pip}}
+  when: wsgi_check.stat.exists
+  sudo: yes
+  sudo_user: "{{wsgi_user}}"

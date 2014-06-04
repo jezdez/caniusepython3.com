@@ -1,0 +1,12 @@
+---
+
+- name: Install requirements - pt. 1
+  apt: pkg={{item}}
+  with_items:
+    - cron
+    - lzop
+    - pv
+    - python-pip
+
+- name: Install requirements - pt. 2
+  pip: name=wal-e

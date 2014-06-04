@@ -1,0 +1,10 @@
+---
+
+- name: redis-configure | Configure redis
+  template: src=redis.conf.j2 dest={{redis_configuration}}
+  notify:
+   - redis restart
+
+- name: redis-configure | Set the kernel parameter for vm overcommit
+  sysctl: name=vm.overcommit_memory value=1 state=present
+  when: redis_update_kernel

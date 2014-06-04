@@ -1,0 +1,5 @@
+- hosts: all
+  tasks:
+    - include: 'tasks/main.yml'
+  vars_files:
+    - 'defaults/main.yml'

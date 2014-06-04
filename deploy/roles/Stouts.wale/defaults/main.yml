@@ -1,0 +1,29 @@
+---
+
+wale_enabled: yes                     # The role is enabled
+wale_remove: no                       # Uninstall the role
+
+wale_home: /etc/wale                  # Where make runscript
+wale_logdir: /var/log/wale            # Where store logs
+wale_user: "postgres"
+wale_group: "postgres"
+wale_cron: []                          # Setup cronjobs
+                                       # Ex. wale_cron:
+                                       #     - { schedule: * * * * *, cmd: backup-push /var/lib/postgresql/9.1/main/ }
+
+# Set the credentials for enable upload to AWS S3
+wale_aws_access_key_id:               
+wale_aws_secret_access_key:
+wale_aws_s3_prefix:
+
+# Set the credentials for enable upload to WABS
+wale_wabs_account_name:               
+wale_wabs_access_key:
+wale_wabs_prefix:
+
+# Set the credentials for enable upload to SWIFT
+wale_swift_authurl:
+wale_swift_tenant:
+wale_swift_user:
+wale_swift_password:
+wale_swift_prefix:

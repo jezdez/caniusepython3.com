@@ -1,0 +1,38 @@
+#!upstart
+description "A Celery beat for {{deploy_app_name}}"
+
+start on started {{deploy_app_name}}-celeryd
+stop on stopping {{deploy_app_name}}-celeryd
+
+env CELERY_APP="{{deploy_app_name}}"
+env CELERY_CHDIR="{{wsgi_src_dir}}"
+env CELERY_BIN="{{wsgi_env_dir}}/bin/celery"
+env CELERY_LOG_DIR="{{deploy_log_dir}}"
+env CELERY_RUN_DIR="{{deploy_run_dir}}"
+env CELERY_LOG_FILE=celerybeat.log
+env CELERY_PID_FILE=celerybeat.pid
+env CELERY_LOG_LEVEL="INFO"
+env USER={{wsgi_user}}
+env GROUP={{wsgi_group}}
+env CELERY_BEAT_SCHEDULE="celerybeat-schedule"
+
+pre-start script
+    if [ ! -d "CELERY_LOG_DIR" ]; then
+        mkdir -p "$CELERY_LOG_DIR"
+        chown "$USER":"$GROUP" "$CELERY_LOG_DIR"
+    fi
+
+    if [ ! -d "CELERY_RUN_DIR" ]; then
+        mkdir -p "$CELERY_RUN_DIR"
+        chown "$USER":"$GROUP" "$CELERY_RUN_DIR"
+    fi
+end script
+
+exec $CELERY_BIN beat --pidfile="$CELERY_RUN_DIR/$CELERY_PID_FILE" \
+                      --logfile="$CELERY_LOG_DIR/$CELERY_LOG_FILE" \
+                      --loglevel="$CELERY_LOG_LEVEL" \
+                      --app="$CELERY_APP" \
+                      --workdir="$CELERY_CHDIR" \
+                      --schedule="$CELERY_RUN_DIR/$CELERY_BEAT_SCHEDULE" \
+                      --uid="$USER" \
+                      --gid="$GROUP"

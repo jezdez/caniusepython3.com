@@ -1,0 +1,60 @@
+#!upstart
+description "A Celery worker for {{deploy_app_name}}"
+
+env CELERY_APP="{{deploy_app_name}}"
+env CELERY_CHDIR="{{wsgi_src_dir}}"
+env CELERY_NODES="{{deploy_app_name}}"
+env CELERY_BIN="{{wsgi_env_dir}}/bin/celery"
+env CELERY_LOG_DIR="{{deploy_log_dir}}"
+env CELERY_RUN_DIR="{{deploy_run_dir}}"
+env CELERY_LOG_FILE=celeryd-%n.log
+env CELERY_PID_FILE=celeryd-%n.pid
+env CELERY_LOG_LEVEL="INFO"
+env CELERY_CONCURRENCY="{{ciupy3_concurrency}}"
+env CELERY_QUEUES="high,default"
+env USER={{wsgi_user}}
+env GROUP={{wsgi_group}}
+
+script
+    # we need this section so that pre-stop gets run!
+    # https://bugs.launchpad.net/upstart/+bug/252996
+    while true
+        do sleep 1d
+    done
+end script
+
+pre-start script
+    if [ ! -d "CELERY_LOG_DIR" ]; then
+        mkdir -p "$CELERY_LOG_DIR"
+        chown "$USER":"$GROUP" "$CELERY_LOG_DIR"
+    fi
+
+    if [ ! -d "CELERY_RUN_DIR" ]; then
+        mkdir -p "$CELERY_RUN_DIR"
+        chown "$USER":"$GROUP" "$CELERY_RUN_DIR"
+    fi
+
+    $CELERY_BIN multi start "$CELERY_NODES" \
+                      --pidfile="$CELERY_RUN_DIR/$CELERY_PID_FILE" \
+                      --logfile="$CELERY_LOG_DIR/$CELERY_LOG_FILE" \
+                      --loglevel="$CELERY_LOG_LEVEL" \
+                      --app="$CELERY_APP" \
+                      --workdir="$CELERY_CHDIR" \
+                      --uid=$USER \
+                      --gid=$GROUP \
+                      --autoscale=$CELERY_CONCURRENCY \
+                      --queues=$CELERY_QUEUES
+end script
+
+pre-stop script
+    $CELERY_BIN multi --verbose stop "$CELERY_NODES" \
+                      --pidfile="$CELERY_RUN_DIR/$CELERY_PID_FILE" \
+                      --logfile="$CELERY_LOG_DIR/$CELERY_LOG_FILE" \
+                      --loglevel="$CELERY_LOG_LEVEL" \
+                      --app="$CELERY_APP" \
+                      --workdir="$CELERY_CHDIR" \
+                      --uid=$USER \
+                      --gid=$GROUP
+                      --autoscale=$CELERY_CONCURRENCY \
+                      --queues=$CELERY_QUEUES
+end script

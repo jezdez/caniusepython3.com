@@ -1,0 +1,25 @@
+---
+
+dependencies: []
+
+galaxy_info:
+  author: klen
+  company: Stouts
+  description: Sets the hostname
+  license: MIT
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+  - name: RedHat
+    versions:
+    - all
+  - name: CentOS
+    versions:
+    - all
+  categories:
+  - system
+

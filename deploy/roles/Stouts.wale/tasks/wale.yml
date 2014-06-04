@@ -1,0 +1,10 @@
+---
+
+- include: install.deb.yml
+  when: ansible_os_family == 'Debian'
+
+- include: configure.yml
+  when: not wale_remove
+
+- include: remove.yml
+  when: wale_remove

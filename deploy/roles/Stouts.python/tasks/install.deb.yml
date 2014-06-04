@@ -1,0 +1,14 @@
+---
+
+- name: Install python-pycurl
+  apt: pkg=python-pycurl
+
+- name: Add python apt repository
+  apt_repository: repo={{python_ppa}} update_cache=yes
+
+- name: Install python
+  apt: pkg={{item}} state=present
+  with_items:
+    - python{{python_version}}
+    - python{{python_version}}-dev
+    - python-pip

@@ -1,0 +1,5 @@
+---
+
+- include: hostname.yml
+  when: hostname_enabled
+  tags: [hostname]

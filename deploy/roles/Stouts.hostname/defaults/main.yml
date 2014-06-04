@@ -1,0 +1,5 @@
+---
+
+hostname_enabled: yes
+hostname_hostname: "{{inventory_hostname}}"
+hostname_hostname_short: "{{hostname_hostname.split('.')[:-1]|join('.')}}"

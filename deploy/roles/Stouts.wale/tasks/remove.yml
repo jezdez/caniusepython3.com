@@ -1,0 +1,7 @@
+---
+
+- name: Remove the role - pt. 1
+  file: state=absent path={{wale_home}}
+
+- name: Remove the role - pt. 2
+  file: state=absent path=/etc/cron.d/wale

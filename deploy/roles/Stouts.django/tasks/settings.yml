@@ -1,0 +1,14 @@
+---
+# vim:sw=2:ft=ansible
+
+- name: Prepare Django settings
+  template: src=settings.py.j2 dest={{django_etc_dir}}/settings.py
+  notify: uwsgi reload
+
+- name: Check for settings directory exists
+  stat: path={{django_settings_dir}}
+  register: check_path
+
+- name: Link Django settings
+  file: src={{django_etc_dir}}/settings.py dest={{django_settings}} state=link
+  when: check_path.stat.exists

@@ -1,0 +1,25 @@
+#!upstart
+description "A Celery monitor for {{deploy_app_name}}"
+
+start on started {{deploy_app_name}}-celeryd
+stop on stopping {{deploy_app_name}}-celeryd
+
+env CELERY_APP="{{deploy_app_name}}"
+env CELERY_CHDIR="{{wsgi_src_dir}}"
+env CELERY_BIN="{{wsgi_env_dir}}/bin/celery"
+env CELERY_LOG_DIR="{{deploy_log_dir}}"
+env CELERY_RUN_DIR="{{deploy_run_dir}}"
+env CELERY_LOG_FILE=flower.log
+env CELERY_PID_FILE=flower.pid
+env CELERY_LOG_LEVEL="INFO"
+
+env USER=celery
+env GROUP=celery
+
+exec $CELERY_BIN flower --pidfile="$CELERY_RUN_DIR/$CELERY_PID_FILE" \
+                        --logfile="$CELERY_LOG_DIR/$CELERY_LOG_FILE" \
+                        --loglevel="$CELERY_LOG_LEVEL" \
+                        --app="$CELERY_APP" \
+                        --workdir="$CELERY_CHDIR" \
+                        --uid="$USER" \
+                        --gid="$GROUP"

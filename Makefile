@@ -1,7 +1,13 @@
-.PHONY: dev deploy
+.PHONY: dev deploy vm kill provision
 
 dev:
 	foreman start
 
-deploy:
-	cd deploy; make deploy
+vm:
+	vagrant up --provider=virtualbox
+
+kill:
+	vagrant destroy -f
+
+provision:
+	vagrant provision

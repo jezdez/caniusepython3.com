@@ -1,0 +1,44 @@
+---
+language: python
+python: "2.7"
+before_install:
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq python-apt python-pycurl
+ - git clone https://github.com/Stouts/Stouts.deploy roles/Stouts.deploy
+ - git clone https://github.com/Stouts/Stouts.supervisor roles/Stouts.supervisor
+ - git clone https://github.com/Stouts/Stouts.nginx roles/Stouts.nginx
+ - git clone https://github.com/Stouts/Stouts.python roles/Stouts.python
+ - git clone https://github.com/Stouts/Stouts.source roles/Stouts.source
+ - git clone https://github.com/Stouts/Stouts.wsgi roles/Stouts.wsgi
+install:
+  - pip install ansible>=1.6.0
+script:
+  # Prepare tests
+  - echo localhost > inventory
+
+  # Check syntax
+  - ansible-playbook --syntax-check -i inventory test.yml
+
+  # First run
+  - ansible-playbook -i inventory test.yml --connection=local --sudo
+
+  # Second run Idempotence test
+  - >
+    ansible-playbook -i inventory test.yml --connection=local --sudo
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
+
+  - sudo rm -f /etc/nginx/sites-enabled/default
+  - sudo /etc/init.d/nginx restart
+  - curl localhost | grep "Hello world!" || exit 1
+
+python_pip_latest:
+  - virtualenv
+deploy_dir: "/home/travis/build/deploy"
+source_sources:
+  - repo: https://github.com/Dipsomaniac/dj-simple.git
+    dest: "{{deploy_src_dir}}"
+wsgi_src_dir: "{{deploy_src_dir}}/simple"
+wsgi_app: "{{deploy_src_dir}}/wsgi.py"
+wsgi_pip_requirements: "{{deploy_src_dir}}/requirements.txt"

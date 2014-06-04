@@ -1,0 +1,14 @@
+dependencies: []
+
+galaxy_info:
+  author: klen
+  company: Stouts
+  description: Installs python, pip, setuptools and virtualenv
+  license: MIT
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  categories:
+  - system
+  - development

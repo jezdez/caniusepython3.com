@@ -1,0 +1,12 @@
+---
+
+- include: configure.yml
+  tags: [source, source-configure]
+
+- include: git.yml repo=item
+  when: source_sources_type == 'git'
+  tags: [source, source-git]
+
+- include: hg.yml
+  when: source_sources_type == 'hg'
+  tags: [source, source-hg]

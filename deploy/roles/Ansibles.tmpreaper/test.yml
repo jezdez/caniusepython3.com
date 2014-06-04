@@ -1,0 +1,10 @@
+- hosts: all
+  vars_files:
+    - 'defaults/main.yml'
+  tasks:
+    - include: 'tasks/main.yml'
+  handlers:
+    - name: restart cron
+      service:
+        name: cron
+        state: restarted

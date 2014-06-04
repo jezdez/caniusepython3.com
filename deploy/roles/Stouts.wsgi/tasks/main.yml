@@ -1,0 +1,6 @@
+---
+# vim:sw=2:ft=ansible
+
+- include: wsgi.yml
+  when: wsgi_enabled
+  tags: [wsgi]

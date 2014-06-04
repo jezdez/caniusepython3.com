@@ -1,0 +1,30 @@
+---
+
+- name: source-git | Ensure git installed
+  apt: pkg=git
+  sudo: yes
+
+- name: source-git | Ensure private keys has mode 0400
+  file: dest={{item.key_file}} mode=0400
+  when: item.key_file is defined
+  with_items: source_sources
+
+- name: source-git | Ensure the repositories is synced
+  git:
+    accept_hostkey: "{{item.accept_hostkey|default(source_default_accept_hostkey)}}"
+    bare: "{{item.bare|default(source_default_bare)}}"
+    dest: "{{item.dest}}"
+    force: "{{item.force|default(source_default_force)}}"
+    key_file: "{{item.key_file|default(source_default_key_file)}}"
+    recursive: "{{item.recursive|default(source_default_recursive)}}"
+    remote: "{{item.remote|default(source_default_remote)}}"
+    repo: "{{item.repo}}"
+    ssh_opts: "{{item.ssh_opts|default(source_default_ssh_opts)}}"
+    version: "{{item.version|default(source_default_version)}}"
+  when: item.dest|default("") != ""
+  with_items: source_sources
+  notify: source reload
+
+- name: source-git | Fix directories
+  file: dest={{item.dest|default(source_default_dest)}} state=directory owner={{source_user}} group={{source_group}}
+  with_items: source_sources

@@ -1,0 +1,18 @@
+---
+
+- name: Symlink the correct localtime - pt.1 (/etc/localtime)
+  file:
+    src: /usr/share/zoneinfo/{{timezone_timezone}}
+    dest: /etc/localtime
+    force: yes
+    state: link
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Make sure tzdata is installed
+  apt: pkg=tzdata
+
+- name: Set timezone
+  template: dest=/etc/timezone src=timezone.j2
+  notify: timezone update

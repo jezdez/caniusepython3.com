@@ -1,0 +1,6 @@
+# file: cron/handlers/main.yml
+
+- name: restart cron
+  service:
+    name: cron
+    state: restarted

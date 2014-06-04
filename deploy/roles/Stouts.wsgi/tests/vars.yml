@@ -1,0 +1,5 @@
+deploy_dir: "/home/travis/build/deploy"
+wsgi_app: "/home/travis/build/Stouts/Stouts.wsgi/tests/app.py"
+wsgi_src_dir: "/home/travis/build/Stouts/Stouts.wsgi/tests"
+python_pip_latest:
+  - virtualenv

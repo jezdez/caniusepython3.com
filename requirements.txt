@@ -1,5 +1,5 @@
 argparse==1.2.1
-caniusepython3==2.1.1
+caniusepython3==2.1.2
 distlib==0.1.9
 django-admin-honeypot==0.3.0
 django-easy-pjax==1.1.0

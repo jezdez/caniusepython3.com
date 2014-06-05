@@ -1,5 +1,9 @@
+import os
 import mimetypes
+from hashlib import md5
 import requests
+
+from django.core.files.storage import default_storage
 
 try:
     # Python 2
@@ -61,8 +65,16 @@ class ShieldRenderer(BaseRenderer):
         )
         if request.QUERY_PARAMS.get('style', '') == 'flat':
             shield_url += '?style=flat'
-        shield_response = requests.get(shield_url)
-        return shield_response.content
+        url_hash = md5(shield_url.encode('utf-8')).hexdigest()
+        shield_path = os.path.join('shields', url_hash)
+
+        if default_storage.exists(shield_path):
+            return default_storage.open(shield_path).read()
+        else:
+            shield_response = requests.get(shield_url)
+            shield_content = shield_response.content
+            default_storage.save(shield_path, BytesIO(shield_content))
+            return shield_content
 
 
 class SVGRenderer(ShieldRenderer):

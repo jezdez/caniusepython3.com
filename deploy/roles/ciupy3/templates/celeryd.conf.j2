@@ -42,7 +42,7 @@ pre-start script
                       --workdir="$CELERY_CHDIR" \
                       --uid=$USER \
                       --gid=$GROUP \
-                      --autoscale=$CELERY_CONCURRENCY \
+                      --concurrency=$CELERY_CONCURRENCY \
                       --queues=$CELERY_QUEUES
 end script
 
@@ -55,6 +55,6 @@ pre-stop script
                       --workdir="$CELERY_CHDIR" \
                       --uid=$USER \
                       --gid=$GROUP
-                      --autoscale=$CELERY_CONCURRENCY \
+                      --concurrency=$CELERY_CONCURRENCY \
                       --queues=$CELERY_QUEUES
 end script

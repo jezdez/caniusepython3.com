@@ -98,9 +98,6 @@ class ProjectDetailView(generics.RetrieveAPIView):
             project, created = Project.objects.get_or_create(name=name)
             project.check()
 
-        # May raise a permission denied
-        self.check_object_permissions(self.request, project)
-
         return project
 
     def retrieve(self, request, *args, **kwargs):

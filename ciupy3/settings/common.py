@@ -136,7 +136,7 @@ MEDIA_URL = '/assets/media/'
 STATIC_ROOT = str(assets_dir / 'static')
 STATIC_URL = '/assets/static/'
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+STATICFILES_STORAGE = 'ciupy3.storage.GzipManifestPipelineStorage'
 
 STATICFILES_DIRS = [
     str(here / 'foundation'),

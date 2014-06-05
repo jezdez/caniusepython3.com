@@ -47,8 +47,9 @@ function handleFileSelect(event) {
 
   // Loop through the FileList and render image files as thumbnails.
   for (var i = 0, file; file = files[i]; i++) {
-    // Only process image files.
+    // Only process text files.
     if (!file.type.match('text/plain')) {
+      alert("Skipping " + file.fileName + ": unsupported file type " + file.type);
       continue;
     }
     var reader = new FileReader();

@@ -6,11 +6,16 @@ nginx_sites_dir: "{{nginx_dir}}/sites-enabled" # Nginx include directory
 nginx_default_site: "{{nginx_sites_dir}}/default"
 nginx_delete_default_site: no
 nginx_user: www-data                # -------------------
-nginx_worker_processes: 4           #   See nginx docs
-nginx_worker_connections: 1024      # -------------------
-nginx_sendfile: yes
-nginx_keepalive_timeout: 65
-nginx_gzip: yes
+nginx_worker_processes: auto        #
+nginx_worker_connections: 1024      #
+nginx_sendfile: yes                 #    See nginx docs
+nginx_multi_accept: yes             #
+nginx_tcp_nodelay: yes              #
+nginx_tcp_nopush: yes               #
+nginx_keepalive_timeout: 65         #
+nginx_keepalive_requests: 100       #
+nginx_gzip: yes                     # -------------------
+nginx_open_file_cache: yes
 nginx_server_names_hash_bucket_size: 128
 nginx_access_log: /var/log/nginx/access.log
 nginx_error_log: /var/log/nginx/error.log

@@ -14,10 +14,10 @@ DATABASES["{{alias}}"]["{{name}}"] = "{{value}}"
 
 # Cache settings
 {% for cache in django_settings_caches %}{% for alias, cred in cache.items() %}
-CACHES["{{alias}}"] = CACHES["{{alias}}"] or {}
+CACHES["{{alias}}"] = CACHES.get("{{alias}}") or {}
 {% for name, value in cred.items() -%}
 {% if name == 'OPTIONS' %}
-CACHES["{{alias}}"]["{{name}}"] = CACHES["{{alias}}"]["{{name}}"] or {}
+CACHES["{{alias}}"]["{{name}}"] = CACHES["{{alias}}"].get("{{name}}") or {}
 {% for option_name, option_value in value.items() -%}
 CACHES["{{alias}}"]["{{name}}"]["{{option_name}}"] = "{{option_value}}"
 {% endfor %}

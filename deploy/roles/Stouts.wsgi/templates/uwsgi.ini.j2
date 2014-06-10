@@ -28,3 +28,6 @@ limit-as = {{wsgi_uwsgi_limit_as}}
 py-autoreload = true
 touch-reload = {{wsgi_src_dir}}
 {% endif %}
+{% for option in wsgi_uwsgi_options %}
+{{option}}
+{% endfor %}

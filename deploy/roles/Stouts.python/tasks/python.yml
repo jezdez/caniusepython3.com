@@ -3,6 +3,14 @@
 - include: install.deb.yml
   when: ansible_os_family == 'Debian'
 
-- name: Update pip
+- name: Install pip - pt. 1
+  copy: src=get-pip.py dest=/usr/share/python/get-pip.py
+
+- name: Install pip - pt. 2
+  shell: python{{python_version}} /usr/share/python/get-pip.py
+    creates=/usr/local/bin/pip{{python_version}}
+  sudo: yes
+
+- name: Update python packages
   pip: name={{item}} state=latest executable={{python_pip_executable}}
   with_items: python_pip_latest

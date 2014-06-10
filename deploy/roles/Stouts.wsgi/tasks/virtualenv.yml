@@ -15,7 +15,7 @@
   when: wsgi_env_dir != ""
 
 - name: Install Pip packages
-  pip: name={{item}} executable={{wsgi_pip}}
+  shell: "{{wsgi_pip}} install {{item}}"
   with_items: wsgi_pip_packages 
   sudo: yes
   sudo_user: "{{wsgi_user}}"
@@ -26,6 +26,6 @@
 
 - name: Install project requirements
   pip: requirements={{wsgi_pip_requirements}} executable={{wsgi_pip}}
-  when: wsgi_check.stat.exists
+  when: wsgi_check.stat.exists and wsgi_pip_requirements != ""
   sudo: yes
   sudo_user: "{{wsgi_user}}"

@@ -11,4 +11,3 @@
   with_items:
     - python{{python_version}}
     - python{{python_version}}-dev
-    - python-pip

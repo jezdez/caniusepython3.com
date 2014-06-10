@@ -38,7 +38,8 @@ wsgi_log_dir: "{{deploy_log_dir}}"
 
 # Application options
 wsgi_app: "{{wsgi_src_dir}}/wsgi.py"                  # File contains wsgi application
-wsgi_pip_requirements: "{{wsgi_src_dir}}/requirements.txt" # Python requirements file
+wsgi_pip_requirements: >                              # Python requirements file (set blank "" to disable install)
+  "{{wsgi_src_dir}}/requirements.txt"
 wsgi_env_dir: "{{deploy_dir}}/env"                    # Setup app to virtualenv (set blank "" to disable)
 wsgi_env_python: python                               # Virtualenv python interpreter
 
@@ -50,6 +51,7 @@ wsgi_uwsgi_processes: 4
 wsgi_uwsgi_enable_threads: no
 wsgi_uwsgi_max_requests: 2000
 wsgi_uwsgi_no_orphans: yes
+wsgi_uwsgi_options: []
 
 # Nginx options
 wsgi_nginx_servernames: "{{inventory_hostname}}"      # Listen servernames (separated by space)
@@ -87,7 +89,6 @@ Example:
 
   vars:
     wsgi_nginx_servernames: facebook.com
-
 ```
 
 #### License

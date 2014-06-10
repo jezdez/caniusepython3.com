@@ -10,10 +10,9 @@ Ansible role which manage python (pip, virtualenv)
 ```yaml
 python_enabled: yes                 # The role is enabled
 python_ppa: ppa:fkrull/deadsnakes   # Python PPA
-python_version: ""                  # Set version (2.6, 2.7)
-python_pip_executable: pip
+python_version: 2.7                 # Set version (2.6, 2.7, 3.3, 3.4)
+python_pip_executable: pip{{python_version}}
 python_pip_latest:                  # Update python packages
-- pip
 - setuptools
 - virtualenv
 ```
@@ -32,7 +31,7 @@ Example:
     - Stouts.python
 
   vars:
-    python_version: 2.7
+    python_version: 3.4
 ```
 
 #### License

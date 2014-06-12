@@ -1,6 +1,6 @@
 import pkg_resources
+from pip.vcs import vcs
 from django import forms
-
 from .models import Check
 
 placeholder = "Project name(s) or URL(s) of pip requirements file"
@@ -15,10 +15,16 @@ def parse_requirement(project_name):
         return req.project_name
 
 
+def is_vcs_requirement(requirement):
+    full_scheme = tuple(['%s://' % scheme
+                         for scheme in vcs.all_schemes])
+    return not requirement.startswith(full_scheme)
+
+
 def filter_requirements(requirements):
     requirements = [parse_requirement(requirement.strip())
                     for requirement in requirements]
-    return list(filter(None, requirements))
+    return list(filter(is_vcs_requirement, filter(None, requirements)))
 
 
 def split_requirements(requirements):

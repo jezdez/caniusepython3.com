@@ -5,6 +5,10 @@ apt_cache_valid_time: 86400
 apt_install_packages: yes
 apt_upgrade: "safe"
 
+unattended_allowed_origins: [security, updates]
+unattended_automatic_reboot: true
+unattended_mail: 'jannis+caniusepython3@leidel.info'
+
 deploy_user: ciupy3
 deploy_app_name: "{{deploy_user}}"
 deploy_dir: "/home/{{deploy_app_name}}"
@@ -42,6 +46,7 @@ wsgi_deb_packages:
   - python-virtualenv
   - libjpeg-dev
   - postgresql-server-dev-all
+  - bsd-mailx
 wsgi_env_python: python3.4
 wsgi_nginx_static_locations: []
 wsgi_nginx_port: 443 ssl

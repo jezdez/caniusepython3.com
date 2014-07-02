@@ -1,4 +1,3 @@
 ---
 
 - include: ssl.yml
-- include: celery.yml

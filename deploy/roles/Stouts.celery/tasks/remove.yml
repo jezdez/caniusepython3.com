@@ -1,0 +1,14 @@
+---
+
+- name: Stop services
+  service: state=stopped name={{celery_app_name}}-{{item.action|default('worker')}}{{item.queue|default('') and ('-' + item.queue) or ''}}
+  with_items: celery_run
+
+- name: Delete upstart configurations
+  file: state=absent path=/etc/init/{{celery_app_name}}-{{item.action|default('worker')}}{{item.queue|default('') and ('-' + item.queue) or ''}}
+  with_items: celery_run
+
+- name: Delete logrotate configurations
+  file: dest=/etc/logrotate.d/{{celery_app_name}}-celery.conf state=absent
+
+# vim:sw=2:ft=ansible

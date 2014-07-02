@@ -14,4 +14,5 @@ Ansibles.build-essential
 Stouts.source
 Stouts.django
 Stouts.wale
+Stouts.celery
 jnv.unattended-upgrades

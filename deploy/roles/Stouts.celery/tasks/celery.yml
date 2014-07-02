@@ -1,0 +1,26 @@
+---
+
+- name: Configure celery
+  template: >
+    src=upstart.conf.j2
+    dest=/etc/init/{{celery_app_name}}-{{item.action|default('worker')}}{{item.queue|default('') and ('-' + item.queue) or ''}}.conf
+    owner=root group=root mode=0644
+  with_items: celery_run
+  notify: celery reload
+
+- name: Prepare log directories
+  file: state=directory dest={{item.log_dir|default(celery_log_dir)}} owner={{item.user|default(celery_user)}}
+  with_items: celery_run
+
+- name: Ensure celery services is started
+  service: >
+      name="{{celery_app_name}}-{{item.action|default('worker')}}{{item.queue|default('') and ('-' + item.queue) or ''}}"
+      state=started
+      enabled=yes
+  with_items: celery_run
+
+- name: Setup logrotate
+  template: src=logrotate.conf.j2 dest=/etc/logrotate.d/{{celery_app_name}}-celery.conf
+
+# vim:sw=2:ft=ansible
+

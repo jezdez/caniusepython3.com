@@ -85,3 +85,10 @@ django_settings_databases:
       NAME: "{{ postgresql_databases.0.name }}"
       USER: "{{ postgresql_users.0.name }}"
       PASSWORD: "{{ postgresql_users.0.pass }}"
+
+celery_bin: "{{wsgi_env_dir}}/bin/celery"
+celery_run:
+- { action: worker, queue: 'high,default' }
+- { action: beat }
+- { action: flower }
+celery_concurrency: 2

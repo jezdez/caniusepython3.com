@@ -229,6 +229,10 @@ CELERYBEAT_SCHEDULE = {
         'task': 'ciupy3.checks.tasks.fill_autocomplete_index',
         'schedule': crontab(minute='55'),
     },
+    'update_checked_count': {
+        'task': 'ciupy3.checks.tasks.update_checked_count',
+        'schedule': every_10_minutes,
+    },
 }
 CELERY_ACCEPT_CONTENT = ['pickle']
 CELERYD_FORCE_EXECV = True

@@ -212,9 +212,12 @@ def run_check(pk):
     check.finished_at = now()
     check.save()
     Check.objects.filter(pk=check.pk).update(runs=F('runs') + 1)
+    return blockers
 
+
+@shared_task
+def update_checked_count():
     redis = get_redis()
-
     # the number of "publicly" announced checks is the sum of all runs
     # and the number of projects that have been created lazily
     public_checks = (Check.objects.filter(public=True)
@@ -222,7 +225,6 @@ def run_check(pk):
     project_count = Project.objects.count()
     redis.set(CHECKED_COUNT_KEY,
               public_checks.get('runs__sum') or 0 + project_count)
-    return blockers
 
 
 @shared_task

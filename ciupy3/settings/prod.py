@@ -41,5 +41,5 @@ TEMPLATE_LOADERS = (
     )),
 )
 
-# BROKER_URL = 'amqp://admin:admin@localhost:5672//'
-# BROKER_TRANSPORT_OPTIONS = {}
+BROKER_URL = 'amqp://admin:admin@localhost:5672//'
+BROKER_TRANSPORT_OPTIONS = {}

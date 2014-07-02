@@ -93,4 +93,3 @@ celery_run:
 - { action: worker, queue: 'high,default' }
 - { action: beat }
 - { action: flower }
-celery_concurrency: 2

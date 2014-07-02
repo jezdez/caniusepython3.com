@@ -187,7 +187,7 @@ def get_or_fetch_all_py3_projects():
     return projects
 
 
-@shared_task(time_limit=1800)
+@shared_task(time_limit=60)
 def run_check(pk):
     """
     The central job to run the check. Called after a check has been

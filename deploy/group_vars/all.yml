@@ -86,6 +86,8 @@ django_settings_databases:
       USER: "{{ postgresql_users.0.name }}"
       PASSWORD: "{{ postgresql_users.0.pass }}"
 
+rabbitmq_vhosts: ['caniusepython3']
+
 celery_bin: "{{wsgi_env_dir}}/bin/celery"
 celery_run:
 - { action: worker, queue: 'high,default' }

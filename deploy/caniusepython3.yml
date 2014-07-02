@@ -17,6 +17,6 @@
     - Stouts.source
     - Stouts.django
     - Stouts.wale
-    - Stouts.celery
     - Stouts.rabbitmq
+    - Stouts.celery
     - ciupy3

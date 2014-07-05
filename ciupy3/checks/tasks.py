@@ -4,7 +4,7 @@ from django.db.models import F, Sum
 from django.utils.timezone import now
 from django.utils.six.moves import xmlrpc_client
 
-from celery import shared_task, group
+from celery import shared_task
 
 from pip._vendor import requests
 from caniusepython3.dependencies import blocking_dependencies
@@ -229,7 +229,6 @@ def update_checked_count():
 
 @shared_task
 def check_all_projects():
-    tasks = []
     for project in Project.objects.all():
         try:
             check = Check(project=project,
@@ -238,11 +237,9 @@ def check_all_projects():
                           projects=[project.name])
             check.full_clean()
             check.save()
-            tasks.append(run_check.subtask((check.pk,)))
+            run_check.delay(check.pk)
         except ValidationError:
             continue
-    job = group(tasks)
-    job.apply_async()
 
 
 def real_project_name(value):

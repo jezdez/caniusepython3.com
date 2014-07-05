@@ -188,6 +188,10 @@ LOGGING = {
         'ciu': {
             'handlers': ['console'],
             'level': 'ERROR',
+        },
+        'redis_lock': {
+            'handlers': ['console'],
+            'level': 'ERROR',
         }
     }
 }
@@ -220,10 +224,6 @@ CELERYBEAT_SCHEDULE = {
     'fetch_overrides': {
         'task': 'ciupy3.checks.tasks.fetch_overrides',
         'schedule': every_10_minutes,
-    },
-    'check_all_projects': {
-        'task': 'ciupy3.checks.tasks.check_all_projects',
-        'schedule': crontab(minute='5'),
     },
     'fill_autocomplete_index': {
         'task': 'ciupy3.checks.tasks.fill_autocomplete_index',

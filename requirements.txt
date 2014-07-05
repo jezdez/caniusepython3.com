@@ -28,6 +28,7 @@ pytz==2014.4
 raven==5.0.0
 # redis==2.9.1
 -e git+https://github.com/andymccurdy/redis-py#egg=redis
+python-redis-lock==0.1.2
 requests==2.3.0
 six==1.7.2
 South==0.8.4

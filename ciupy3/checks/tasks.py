@@ -1,5 +1,4 @@
 import uuid
-from django.core.exceptions import ValidationError
 from django.db.models import F, Sum
 from django.utils.timezone import now
 from django.utils.six.moves import xmlrpc_client
@@ -225,21 +224,6 @@ def update_checked_count():
     project_count = Project.objects.count()
     redis.set(CHECKED_COUNT_KEY,
               public_checks.get('runs__sum') or 0 + project_count)
-
-
-@shared_task
-def check_all_projects():
-    for project in Project.objects.all():
-        try:
-            check = Check(project=project,
-                          public=False,
-                          requirements=[project.name],
-                          projects=[project.name])
-            check.full_clean()
-            check.save()
-            run_check.delay(check.pk)
-        except ValidationError:
-            continue
 
 
 def real_project_name(value):

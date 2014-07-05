@@ -16,5 +16,5 @@ Stouts.django
 Stouts.wale
 Stouts.rabbitmq
 Stouts.celery
+Stouts.limits
 jnv.unattended-upgrades
-

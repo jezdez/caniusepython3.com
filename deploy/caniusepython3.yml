@@ -19,4 +19,5 @@
     - Stouts.wale
     - Stouts.rabbitmq
     - Stouts.celery
+    - Stouts.limits
     - ciupy3

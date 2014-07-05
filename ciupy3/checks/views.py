@@ -117,7 +117,7 @@ class ProjectDetailView(generics.RetrieveAPIView):
 @api_view(['GET'])
 @renderer_classes([JSONRenderer])
 def autocomplete(request):
-    term = request.QUERY_PARAMS.get('term', None)
+    term = request.QUERY_PARAMS.get('term', '')
     count = 50
     try:
         count = int(request.QUERY_PARAMS.get('count', count))
@@ -126,7 +126,7 @@ def autocomplete(request):
     if count > 50:
         count = 50
     byte_results = redis.zrangebylex('autocomplete',
-                                     '[%s' % term, '[%s\xff' % term)
+                                     u'[%s' % term, u'[%s\xff' % term)
     text_results = (force_text(result).split(':')[1]
                     for result in byte_results)
     return Response(sorted(text_results, key=len)[:count])

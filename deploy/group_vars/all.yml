@@ -41,13 +41,13 @@ source_reload_cmd: "restart {{deploy_user}}-uwsgi"
 
 wsgi_app: "{{wsgi_src_dir}}/{{deploy_user}}/wsgi.py"
 wsgi_deb_packages:
-  - python3-dev
-  - python3-pip
+  - python-dev
+  - python-pip
   - python-virtualenv
   - libjpeg-dev
   - postgresql-server-dev-all
   - bsd-mailx
-wsgi_env_python: python3.4
+wsgi_env_python: python
 wsgi_nginx_static_locations: []
 wsgi_nginx_port: 443 ssl
 wsgi_nginx_options:

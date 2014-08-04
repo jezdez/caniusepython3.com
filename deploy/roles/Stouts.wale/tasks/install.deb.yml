@@ -7,6 +7,8 @@
     - lzop
     - pv
     - python-pip
+    - python-dev
+    - python-lxml
 
 - name: Install requirements - pt. 2
   pip: name=wal-e

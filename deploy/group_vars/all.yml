@@ -1,6 +1,7 @@
 ---
 pipelining: true
 redis_syslog_enabled: "no"
+redis_max_memory: 128mb
 apt_cache_valid_time: 86400
 apt_install_packages: yes
 apt_upgrade: "safe"

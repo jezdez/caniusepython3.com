@@ -118,13 +118,14 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.TemplateHTMLRenderer',
         'ciupy3.checks.renderers.SVGRenderer',
         'ciupy3.checks.renderers.PNGRenderer',
-    )
+    ),
+    'DATETIME_FORMAT': None,
 }
 
 CACHES = {
     'default': {
-        'BACKEND': 'redis_cache.cache.RedisCache',
-        'LOCATION': '127.0.0.1:6379:0',
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/0',
         'OPTIONS': {
             'PARSER_CLASS': 'redis.connection.HiredisParser',
         }

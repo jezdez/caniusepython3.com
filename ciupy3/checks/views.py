@@ -32,7 +32,7 @@ class CheckDetailView(generics.RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         self.object = self.get_object()
         # redirect if the case doesn't match
-        if self.request.DATA.get('check', None) == 'again':
+        if self.request.data.get('check', None) == 'again':
             self.object.finished_at = None
             self.object.save()
             run_check.delay(self.object.pk)
@@ -106,7 +106,7 @@ class ProjectDetailView(generics.RetrieveAPIView):
         if self.object.name != self.lookup:
             return redirect(self.object)
 
-        if self.request.DATA.get('check', None) == 'again':
+        if self.request.data.get('check', None) == 'again':
             self.object.check()
             return redirect(self.object)
 
@@ -117,10 +117,10 @@ class ProjectDetailView(generics.RetrieveAPIView):
 @api_view(['GET'])
 @renderer_classes([JSONRenderer])
 def autocomplete(request):
-    term = request.QUERY_PARAMS.get('term', '')
+    term = request.query_params.get('term', '')
     count = 50
     try:
-        count = int(request.QUERY_PARAMS.get('count', count))
+        count = int(request.query_params.get('count', count))
     except ValueError:
         pass
     if count > 50:

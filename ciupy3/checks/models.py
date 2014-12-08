@@ -12,7 +12,7 @@ from django.utils.six.moves.urllib.parse import urlparse, urlunparse
 from django.utils.timezone import now
 
 from django_pg import models
-from redis_cache import get_redis_connection
+from django_redis import get_redis_connection
 
 
 project_name_re = re.compile(r'^[\.\-\w]+$')

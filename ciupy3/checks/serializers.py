@@ -8,10 +8,10 @@ from .tasks import (get_compatible, get_total,
 
 
 class PublicDataSerializer(serializers.HyperlinkedModelSerializer):
-    compatible = serializers.SerializerMethodField('get_compatible')
-    total = serializers.SerializerMethodField('get_total')
-    checked = serializers.SerializerMethodField('get_checked')
-    public = serializers.SerializerMethodField('get_public')
+    compatible = serializers.SerializerMethodField()
+    total = serializers.SerializerMethodField()
+    checked = serializers.SerializerMethodField()
+    public = serializers.SerializerMethodField()
 
     class Meta:
         fields = ('compatible', 'total', 'checked', 'public')
@@ -39,9 +39,9 @@ class PublicDataSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CheckSerializer(serializers.HyperlinkedModelSerializer):
-    projects = serializers.CharField()
-    blockers = serializers.CharField()
-    requirements = serializers.CharField()
+    projects = serializers.ListField(child=serializers.CharField())
+    blockers = serializers.ListField(child=serializers.CharField())
+    requirements = serializers.ListField(child=serializers.CharField())
 
     class Meta:
         model = Check
@@ -51,14 +51,18 @@ class CheckSerializer(serializers.HyperlinkedModelSerializer):
     def get_last_check(self, obj):
         return obj
 
-    def transform_projects(self, obj, value):
-        return sorted(value)
+    def validate(self, attrs):
+        obj = Check(**attrs)
+        obj.clean()
+        return attrs
 
-    def transform_blockers(self, obj, value):
-        if value:
-            return OrderedDict(sorted(value.items(),
-                                      key=itemgetter(0)))
-        return value
+    def to_representation(self, obj):
+        ret = super(CheckSerializer, self).to_representation(obj)
+        ret['projects'] = sorted(ret['projects'])
+        if ret['blockers']:
+            ret['blockers'] = OrderedDict(sorted(ret['blockers'].items(),
+                                                 key=itemgetter(0)))
+        return ret
 
 
 class PublicCheckSerializer(CheckSerializer, PublicDataSerializer):
@@ -68,31 +72,29 @@ class PublicCheckSerializer(CheckSerializer, PublicDataSerializer):
 
 
 class ProjectSerializer(PublicDataSerializer):
-    finished_at = serializers.SerializerMethodField('get_finished_at')
-    check_count = serializers.SerializerMethodField('get_check_count')
+    finished_at = serializers.DateTimeField(read_only=True,
+                                            source='last_check.finished_at')
+    check_count = serializers.SerializerMethodField()
     checks = CheckSerializer(read_only=True, many=True)
 
-    def transform_checks(self, obj, value):
+    def to_representation(self, obj):
+        ret = super(ProjectSerializer, self).to_representation(obj)
         number = 0
         checks = []
-        for check in value:
+        for check in ret['checks']:
             if check.get('finished_at', None) is not None:
                 checks.append(check)
                 number += 1
             if number == 30:
-                return checks
-        return checks
+                break
+        ret['checks'] = checks
+        return ret
 
     def get_last_check(self, obj):
         return obj.last_check
 
     def get_check_count(self, obj):
         return obj.checks.exclude(finished_at=None).count()
-
-    def get_finished_at(self, obj):
-        if obj.last_check:
-            return obj.last_check.finished_at
-        return None
 
     class Meta:
         model = Project

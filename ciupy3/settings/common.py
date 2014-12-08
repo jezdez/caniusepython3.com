@@ -143,6 +143,12 @@ STATICFILES_DIRS = [
     str(here / 'foundation'),
 ]
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
+
 PIPELINE_CSS = {
     'styles': {
         'source_filenames': (

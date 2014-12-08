@@ -14,7 +14,7 @@ django-admin-honeypot==0.4.0
 django-easy-pjax==1.1.0
 django-pgfields==1.4.4
 django-picklefield==0.3.1
-django-pipeline==1.3.25
+django-pipeline==1.4.2
 django-redis==3.8.0
 django-secure==1.0.1
 django-staticflatpages==0.3.0

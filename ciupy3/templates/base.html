@@ -1,4 +1,4 @@
-{% load static from staticfiles %}{% load compressed %}<!DOCTYPE html>
+{% load static from staticfiles %}{% load pipeline %}<!DOCTYPE html>
 <!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
 <html class="no-js" lang="en" >
 <head>
@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{% endblock title %}Can I use Python 3?</title>
   <link href='//fonts.googleapis.com/css?family=Roboto:400,100,300,500,700|Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
-  {% compressed_css 'styles' %}
+  {% stylesheet 'styles' %}
   <!--[if lt IE 9]>
       <link rel="stylesheet" href="{% static "css/gh-fork-ribbon.ie.css" %}">
   <![endif]-->
@@ -49,7 +49,7 @@
     </div>
     {% endblock footer %}
   </footer>
-  {% compressed_js 'scripts' %}
+  {% javascript 'scripts' %}
   <script>
   jQuery(document).ready(function ($) {
     $(document).foundation();

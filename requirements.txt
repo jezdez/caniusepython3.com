@@ -25,7 +25,6 @@ flower==0.7.3
 futures==2.2.0
 hiredis==0.1.5
 kombu==3.0.24
-librabbitmq==1.6.1
 mock==1.0.1
 pathlib==1.0.1
 pip-tools==0.3.5

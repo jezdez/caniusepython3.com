@@ -40,6 +40,3 @@ TEMPLATE_LOADERS = (
         'django.template.loaders.app_directories.Loader',
     )),
 )
-
-# BROKER_URL = 'amqp://admin:admin@localhost:5672//'
-# BROKER_TRANSPORT_OPTIONS = {}

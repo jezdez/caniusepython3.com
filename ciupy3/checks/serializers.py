@@ -38,9 +38,15 @@ class PublicDataSerializer(serializers.HyperlinkedModelSerializer):
         return set(all_projects.keys()).intersection(check_project_set)
 
 
+class BlockersField(serializers.Field):
+
+    def to_representation(self, data):
+        return data
+
+
 class CheckSerializer(serializers.HyperlinkedModelSerializer):
     projects = serializers.ListField(child=serializers.CharField())
-    blockers = serializers.ListField(child=serializers.CharField())
+    blockers = BlockersField(read_only=True)
     requirements = serializers.ListField(child=serializers.CharField())
 
     class Meta:

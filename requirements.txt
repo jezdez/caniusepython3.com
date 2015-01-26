@@ -19,7 +19,7 @@ django-redis==3.8.2
 django-secure==1.0.1
 django-staticflatpages==0.3.0
 django-vanilla-views==1.0.3
-Django==1.6.10
+Django==1.7.3
 djangorestframework==3.0.3
 flower==0.7.3
 futures==2.2.0

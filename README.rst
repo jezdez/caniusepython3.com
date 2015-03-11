@@ -6,7 +6,7 @@ Can I Use Python 3
    :alt: Requirements Status
 
 This is the companion site to the CLI tool caniusepython3_ available at
-caniusepython3.com.
+caniusepython3.com_.
 
 Workflow
 --------
@@ -35,3 +35,4 @@ Backend perspective
 - Periodically update the trove classifier cache (~30 mins)
 
 .. _caniusepython3: https://pypi.python.org/pypi/caniusepython3
+.. _caniusepython3.com: http://caniusepython3.com

@@ -1,4 +1,4 @@
-.PHONY: dev deploy vm kill provision
+.PHONY: dev vm kill provision
 
 dev:
 	foreman start

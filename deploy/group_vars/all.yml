@@ -36,7 +36,7 @@ timezone_zone: UTC
 
 source_user: "{{deploy_user}}"
 source_sources:
-  - repo: https://github.com/jezdez/caniusepython3.com.git
+  - repo: https://github.com/caniusepython3/caniusepython3.com.git
     dest: "{{deploy_src_dir}}"
 source_reload_cmd: "restart {{deploy_user}}-uwsgi"
 

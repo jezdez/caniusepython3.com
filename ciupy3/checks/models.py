@@ -4,6 +4,7 @@ from collections import OrderedDict
 from pip.req import parse_requirements
 from pip.index import PackageFinder
 
+from django.db import models
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -11,7 +12,6 @@ from django.utils.functional import cached_property
 from django.utils.six.moves.urllib.parse import urlparse, urlunparse
 from django.utils.timezone import now
 
-from django_pg import models
 from django_redis import get_redis_connection
 
 

@@ -11,9 +11,11 @@ click==6.2
 distlib==0.2.1
 Django==1.9.1
 django-admin-honeypot==0.4.0
-django-easy-pjax==1.2.0
-django-pgfields==1.4.4
+# django-easy-pjax==1.2.0
+# django-easy-pjax is broken with 1.9, here's a version that works with 1.9
+-e git+https://github.com/Kondou-ger/django-easy-pjax.git@b0ef0070de49afa5cb98fbdab37e871aac8fde95#egg=django-easy-pjax
 django-picklefield==0.3.1
+django-pgfields==1.4.4
 django-pipeline==1.5.3
 django-redis==4.2.0
 django-secure==1.0.1

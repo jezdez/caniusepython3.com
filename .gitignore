@@ -3,4 +3,4 @@ __pycache__
 envs/prod/
 assets/
 .vagrant
-celerybeat-schedule
+celerybeat-schedule.db

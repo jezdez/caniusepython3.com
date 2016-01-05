@@ -125,9 +125,9 @@ CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://127.0.0.1:6379/0',
-        'OPTIONS': {
-            'PARSER_CLASS': 'redis.connection.HiredisParser',
-        }
+        # 'OPTIONS': {
+        #     'PARSER_CLASS': 'redis.connection.HiredisParser',
+        # }
     }
 }
 

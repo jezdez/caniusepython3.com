@@ -1,7 +1,8 @@
 import uuid
+from xmlrpc.client import ServerProxy
+
 from django.db.models import F, Sum
 from django.utils.timezone import now
-from django.utils.six.moves import xmlrpc_client
 
 from celery import shared_task
 
@@ -22,7 +23,7 @@ OVERRIDE_URL = ('https://raw.github.com/brettcannon/caniusepython3/'
 
 
 def all_projects():
-    client = xmlrpc_client.ServerProxy('http://pypi.python.org/pypi')
+    client = ServerProxy('http://pypi.python.org/pypi')
     return client.list_packages()
 
 

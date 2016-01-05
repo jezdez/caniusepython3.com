@@ -1,9 +1,9 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from ciupy3.checks.views import (CheckDetailView, CheckCreateView,
                                  ProjectDetailView, autocomplete)
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', CheckCreateView.as_view(), name='check_form'),
     url(r'^autocomplete/$', autocomplete, name='project-autocomplete'),
     url(r'^project/(?P<name>[^/]+)\.(?P<format>(json|svg|png))$',
@@ -14,4 +14,4 @@ urlpatterns = patterns('',
         ProjectDetailView.as_view(), name='project-detail'),
     url(r'^check/(?P<pk>[^/]+)$',
         CheckDetailView.as_view(), name='check-detail'),
-)
+]

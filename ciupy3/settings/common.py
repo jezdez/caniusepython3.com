@@ -58,7 +58,6 @@ INSTALLED_APPS = (
     'admin_honeypot',
     'djangosecure',
     'rest_framework',
-    'south',
     'easy_pjax',
     'whitenoise',
     'macros',

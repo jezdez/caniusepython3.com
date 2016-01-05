@@ -63,7 +63,7 @@ class ShieldRenderer(BaseRenderer):
             color,
             self.format,
         )
-        if request.QUERY_PARAMS.get('style', '') == 'flat':
+        if request.query_params.get('style', '') == 'flat':
             shield_url += '?style=flat'
         url_hash = md5(shield_url.encode('utf-8')).hexdigest()
         shield_path = os.path.join('shields', url_hash)

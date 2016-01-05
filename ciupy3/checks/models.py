@@ -1,10 +1,12 @@
 import re
+import uuid
 from collections import OrderedDict
 
 from pip.req import parse_requirements
 from pip.index import PackageFinder
 
 from django.db import models
+from django.contrib.postgres.fields import ArrayField, JSONField
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -54,7 +56,7 @@ def sanitize_github_url(requirement, url):
 
 
 class Project(models.Model):
-    id = models.UUIDField(auto_add=True, primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.TextField(db_index=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -87,14 +89,14 @@ class Project(models.Model):
 
 
 class Check(models.Model):
-    id = models.UUIDField(auto_add=True, primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     unblocked = models.SmallIntegerField(default=0)
     created_at = models.DateTimeField(default=now)
     started_at = models.DateTimeField(null=True, blank=True)
     finished_at = models.DateTimeField(null=True, blank=True)
-    requirements = models.ArrayField(models.TextField())
-    projects = models.ArrayField(models.CharField(max_length=255))
-    blockers = models.JSONField()
+    requirements = ArrayField(models.TextField())
+    projects = ArrayField(models.CharField(max_length=255))
+    blockers = JSONField()
     public = models.BooleanField(default=True)
     runs = models.SmallIntegerField(default=0)
     project = models.ForeignKey(Project, related_name='checks',

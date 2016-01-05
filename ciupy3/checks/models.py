@@ -76,12 +76,12 @@ class Project(models.Model):
 
     def run_check(self, delay=True):
         from .tasks import run_check
-        check = Check(project=self,
-                      public=False,
-                      requirements=[self.name],
-                      projects=[self.name])
-        check.full_clean()
-        check.save()
+        check = Check.objects.create(
+            project=self,
+            public=False,
+            requirements=[self.name],
+            projects=[self.name])
+
         if delay:
             run_check.delay(check.pk)
         else:
@@ -96,7 +96,7 @@ class Check(models.Model):
     finished_at = models.DateTimeField(null=True, blank=True)
     requirements = ArrayField(models.TextField())
     projects = ArrayField(models.CharField(max_length=255))
-    blockers = JSONField()
+    blockers = JSONField(null=True, blank=True)
     public = models.BooleanField(default=True)
     runs = models.SmallIntegerField(default=0)
     project = models.ForeignKey(Project, related_name='checks',

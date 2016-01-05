@@ -96,7 +96,7 @@ class ProjectDetailView(generics.RetrieveAPIView):
             if name is None:
                 raise
             project, created = Project.objects.get_or_create(name=name)
-            project.check()
+            project.run_check()
 
         return project
 
@@ -107,7 +107,7 @@ class ProjectDetailView(generics.RetrieveAPIView):
             return redirect(self.object)
 
         if self.request.data.get('check', None) == 'again':
-            self.object.check()
+            self.object.run_check()
             return redirect(self.object)
 
         serializer = self.get_serializer(self.object)

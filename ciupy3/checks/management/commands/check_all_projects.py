@@ -22,7 +22,7 @@ class Command(BaseCommand):
                     self.stdout.write('Checking (%s/%s): %s' %
                                       (i, count, project))
                     try:
-                        project.check(delay=False)
+                        project.run_check(delay=False)
                     except ValidationError:
                         continue
         finally:

@@ -72,7 +72,7 @@ class Project(models.Model):
         except (Check.DoesNotExist, IndexError):
             return None
 
-    def check(self, delay=True):
+    def run_check(self, delay=True):
         from .tasks import run_check
         check = Check(project=self,
                       public=False,

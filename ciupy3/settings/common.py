@@ -66,7 +66,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'easy_pjax',
     'whitenoise',
-    'macros',
     'staticflatpages',
     'ciupy3.checks',
 )

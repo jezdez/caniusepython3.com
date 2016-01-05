@@ -1,14 +1,3 @@
-{% load macros %}
-{% load variables %}
-
-{% macro check_again name url label class %}
-  <form action="{{ url }}" method="post">{% csrf_token %}
-    <input type="hidden" name="check" value="again" />
-    <button type="submit" class="button radius tiny right {{ class }}">{{ label }}</button>
-  </form>
-{% endmacro %}
-
-{% macro shield name shield_path format %}
 <div class="row">
   {% capture shield_url %}
     {% if request.is_secure %}https{% else %}http{% endif %}://{{ request.get_host }}{{ shield_path }}
@@ -41,4 +30,3 @@
     <textarea readonly="readonly" id="shield-code">{{ shield_url }}.{{ format }}</textarea>
   </div>
 </div>
-{% endmacro %}

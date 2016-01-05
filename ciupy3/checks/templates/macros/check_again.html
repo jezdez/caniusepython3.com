@@ -1,0 +1,4 @@
+<form action="{{ url }}" method="post">{% csrf_token %}
+  <input type="hidden" name="check" value="again" />
+  <button type="submit" class="button radius tiny right {{ class }}">{{ label }}</button>
+</form>

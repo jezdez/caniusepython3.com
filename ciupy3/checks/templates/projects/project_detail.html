@@ -2,8 +2,6 @@
 {% load i18n %}
 {% load humanize %}
 {% load variables %}
-{% load macros %}
-{% loadmacros "macros.html" %}
 
 {% block title %}Project {{ name }} - {% endblock title %}
 
@@ -38,7 +36,7 @@
     </div>
     <div class="small-4 columns">
         <h2>
-          {% usemacro check_again name project_url "Check again" %}
+          {% include "macros/check_again.html" with name=name url=project_url label="Check again" only %}
         </h2>
     </div>
   </div>
@@ -70,7 +68,7 @@
       {% endif %}
       {% url 'project-detail' name=name as shield_path %}
       <span class="show-for-large-up">
-      {% usemacro shield name shield_path 'svg' %}
+      {% include "macros/shield.html" with name=name shield_path=shield_path format='svg' %}
       </span>
     </div>
     <div class="large-4 columns">
@@ -114,7 +112,9 @@
       </p>
     </div>
     <div class="small-4 columns show-for-large-up">
-      <h2>{% usemacro check_again name check_url "Checking.." "disabled" %}</h2>
+      <h2>
+          {% include "macros/check_again.html" with name=name url=project_url label="Checking" class="disabled" only %}
+      </h2>
     </div>
   </div>
 </div>

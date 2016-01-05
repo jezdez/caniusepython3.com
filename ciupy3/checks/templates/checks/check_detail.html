@@ -1,7 +1,5 @@
 {% extends "base.html"|pjax:request %}
 {% load i18n %}
-{% load macros %}
-{% loadmacros "macros.html" %}
 
 {% block title %}Check {{ id }} - {% endblock title %}
 
@@ -33,7 +31,9 @@
       </h2>
     </div>
     <div class="small-4 columns">
-      <h2>{% usemacro check_again name check_url "Check again" %}</h2>
+      <h2>
+          {% include "macros/check_again.html" with name=name url=check_url label="Checking..." class="disabled" only %}
+      </h2>
     </div>
   </div>
   <div class="row">
@@ -64,7 +64,7 @@
       {% endif %}
       {% url 'check-detail' pk=id as shield_path %}
       <span class="show-for-large-up">
-        {% usemacro shield id shield_path 'svg' %}
+        {% include "macros/shield.html" with name=id shield_path=shield_path format='svg' %}
       </span>
     </div>
     <div class="large-4 columns">
@@ -107,7 +107,9 @@
       </p>
     </div>
     <div class="small-4 columns show-for-large-up">
-      <h2>{% usemacro check_again name check_url "Checking.." "disabled" %}</h2>
+        <h2>
+            {% include "macros/check_again.html" with name=name url=check_url label="Checking" class="disabled" only %}
+        </h2>
     </div>
   </div>
   <div class="row">

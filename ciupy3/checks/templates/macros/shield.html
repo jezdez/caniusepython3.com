@@ -1,3 +1,5 @@
+{% load variables %}
+
 <div class="row">
   {% capture shield_url %}
     {% if request.is_secure %}https{% else %}http{% endif %}://{{ request.get_host }}{{ shield_path }}

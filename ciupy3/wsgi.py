@@ -20,6 +20,10 @@ import os
 # os.environ["DJANGO_SETTINGS_MODULE"] = "ciupy3.settings"
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ciupy3.settings.dev")
 
+if os.environ['DJANGO_SETTINGS_MODULE'].endswith('prod'):
+    import newrelic.agent
+    newrelic.agent.initialize()
+
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.

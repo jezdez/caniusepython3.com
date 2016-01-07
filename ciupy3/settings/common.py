@@ -21,7 +21,7 @@ BASE_DIR = str(here.parent)
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')07khcog6b!)x636@=%rq53mk0g-^!n_p(jf!2bfhyc-*5^f_9'
+SECRET_KEY = '42'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,8 +48,6 @@ TEMPLATES = [
         },
     },
 ]
-
-ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = (
@@ -91,10 +89,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ciupy3',
-        'USER': 'ciupy3',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'USER': 'ciupy3'
     }
 }
 
@@ -130,9 +125,6 @@ CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://127.0.0.1:6379/0',
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
         # 'OPTIONS': {
         #     'PARSER_CLASS': 'redis.connection.HiredisParser',
         # }

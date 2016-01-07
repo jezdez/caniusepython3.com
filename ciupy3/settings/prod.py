@@ -13,6 +13,15 @@ SECURE_SSL_REDIRECT = True
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ciupy3',
+        'USER': 'ciupy3',
+        'PASSWORD': os.env.get('DJANGO_DB_PASS')
+    }
+}
+
 # MIDDLEWARE_CLASSES += (
 #     'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
 # )
@@ -33,8 +42,8 @@ MEDIA_URL = '/assets/media/'
 #     'dsn': SENTRY_URL,
 # }
 
-TEMPLATE[0]['OPTIONS']['debug'] = False
-TEMPLATE[0]['OPTIONS']['loaders'] = (
+TEMPLATES[0]['OPTIONS']['debug'] = False
+TEMPLATES[0]['OPTIONS']['loaders'] = (
     'django.template.loaders.cached.Loader', (
         'django.template.loaders.filesystem.Loader',
         'django.template.loaders.app_directories.Loader',

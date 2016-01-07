@@ -18,7 +18,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ciupy3',
         'USER': 'ciupy3',
-        'PASSWORD': os.env.get('DJANGO_DB_PASS')
+        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD')
     }
 }
 

@@ -148,36 +148,40 @@ STATICFILES_FINDERS = (
     'pipeline.finders.PipelineFinder',
 )
 
-PIPELINE_CSS = {
-    'styles': {
-        'source_filenames': (
-            'css/normalize.css',
-            'css/foundation.min.css',
-            'css/gh-fork-ribbon.css',
-            'css/app.css',
-        ),
-        'output_filename': 'styles.css',
+PIPELINE = {
+    'PIPELINE_ENABLED': False,
+
+    'STYLESHEETS': {
+        'styles': {
+            'source_filenames': (
+                'css/normalize.css',
+                'css/foundation.min.css',
+                'css/gh-fork-ribbon.css',
+                'css/app.css',
+            ),
+            'output_filename': 'styles.css',
+        },
     },
+
+    'JAVASCRIPT': {
+        'scripts': {
+            'source_filenames': (
+                'js/vendor/jquery.js',
+                'js/vendor/fastclick.js',
+                'js/foundation.min.js',
+                'js/jquery.textcomplete.min.js',
+                'js/jquery.pjax.js',
+                'js/jquery.autosize.min.js',
+                'js/app.js',
+            ),
+            'output_filename': 'scripts.js',
+        }
+    },
+
+    'CSS_COMPRESSOR': None,
+    'JS_COMPRESSOR': None
+
 }
-
-PIPELINE_JS = {
-    'scripts': {
-        'source_filenames': (
-            'js/vendor/jquery.js',
-            'js/vendor/fastclick.js',
-            'js/foundation.min.js',
-            'js/jquery.textcomplete.min.js',
-            'js/jquery.pjax.js',
-            'js/jquery.autosize.min.js',
-            'js/app.js',
-        ),
-        'output_filename': 'scripts.js',
-    }
-}
-
-PIPELINE_CSS_COMPRESSOR = None
-PIPELINE_JS_COMPRESSOR = None
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

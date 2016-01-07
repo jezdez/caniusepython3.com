@@ -32,8 +32,6 @@ DATABASES = {
 
 ALLOWED_HOSTS = ['caniusepython3.com']
 
-PIPELINE_ENABLED = True
-
 STATIC_URL = '/assets/static/'
 MEDIA_URL = '/assets/media/'
 
@@ -50,3 +48,5 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [
         'django.template.loaders.app_directories.Loader',
     ]),
 ]
+
+PIPELINE['PIPELINE_ENABLED'] = True

@@ -42,6 +42,7 @@ MEDIA_URL = '/assets/media/'
 #     'dsn': SENTRY_URL,
 # }
 
+TEMPLATES[0]['APP_DIRS'] = False
 TEMPLATES[0]['OPTIONS']['debug'] = False
 TEMPLATES[0]['OPTIONS']['loaders'] = (
     'django.template.loaders.cached.Loader', (

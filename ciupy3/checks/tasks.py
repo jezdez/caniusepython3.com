@@ -241,5 +241,5 @@ def fill_autocomplete_index():
     with redis.pipeline() as pipe:
         for project_name, project_label in projects.items():
             value = '%s:%s' % (project_label, project_name)
-            pipe.zadd('autocomplete', value, 0)
+            pipe.zadd('autocomplete', 0, value)
         pipe.execute()

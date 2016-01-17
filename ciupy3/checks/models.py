@@ -96,7 +96,7 @@ class Check(models.Model):
     finished_at = models.DateTimeField(null=True, blank=True)
     requirements = ArrayField(models.TextField())
     projects = ArrayField(models.CharField(max_length=255))
-    blockers = JSONField(null=True, blank=True)
+    blockers = JSONField(default=dict)
     public = models.BooleanField(default=True)
     runs = models.SmallIntegerField(default=0)
     project = models.ForeignKey(Project, related_name='checks',
@@ -113,6 +113,9 @@ class Check(models.Model):
 
     def clean(self):
         projects = OrderedDict()  # using this since sets aren't ordered
+
+        if self.requirements is None:
+            self.requirements = []
         for requirement in self.requirements:
             url = urlparse(requirement)
             if url.scheme in ('http', 'https', 'file'):

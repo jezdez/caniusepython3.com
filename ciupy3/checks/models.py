@@ -56,7 +56,7 @@ def sanitize_github_url(requirement, url):
 
 
 class Project(models.Model):
-    id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.TextField(db_index=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -89,7 +89,7 @@ class Project(models.Model):
 
 
 class Check(models.Model):
-    id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     unblocked = models.SmallIntegerField(default=0)
     created_at = models.DateTimeField(default=now)
     started_at = models.DateTimeField(null=True, blank=True)

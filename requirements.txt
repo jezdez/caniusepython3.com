@@ -1,12 +1,11 @@
-## The following requirements were added by pip freeze:
 amqp==2.0.3
 anyjson==0.3.3
 arrow==0.8.0
 Babel==2.3.4
 backports.ssl-match-hostname==3.5.0.1
-billiard==3.5.0.0rc2
+billiard==3.3.0.23
 caniusepython3==3.4.0
-celery==4.0.0rc3
+celery==3.1.23
 certifi==2016.2.28
 click==6.6
 contextlib2==0.5.3
@@ -20,13 +19,13 @@ django-secure==1.0.1
 django-staticflatpages==0.4.0
 django-templates-macros==0.1
 django-vanilla-views==1.0.4
-Django==1.10rc1
+Django==1.9.8
 djangorestframework==3.4.0
 first==2.0.1
 flower==0.9.1
 futures==3.0.5
 Jinja2==2.8
-kombu==4.0.0rc3
+kombu==3.0.35
 MarkupSafe==0.23
 mock==2.0.0
 msgpack-python==0.4.7

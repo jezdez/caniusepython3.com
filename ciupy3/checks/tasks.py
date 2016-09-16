@@ -23,7 +23,7 @@ OVERRIDE_URL = ('https://raw.github.com/brettcannon/caniusepython3/'
 
 
 def all_projects():
-    client = ServerProxy('http://pypi.python.org/pypi')
+    client = ServerProxy('https://pypi.python.org/pypi')
     return client.list_packages()
 
 

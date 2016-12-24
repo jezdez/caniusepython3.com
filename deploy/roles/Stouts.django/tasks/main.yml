@@ -1,4 +1,0 @@
----
-
-- include: django.yml
-  when: django_enabled

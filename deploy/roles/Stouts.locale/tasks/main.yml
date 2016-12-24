@@ -1,5 +1,0 @@
----
-
-- include: locale.yml
-  when: locale_enabled
-  tags: [locale]

@@ -1,4 +1,0 @@
----
-
-timezone_enabled: yes                   # The role is enabled
-timezone_timezone: Etc/UTC              # Set timezone

@@ -1,5 +1,0 @@
-# file: perl/defaults/main.yml
-
-perl_cpanm_version: "1.7102"              # The CPAN release version
-perl_cpanm_path: "/usr/local/bin/cpanm"   # The CPAN script location
-perl_cpanm_url: "https://raw.githubusercontent.com/miyagawa/cpanminus/{{perl_cpanm_version}}/cpanm"

@@ -1,6 +1,0 @@
-# file: monit/handlers/main.yml
-
-- name: restart monit
-  service:
-    name: monit
-    state: restarted

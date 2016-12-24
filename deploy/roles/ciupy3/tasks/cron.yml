@@ -1,9 +1,0 @@
----
-- name: Set the check_all_projects cron
-  cron:
-    name: ciupy3_check_all_projects
-    job: "{{ciupy3_manage}} check_all_projects > /dev/null"
-    special_time: hourly
-    user: "{{deploy_user}}"
-  notify:
-    - restart cron

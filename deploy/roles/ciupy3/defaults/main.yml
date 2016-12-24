@@ -1,5 +1,0 @@
----
-ciupy3_manage: "{{wsgi_env_dir}}/bin/python {{deploy_src_dir}}/manage.py"
-ciupy3_ssl_dir: "/etc/nginx/ssl"
-ciupy3_ssl_crt_path: "{{ciupy3_ssl_dir}}/caniusepython3.com.crt"
-ciupy3_ssl_key_path: "{{ciupy3_ssl_dir}}/caniusepython3.com.key"

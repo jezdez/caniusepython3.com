@@ -1,0 +1,23 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+     - "8080:8080"
+    volumes:
+     - .:/app
+    depends_on:
+       - postgres
+       - redis
+
+  postgres:
+     image: postgres
+     volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  # :alpine uses Alpine Linux project and leads to much smaller image size
+  redis:
+    image: "redis:alpine"
+
+volumes:
+  postgres-data:

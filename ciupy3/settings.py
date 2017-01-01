@@ -7,6 +7,7 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+import os
 from celery.schedules import crontab
 from kombu import Queue, Exchange
 from pathlib import Path
@@ -19,14 +20,19 @@ BASE_DIR = str(here.parent)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
+DEBUG = False
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '42'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
 ALLOWED_HOSTS = [
-    'lan.caniusepython3.com'
+    'caniusepython3.com'
 ]
 
 TEMPLATES = [
@@ -35,11 +41,17 @@ TEMPLATES = [
         'DIRS': [
             str(here / 'templates')
         ],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
-            'debug': True,
+            'debug': False,
             "builtins": [
                 "easy_pjax.templatetags.pjax_tags"
+            ],
+            'loaders': [
+                ('django.template.loaders.cached.Loader', [
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ]),
             ],
             'context_processors': (
                 'django.contrib.auth.context_processors.auth',
@@ -95,9 +107,9 @@ WSGI_APPLICATION = 'ciupy3.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': 'postgres',
-        'NAME': 'postgres',
-        'USER': 'postgres'
+        'NAME': 'ciupy3',
+        'USER': 'ciupy3',
+        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD')
     }
 }
 
@@ -106,7 +118,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Prague'
 
 USE_I18N = False
 
@@ -115,13 +127,9 @@ USE_L10N = False
 USE_TZ = True
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAdminUser',
-    # ),
     'PAGINATE_BY': 10,
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        # 'rest_framework.renderers.BrowsableAPIRenderer',
         'rest_framework.renderers.TemplateHTMLRenderer',
         'ciupy3.checks.renderers.SVGRenderer',
         'ciupy3.checks.renderers.PNGRenderer',
@@ -133,9 +141,6 @@ CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://redis:6379/0',
-        # 'OPTIONS': {
-        #     'PARSER_CLASS': 'redis.connection.HiredisParser',
-        # }
     }
 }
 
@@ -157,7 +162,7 @@ STATICFILES_FINDERS = (
 )
 
 PIPELINE = {
-    'PIPELINE_ENABLED': False,
+    'PIPELINE_ENABLED': True,
 
     'STYLESHEETS': {
         'styles': {

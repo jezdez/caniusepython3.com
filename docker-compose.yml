@@ -18,7 +18,7 @@ services:
     depends_on:
        - postgres
        - redis
-    command: celery -A ciupy3 worker -l debug -Q high,default
+    command: celery --app=ciupy3 worker --loglevel=info --queues=high,default --beat
 
 
   postgres:

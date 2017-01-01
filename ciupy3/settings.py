@@ -11,7 +11,7 @@ from celery.schedules import crontab
 from kombu import Queue, Exchange
 from pathlib import Path
 
-here = Path(__file__).parent.parent.resolve()
+here = Path(__file__).parent.resolve()
 assets_dir = here.parent / 'assets'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -25,6 +25,9 @@ SECRET_KEY = '42'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+ALLOWED_HOSTS = [
+    'lan.caniusepython3.com'
+]
 
 TEMPLATES = [
     {
@@ -92,8 +95,9 @@ WSGI_APPLICATION = 'ciupy3.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ciupy3',
-        'USER': 'ciupy3'
+        'HOST': 'postgres',
+        'NAME': 'postgres',
+        'USER': 'postgres'
     }
 }
 
@@ -128,7 +132,7 @@ REST_FRAMEWORK = {
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/0',
+        'LOCATION': 'redis://redis:6379/0',
         # 'OPTIONS': {
         #     'PARSER_CLASS': 'redis.connection.HiredisParser',
         # }
@@ -210,10 +214,10 @@ LOGGING = {
     }
 }
 
-BROKER_URL = 'redis://127.0.0.1:6379/0'
+BROKER_URL = 'redis://redis:6379/0'
 BROKER_TRANSPORT_OPTIONS = {'fanout_patterns': True}
 
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/2'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/2'
 CELERY_TIMEZONE = 'UTC'
 CELERY_ENABLE_UTC = True
 CELERY_DEFAULT_QUEUE = 'default'

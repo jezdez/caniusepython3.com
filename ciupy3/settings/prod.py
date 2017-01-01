@@ -2,7 +2,8 @@
 The in-production settings.
 """
 import os
-from .common import *  # noqa
+
+from ciupy3.common import *  # noqa
 
 DEBUG = False
 
@@ -21,14 +22,6 @@ DATABASES = {
         'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD')
     }
 }
-
-# MIDDLEWARE_CLASSES += (
-#     'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
-# )
-#
-# INSTALLED_APPS += (
-#     'raven.contrib.django.raven_compat',
-# )
 
 ALLOWED_HOSTS = ['caniusepython3.com']
 

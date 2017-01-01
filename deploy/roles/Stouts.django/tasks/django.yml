@@ -1,7 +1,0 @@
----
-
-- include: settings.yml
-  tags: [django, django-settings]
-
-- include: manage.yml
-  tags: [django, django-manage]

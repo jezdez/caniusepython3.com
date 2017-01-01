@@ -1,5 +1,0 @@
----
-
-- include: deploy.yml
-  when: deploy_enabled
-  tags: [deploy]

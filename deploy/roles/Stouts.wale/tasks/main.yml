@@ -1,5 +1,0 @@
----
-
-- include: wale.yml
-  when: wale_enabled
-  tags: [wale]

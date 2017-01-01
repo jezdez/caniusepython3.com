@@ -1,5 +1,0 @@
----
-
-- include: redis.yml
-  when: redis_enabled
-  tags: [redis]

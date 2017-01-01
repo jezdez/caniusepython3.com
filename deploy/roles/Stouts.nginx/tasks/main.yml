@@ -1,4 +1,0 @@
----
-
-- include: nginx.yml
-  tags: [nginx]

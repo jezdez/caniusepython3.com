@@ -1,5 +1,0 @@
-# file: perl/vars/Debian.yml
-
-perl_packages:
-  - perl
-  - libperl-dev

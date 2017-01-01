@@ -1,8 +1,0 @@
----
-
-- include: timezone.yml
-  when: timezone_enabled and ansible_os_family == "Debian"
-  tags: [timezone]
-
-- debug: msg="The role supports only debian based OS"
-  when: ansible_os_family != "Debian"

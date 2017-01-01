@@ -1,8 +1,0 @@
----
-
-- name: Configure limits
-  template: src=limits.conf.j2 dest={{limits_path}} owner=root group=root mode=0644
-
-- name: Update sysctl
-  sysctl: name={{item.name}} value={{item.value}}
-  with_items:  limits_sysctl

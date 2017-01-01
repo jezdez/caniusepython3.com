@@ -18,14 +18,14 @@ django-pipeline==1.6.10
 django-redis==4.6.0
 django-secure==1.0.1
 django-staticflatpages==0.4.0
-django-templates-macros==0.1
+django-templates-macros==0.2
 django-vanilla-views==1.0.4
 Django==1.10.4
 djangorestframework==3.5.3
 first==2.0.1
 flower==0.9.1
 futures==3.0.5
-Jinja2==2.8
+Jinja2==2.8.1
 kombu==4.0.2
 MarkupSafe==0.23
 mock==2.0.0

@@ -13,6 +13,8 @@ class Command(BaseCommand):
     def handle(self, **options):
         redis = get_redis()
         lock = redis_lock.Lock(redis, "check_all_projects", expire=60 * 60 * 2)
+
+        acquired = False
         try:
             acquired = lock.acquire(blocking=False)
             if acquired:

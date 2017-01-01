@@ -231,17 +231,9 @@ CELERY_ROUTES = {
 
 every_10_minutes = crontab(minute='*/10')
 CELERYBEAT_SCHEDULE = {
-    'fetch_all_py3_projects': {
-        'task': 'ciupy3.checks.tasks.fetch_all_py3_projects',
-        'schedule': every_10_minutes,
-    },
     'fetch_all_projects': {
         'task': 'ciupy3.checks.tasks.fetch_all_projects',
         'schedule': crontab(minute='35'),
-    },
-    'fetch_overrides': {
-        'task': 'ciupy3.checks.tasks.fetch_overrides',
-        'schedule': every_10_minutes,
     },
     'fill_autocomplete_index': {
         'task': 'ciupy3.checks.tasks.fill_autocomplete_index',
@@ -252,5 +244,3 @@ CELERYBEAT_SCHEDULE = {
         'schedule': every_10_minutes,
     },
 }
-CELERY_ACCEPT_CONTENT = ['pickle']
-CELERYD_FORCE_EXECV = True

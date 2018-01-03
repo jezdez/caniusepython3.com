@@ -28,7 +28,7 @@ class ShieldRenderer(BaseRenderer):
     """
     charset = 'utf-8'
     render_style = 'binary'
-    subject = 'Python 3 port'
+    subject = 'Python 3 support'
 
     def render(self, data, accepted_media_type=None, renderer_context=None):
         renderer_context = renderer_context or {}

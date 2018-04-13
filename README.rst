@@ -35,4 +35,4 @@ Backend perspective
 - Periodically update the trove classifier cache (~30 mins)
 
 .. _caniusepython3: https://pypi.python.org/pypi/caniusepython3
-.. _caniusepython3.com: http://caniusepython3.com
+.. _caniusepython3.com: https://caniusepython3.com
